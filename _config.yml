@@ -11,7 +11,7 @@ email: clive.shirley@mac.com
 description: > # this means to ignore newlines until "baseurl:"
   Documenting thinking and exploration into development practices, pitfalls and fun.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://yourdomain.com" # the base hostname & protocol for your site
+url: "http://macberrypro.com" # the base hostname & protocol for your site
 twitter_username: macberrypro
 github_username: cshirley
 
