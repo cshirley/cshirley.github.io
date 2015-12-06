@@ -1,0 +1,63 @@
+---
+layout: post
+title: Coding in the Cloud [practical fact or developer fiction]
+date: 2014-10-04 17:18:41.000000000 +01:00
+type: post
+published: true
+status: publish
+categories:
+- Development
+tags:
+- Cloud
+- mosh
+- ovh
+- ssh
+- tmux
+- vim
+- vps
+meta:
+  _wpas_skip_facebook: '1'
+  _wpas_skip_tumblr: '1'
+  _wpas_skip_path: '1'
+  _oembed_9fa266212effdb078edbea06d03f79da: "{{unknown}}"
+  geo_latitude: '51.354963358242834'
+  geo_longitude: "-0.08529904709882885"
+  geo_address: South Croydon, Greater London, UK
+  geo_public: ''
+  _publicize_pending: '1'
+  publicize_google_plus_url: https://plus.google.com/106801832574314605779/posts/6ThUnB1xzFa
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _wpas_done_8443850: '1'
+  _publicize_done_external: a:1:{s:11:"google_plus";a:1:{s:21:"106801832574314605779";b:1;}}
+  publicize_twitter_user: macberrypro
+  publicize_twitter_url: http://t.co/pj6RJWHRIL
+  _wpas_done_3035556: '1'
+  publicize_linkedin_url: https://www.linkedin.com/updates?discuss=&scope=8338752&stype=M&topic=5924215851782795264&type=U&a=DakZ
+  _wpas_done_3035560: '1'
+author:
+  login: macberrypro
+  email: clive.shirley@mac.com
+  display_name: Clive Shirley
+  first_name: Clive
+  last_name: Shirley
+---
+<p style="text-align:justify;">For the last 12 months I have been intrigue with the idea of a development environment in the cloud.  There are some great posts out there detailing methodologies and the experiences of engineers whom have gone down this road.  The following is a short list of ones I have read and found useful:</p>
+<ul>
+<li style="padding-left:30px;"><a href="http://yieldthought.com/post/12239282034/swapped-my-macbook-for-an-ipad" target="_blank">swapped-my-macbook-for-an-ipad</a></li>
+<li style="padding-left:30px;"><a href="http://aaron.vegh.ca/2014/01/ipad-coding-for-web-development/" target="_blank">ipad-coding-for-web-development</a></li>
+<li style="padding-left:30px;"><a href="http://techland.time.com/2012/09/04/one-year-later-the-ipad-is-still-my-favorite-computer/" target="_blank">one-year-later-the-ipad-is-still-my-favorite-computer</a></li>
+</ul>
+<p style="text-align:justify;">I am somewhat of a polyglot engineer who started with a Spectrum Zx81 and basic over 34 years ago,  C/C++ at university then moved into enterprise development (integrating heterogeneous systems) with Visual Basic,  ASP and SQL through to Java, .Net, Javascript, Lisp, R, Ruby, GoLang, Objective C for both enterprise, mobile and SaaS solutions.  Now my general day-to-day tool-chain is Ruby (web/general development) and recently GoLang (system development).  Gone are days of building platform native GUI applications, replace with platform agnostic APIs leverage through javascript client applications; nothing new here.</p>
+<p style="text-align:justify;">For the last 20+ years I have been lugging a laptop around, starting with an Olivetti Echos P120c then, a beast of a Dell (4 KG), Apple TiBook,  IBM Thinkpad, 17" MBP ... finally ending up with a 2013 13" Macbook Air which is my current daily driver.  This IMHO, is almost the perfect developer laptop, lasts all day and the i7 with 8GB RAM chews up and spits out any tasks I throw at it.  The downside is hunting for WiFi hotspots (or tethering) while on the move</p>
+<p style="text-align:justify;">A little over a year ago I dumped my existing development editor (Sublime Text 3 Beta) which was/is a superb editor and moved to MacVim primarily after reading a blog post by the Infamous <a href="http://yehudakatz.com/2010/07/29/everyone-who-tried-to-convince-me-to-use-vim-was-wrong/" target="_blank">Yehuda Kata</a> detailing how he approach the switch.  Vim is all about muscle memory, which sometimes drives me nuts, particularly when it comes to using other content creation apps, all I seem to end up with is '<strong>hjklhjkl</strong>...', anyway lets not digress.</p>
+<p style="text-align:justify;">12 months later and I have my Vim environment finely tuned, leveraging essential plugins such as 'Unite, Vundle, NerdTree'  to name but a few.  When setting up linux servers I generally deploy my Vim configuration allowing me to transition between local and server machines for editing configuration and deployment settings.</p>
+<p style="text-align:justify;">At home and the office, the coding-test-deployment cycle is a joy as fast, always on internet connections allowing me to be super productive and responsive.   I have gotten into the habit of closing OS X Mail, ignoring Skype and just getting on with the task at hand.</p>
+<p style="text-align:justify;">Recently work has required me to be onsite at key customer locations, where the Wifi connection is poor/unavailable hence have been depending on mobile data connections.  In these circumstances,  development on my MBA is fine, but deploying updates to UAT and production environments over a mobile connection can prove challenging and long winded,  particularly with large assets that have to be copied to multiple servers, and don't forget the data costs once you go over you monthly allowance.</p>
+<p style="text-align:justify;">Last week, after much deployment pain and data cost, I decided to purchase a VPS subscription from <a href="http://www.ovh.co.uk" target="_blank">OVH</a> to use as my primary coding environment.  Having recommended OVH to clients in the past (as they provide an excellent service with cost savings over the competition - BTW I am not on commission), I selected the VPS Classic 1 2GB Ram 2x vCores, a consistent 100 MBits connection would mean no more issues with deployments and @£5.09/month this becomes a cost no-brainer.</p>
+<p style="text-align:justify;">The VPS was configured with a standard 14.04 LTS image, 1 hour later after installing VIM, Postgres, RVM/Ruby, GIT, Dropbox (sync files between my MBA and VPS) I was up and running - well almost.  Next I needed a terminal multiplexer to replace my local use of iTerm, I settled on <a href="http://tmux.sourceforge.net" target="_blank">Tmux</a> and <a href="https://github.com/tmuxinator/tmuxinator" target="_blank">tmuxinator</a> which allows per project tmux session configuration.  Done or so I though !</p>
+<p style="text-align:justify;">One wrinkle was the reliability of SSH connections when changing networks (i.e switching from a Wifi hotspot to mobile connection and back again).  Constantly killing SSH client sessions is a waste of keystrokes.  After some further research I found <a title="Mosh" href="https://mosh.mit.edu" target="_blank">mosh</a>, a client/server terminal application that initiates a connection over SSH which spawns a server instance of the application,  the client then connects to the server over UDP 6001 - 6100 and the SSH connection is closed.  Mosh handles all aspects of maintaining the server connection (including client network address changes) while optimising data transmission (i.e. only transmitting screen deltas between server and client).  Now I just close my laptop, no need to worry about the SSH client hanging when I open the lid, it just works; but ...  alas I have not found an iOS compatible application, thus I am relying on SSH when using an iPad/iPhone (but this is where tmux really shines).</p>
+<p style="text-align:justify;">I am only a week into my new setup, roaming around with my MBA rather than just an iPad, but all work is done on my VPS.  Dropbox automatically syncs changes back to my MBA incase I of network loss, although I have to remember not to edit code in both places otherwise the local git branch indexes &amp; change lists conflict and require manually editing.</p>
+<p style="text-align:justify;">Unlike the gradual move to Vim a year or so ago,  my move to the cloud for a full-blown development environment has been immediate (although I have a safety net with Dropbox syncing all changes between my VPS and MBA).</p>
+<p style="text-align:justify;">My next stage is to leave the MBA at home, although I am not convinced of the advantages of going iPad only as you still need to lug a keyboard around (mine is the Filco bluetooth Minila Air).  But the new iPhone 6 Plus hooked up to an external 1920x1020 monitor with a bluetooth keyboard is an interesting proposition I am keen to explore.</p>
+<p style="text-align:justify;">Setup of the VPS development environment was manual,  which I plan to automate in the future by leveraging Docker in combined with the OVH provisioning API making for a slick way to per-project development environments.</p>
