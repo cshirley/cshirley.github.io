@@ -6,10 +6,10 @@
 # 'jekyll serve'. If you change this file, please restart the server process.
 
 # Site settings
-title: The Accidental Engineer
+title: The Accidental coder - an aide-memoire
 email: clive.shirley@mac.com
 description: > # this means to ignore newlines until "baseurl:"
-  Documenting thinking and exploration into development practices, pitfalls and fun.
+  Coding and problem solving topics - an aide-memoire to an aging developer
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://macberrypro.com" # the base hostname & protocol for your site
 twitter_username: macberrypro
