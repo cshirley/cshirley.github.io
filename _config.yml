@@ -10,7 +10,6 @@ title: Aide memoir for an aging coder
 email: clive.shirley@mac.com
 description: > # this means to ignore newlines until "baseurl:"
   Coding and problem solving topics,
-  aide-memoir
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://macberrypro.com" # the base hostname & protocol for your site
 twitter_username: macberrypro
