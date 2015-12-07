@@ -12,4 +12,8 @@ layout: default
     {{ content }}
   </div>
 
+  <div class="post-comments" itemprop="articleBody">
+    {% include comments/disqus %}
+  </div>
+
 </article>
