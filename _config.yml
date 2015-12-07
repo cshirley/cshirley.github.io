@@ -21,6 +21,7 @@ markdown: kramdown
 comments:
   disqus:
     short_name: macberryprocom
+
 analytics:
   googleUA:
     tracking_id: UA-58277687-1
