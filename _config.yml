@@ -18,6 +18,10 @@ github_username: cshirley
 # Build settings
 markdown: kramdown
 
+collections:
+  projects:
+    output: true
+
 comments:
   disqus:
     short_name: macberryprocom
