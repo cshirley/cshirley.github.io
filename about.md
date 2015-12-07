@@ -11,6 +11,6 @@ Currently I am embracing new technologies and business verticals, focusing on te
 
   * Ruby scalable web applications (Rails/Sinatra)&nbsp;and backend services
   * Big Data Architecture Design and Implementation
-  * Social Data Mining within Finance &amp; Banking<
+  * Social Data Mining within Finance &amp; Banking
   * Mobility Solution Development (iPad/iPhone/Blackberry)
   * Enterprise Document and Content Management
