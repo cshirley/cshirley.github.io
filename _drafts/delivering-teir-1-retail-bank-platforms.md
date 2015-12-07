@@ -8,7 +8,7 @@ categories:
 - Development
 - Consultancy
 - Business
-tags:[]
+tags: []
 author:
   email: clive.shirley@mac.com
   display_name: Clive Shirley
