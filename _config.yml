@@ -6,8 +6,8 @@
 # 'jekyll serve'. If you change this file, please restart the server process.
 
 # Site settings
-title: Aide Memoir [ ..for an ageing coder ]
-email: clive.shirley@mac.com
+title: Aide Memoir [ ..for an ageing engineer]
+email: clive@shirleyconsulting.co.uk
 description: > # this means to ignore newlines until "baseurl:"
   Coding and problem solving topics,
 baseurl: "" # the subpath of your site, e.g. /blog
