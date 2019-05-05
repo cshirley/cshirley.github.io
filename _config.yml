@@ -1,10 +1,10 @@
 # Site settings
-title: Aide Memoir [ ..for an ageing engineer]
+title: Shirley Consulting
 email: clive@shirleyconsulting.co.uk
 description: > # this means to ignore newlines until "baseurl:"
-  Coding and problem solving topics,
-url: "http://macberrypro.com" # the base hostname & protocol for your site
+  Engineering Excellence,
 baseurl: "" # the subpath of your site, e.g. /blog
+url: "http://macberrypro.com" # the base hostname & protocol for your site
 
 github: cshirley
 twitter: macberrypro

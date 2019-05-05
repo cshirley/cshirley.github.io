@@ -3,24 +3,17 @@ layout: home
 title: Home
 banner_image: "/assets/images/banner.jpg"
 buttons:
-  - title: "Sign Up"
-    url: "#"
-    class: "special"
   - title: "Learn More"
+    class: "special"
     url: "#"
-cta:
-  title: "Sign up for beta access"
-  description: "Blandit varius ut praesent nascetur eu penatibus nisi risus faucibus nunc."
-  field: "Email Address"
-  action: "Sign Up"
 ---
 
 <section id="main" class="container">
   <section class="box special features">
     <header class="major">
-      <h2>Excellence &amp; Honesty</h2>
+      <h2>Engineering Excellence with Integrity</h2>
       <p>
-      Providing software consultancy and development you can rely on.  Our team is composed of consultants and engineers whom have been working within a variatey of computing and business sectors for over a quarter of a century.
+      Providing software consultancy and development you can rely on.  Our team is composed of consultants and engineers whom have been working across a range of computing and business sectors for over a quarter of a century.
       </p>
     </header>
     <span class="image featured">
