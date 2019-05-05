@@ -1,21 +1,18 @@
+---
+---
+
 <!DOCTYPE html>
 <html>
-
   {% include head.html %}
-
-  <body>
-
-    {% include header.html %}
-
-    <div class="page-content">
-      <div class="wrapper">
-        {{ content }}
-      </div>
+  <body
+    {% if page.layout == "home" %}
+    class="landing"
+    {% endif %}>
+    <div id="page-wrapper">
+      {% include header.html %}
+      {{ content }}
+      {% include footer.html %}
     </div>
-
-    {% include footer.html %}
-
-    {% include analytics/google-universal %}
+    {% include scripts.html %}
   </body>
-
 </html>

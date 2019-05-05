@@ -1,19 +1,17 @@
-# Welcome to Jekyll!
-#
-# This config file is meant for settings that affect your whole blog, values
-# which you are expected to set up once and rarely need to edit after that.
-# For technical reasons, this file is *NOT* reloaded automatically when you use
-# 'jekyll serve'. If you change this file, please restart the server process.
-
 # Site settings
 title: Aide Memoir [ ..for an ageing engineer]
 email: clive@shirleyconsulting.co.uk
 description: > # this means to ignore newlines until "baseurl:"
   Coding and problem solving topics,
-baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://macberrypro.com" # the base hostname & protocol for your site
-twitter_username: macberrypro
-github_username: cshirley
+baseurl: "/" # the subpath of your site, e.g. /blog
+
+github: cshirley
+twitter: macberrypro
+facebook:
+instagram: macberrypro
+dribbble:
+google_plus:
 
 # Build settings
 markdown: kramdown
@@ -29,3 +27,11 @@ comments:
 analytics:
   googleUA:
     tracking_id: UA-58277687-1
+
+include:
+  - _pages
+
+compress_html:
+  clippings: []
+  blanklines: false
+  comments: all

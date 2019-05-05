@@ -1,0 +1,28 @@
+
+@include skel-breakpoints((
+  wide: '(max-width: 1680px)',
+  normal: '(max-width: 1280px)',
+  narrow: '(max-width: 980px)',
+  narrower: '(max-width: 840px)',
+  mobile: '(max-width: 736px)',
+  mobilep: '(max-width: 480px)'
+));
+
+@include skel-layout((
+  reset: 'full',
+  boxModel: 'border',
+  grid: ( gutters: 2em ),
+  conditionals: true,
+  containers: 60em,
+  breakpoints: (
+    narrow: (
+      containers: 90%,
+    ),
+    narrower: (
+      containers: (90%, true),
+    ),
+    mobile: (
+      containers: (100%, true),
+    ),
+  )
+));

@@ -1,38 +1,50 @@
-<footer class="site-footer">
-
-  <div class="wrapper">
-
-    <h2 class="footer-heading">{{ site.title }}</h2>
-
-    <div class="footer-col-wrapper">
-      <div class="footer-col footer-col-1">
-        <ul class="contact-list">
-          <li>{{ site.title }}</li>
-          <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col footer-col-2">
-        <ul class="social-media-list">
-          {% if site.github_username %}
-          <li>
-            {% include icon-github.html username=site.github_username %}
-          </li>
-          {% endif %}
-
-          {% if site.twitter_username %}
-          <li>
-            {% include icon-twitter.html username=site.twitter_username %}
-          </li>
-          {% endif %}
-        </ul>
-      </div>
-
-      <div class="footer-col footer-col-3">
-        <p>{{ site.description }}</p>
-      </div>
-    </div>
-
-  </div>
-
+<!-- Footer -->
+<footer id="footer">
+	<ul class="icons">
+    {% if site.twitter %}
+      <li>
+        <a href="https://twitter.com/{{ site.twitter }}" class="icon">
+          <i class="fab fa-twitter fa-2x"></i>
+        </a>
+      </li>
+    {% endif %}
+    {% if site.facebook %}
+      <li>
+        <a href="https://www.facebook.com/{{ site.facebook }}" class="icon">
+          <i class="fab fa-facebook fa-2x"></i>
+        </a>
+      </li>
+    {% endif %}
+    {% if site.instagram %}
+      <li>
+        <a href="https://instagram.com/{{ site.instagram }}" class="icon">
+          <i class="fab fa-instagram fa-2x"></i>
+        </a>
+      </li>
+    {% endif %}
+    {% if site.github %}
+      <li>
+        <a href="https://github.com/{{ site.github }}" class="icon">
+          <i class="fab fa-github fa-2x"></i>
+        </a>
+      </li>
+    {% endif %}
+    {% if site.dribbble %}
+      <li>
+        <a href="https://dribbble.com/{{ site.dribbble }}" class="icon">
+          <i class="fab fa-dribbble fa-2x"></i>
+        </a>
+      </li>
+    {% endif %}
+    {% if site.google_plus %}
+      <li>
+        <a href="https://plus.google.com/{{ site.google_plus }}" class="icon">
+          <i class="fab fa-google-plus fa-2x"></i>
+        </a>
+      </li>
+    {% endif %}
+	</ul>
+	<ul class="copyright">
+		<li>&copy; {{ site.title }}. All rights reserved.</li>
+	</ul>
 </footer>

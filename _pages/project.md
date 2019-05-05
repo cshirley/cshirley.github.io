@@ -1,13 +1,14 @@
 ---
 layout: default
+title: Work
+layout: page
+permalink: /projects/
 ---
 
 <div class="home">
 
-  <h1 class="page-heading">Posts</h1>
-
   <ul class="post-list">
-    {% for post in site.posts %}
+    {% for post in site.projects %}
       <li>
         <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
 

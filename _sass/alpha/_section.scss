@@ -1,0 +1,57 @@
+/* Section/Article */
+
+section, article {
+  &.special {
+    text-align: center;
+  }
+}
+
+header {
+  p {
+    color: _palette(fg-light);
+    position: relative;
+    margin: 0 0 (_size(element-margin) * 0.75) 0;
+    font-style: italic;
+  }
+
+  h2 + p {
+    font-size: 1.25em;
+    margin-top: -1em;
+    line-height: 1.5em;
+  }
+
+  h3 + p {
+    font-size: 1.1em;
+    margin-top: -0.85em;
+    line-height: 1.5em;
+  }
+
+  h4 + p,
+  h5 + p,
+  h6 + p {
+    font-size: 0.8em;
+    margin-top: -0.5em;
+    line-height: 1.5em;
+  }
+
+  &.major {
+    padding: 1em 0;
+    text-align: center;
+
+    h2 {
+      margin: 0;
+    }
+
+    p {
+      display: inline-block;
+      border-top: solid 2px _palette(border);
+      color: _palette(fg);
+      margin: 1.5em 0 0 0;
+      padding: 1.5em 0 0 0;
+      font-style: normal;
+    }
+  }
+}
+
+footer {
+}

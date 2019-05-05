@@ -1,0 +1,11 @@
+/* Narrow */
+
+@include breakpoint(narrow) {
+
+  /* Basic */
+
+    body, input, select, textarea {
+      font-size: 11pt;
+    }
+
+}

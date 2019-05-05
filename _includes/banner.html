@@ -1,0 +1,22 @@
+<!-- Banner -->
+<section id="banner" style="background-image: {{ overlay_str }}url('{{ banner_image_path }}');">
+  <h2>{{ site.title }}</h2>
+  <p>{{ site.description }}</p>
+  {% if page.buttons %}
+    <ul class="actions">
+      {% for b in page.buttons %}
+
+        {% comment %} internal/external URL check {% endcomment %}
+        {% if b.url contains "://" %}
+          {% assign button_url = b.url %}
+        {% else %}
+          {% assign button_url = b.url | relative_url %}
+        {% endif %}
+
+        <li>
+          <a href="{{ button_url }}" class="button {{ b.class }}">{{ b.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</section>

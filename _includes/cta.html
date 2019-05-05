@@ -1,0 +1,20 @@
+<!-- CTA -->
+{% if page.cta %}
+<section id="cta">
+
+  <h2>{{ page.cta.title }}</h2>
+  <p>{{ page.cta.description }}</p>
+
+	<form>
+		<div class="row uniform 50%">
+			<div class="8u 12u(mobilep)">
+        <input type="email" name="email" id="email" placeholder="{{ page.cta.field | default: 'Email Address' }}" />
+			</div>
+			<div class="4u 12u(mobilep)">
+        <input type="submit" value="{{ page.cta.action | default: 'Sign Up' }}" class="fit" />
+			</div>
+		</div>
+	</form>
+
+</section>
+{% endif %}

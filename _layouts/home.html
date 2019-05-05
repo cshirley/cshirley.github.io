@@ -1,0 +1,21 @@
+---
+layout: default
+---
+
+{% if page.banner_image %}
+  {% capture banner_image_path %}{{ page.banner_image | relative_url }}{% endcapture %}
+{% else %}
+  {% capture banner_image_path %}{{ '/assets/images/overlay.png' | relative_url }}{% endcapture %}
+{% endif %}
+
+{% comment %} Let users stop the overlay if they wish {% endcomment %}
+{% if page.no_overlay %}
+  {% assign overlay_str = "" %}
+{% else %}
+  {% capture overlay_str %}url('{{ "/assets/images/overlay.png" | relative_url }}'), {% endcapture %}
+{% endif %}
+
+{% include banner.html %}
+
+{{ content }}
+

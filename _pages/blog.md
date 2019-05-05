@@ -1,13 +1,16 @@
 ---
-layout: default
-title: Work
-permalink: /projects/
+permalink: /blog/
+layout: page
+title: "Blog Posts"
+subtitle: ""
 ---
 
 <div class="home">
 
+  <h1 class="page-heading">Posts</h1>
+
   <ul class="post-list">
-    {% for post in site.projects %}
+    {% for post in site.posts %}
       <li>
         <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
 

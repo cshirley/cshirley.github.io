@@ -1,0 +1,52 @@
+/* Icon */
+
+.icon {
+  @include icon;
+  border-bottom: none;
+  position: relative;
+
+  > .label {
+    display: none;
+  }
+
+  &.major {
+    background: _palette(accent1, bg);
+    border-radius: 100%;
+    color: _palette(accent1, fg-bold);
+    cursor: default;
+    display: inline-block;
+    height: 5.5em;
+    line-height: 5.5em;
+    margin: 0 0 _size(element-margin) 0;
+    width: 5.5em;
+
+    &:before {
+      font-size: 2.5em;
+    }
+
+    &.accent1 {
+      background: _palette(accent1, bg);
+      color: _palette(accent1, fg-bold);
+    }
+
+    &.accent2 {
+      background: _palette(accent2, bg);
+      color: _palette(accent2, fg-bold);
+    }
+
+    &.accent3 {
+      background: _palette(accent3, bg);
+      color: _palette(accent3, fg-bold);
+    }
+
+    &.accent4 {
+      background: _palette(accent4, bg);
+      color: _palette(accent4, fg-bold);
+    }
+
+    &.accent5 {
+      background: _palette(accent5, bg);
+      color: _palette(accent5, fg-bold);
+    }
+  }
+}

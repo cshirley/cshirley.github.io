@@ -1,0 +1,76 @@
+{% assign navigation = site.data.navigation.main %}
+
+{% if navigation %}
+<nav id="nav">
+	<ul>
+    {% for nav in navigation %}
+
+      <li>
+      {% assign cls_str = nav.class %}
+
+      {% comment %} internal/external URL check {% endcomment %}
+      {% if nav.url contains "://" %}
+        {% assign nav_url = nav.url %}
+      {% elsif nav.url %}
+        {% assign nav_url = nav.url | relative_url %}
+      {% else %}
+        {% assign nav_url = "#" %}
+      {% endif %}
+
+      {% comment %} Set the browse icon {% endcomment %}
+      {% if nav.children %}
+        {% assign child_icon = '<i class="icon fas fa-angle-down"></i>' %}
+      {% else %}
+        {% assign child_icon = '' %}
+      {% endif %}
+
+      <a href="{{ nav_url }}" class="{{ cls_str }}">
+        {{ child_icon }}{{ nav.title }}
+      </a>
+
+      {% comment %} loop over navigation children {% endcomment %}
+      {% if nav.children %}
+        <ul>
+
+        {% for child in nav.children %}
+          <li>
+          {% comment %} internal/external URL check {% endcomment %}
+          {% if child.url contains "://" %}
+            {% assign child_url = child.url %}
+          {% elsif child.url %}
+            {% assign child_url = child.url | relative_url %}
+          {% else %}
+            {% assign child_url = "#" %}
+          {% endif %}
+
+          <a href="{{ child_url }}">{{ child.title }}</a>
+
+          {% comment %} loop over grandchildren {% endcomment %}
+          {% if child.children %}
+            <ul>
+            {% for cc in child.children %}
+
+              {% comment %} internal/external URL check {% endcomment %}
+              {% if cc.url contains "://" %}
+                {% assign child_url = cc.url %}
+              {% elsif cc.url %}
+                {% assign child_url = cc.url | relative_url %}
+              {% else %}
+                {% assign child_url = "#" %}
+              {% endif %}
+
+              <a href="{{ child_url }}">{{ cc.title }}</a>
+            {% endfor %}
+            </ul>
+          {% endif %}
+
+        {% endfor %}
+
+        </ul>
+      {% endif %}
+      </li>
+
+    {% endfor %}
+	</ul>
+</nav>
+{% endif %}

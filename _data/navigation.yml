@@ -1,0 +1,20 @@
+main:
+  - title: Home
+    class: button
+  - title: Blog
+    class: button
+    url: /blog
+  - title: Work
+    class: button
+    url: /projects
+  - title: About
+    class: button
+    url: /about
+  - title: Layouts
+    children:
+      - title: Generic
+        url: /generic
+      - title: Contact
+        url: /contact
+      - title: Elements
+        url: /elements
