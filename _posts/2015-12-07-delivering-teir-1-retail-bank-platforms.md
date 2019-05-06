@@ -3,7 +3,6 @@ layout: post
 title: Tier-1 Retail Bank SaaS Delivery
 date: 2015-12-07 14:57:38 +0000
 type: post
-status: draft
 categories:
 - Development
 - Consultancy
