@@ -1,19 +1,48 @@
 ---
 layout: default
 ---
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">{{ page.title }}</h1>
-    <p class="post-meta"><time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%b %-d, %Y" }}</time>{% if page.author %} • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ page.author.display_name }}</span></span>{% endif %}</p>
-  </header>
-
-  <div class="post-content" itemprop="articleBody">
-    {{ content }}
+<section id="main" class="container {{ page.box_width }}">
+  {% if page.title %}
+    <header>
+      <h2>{{ page.title }}</h2>
+      {% if page.subtitle %}
+        <p>{{ page.subtitle }}</p>
+      {% endif %}
+      {% if page.date %}
+        <p>
+          <time datetime="{{ page.date | date_to_xmlschema }}"
+            itemprop="datePublished">
+            {{ page.date | date: "%b %-d, %Y" }}
+          </time>
+        </p>
+      {% endif %}
+      {% if page.author %}
+        <br/>
+        <span itemprop="author" itemscope
+              itemtype="http://schema.org/Person">
+          <span itemprop="name">
+            {{ page.author.display_name }}
+          </span>
+        </span>
+      {% endif %}
+    </header>
+  {% endif %}
+  <div class="row">
+    <div class="12u">
+      <!-- Text -->
+      <section class="box">
+        {{ content }}
+      </section>
+    </div>
   </div>
 
-  <div class="post-comments" itemprop="articleBody">
-    {% include comments/disqus %}
-  </div>
+  <div class="row">
+    <div class="12u">
+      <!-- Text -->
+      <section class="box">
+        {% include comments/disqus %}
+      </section>
+    </div>
 
-</article>
+  </div>
+</section>
