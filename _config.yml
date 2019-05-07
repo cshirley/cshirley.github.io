@@ -3,7 +3,7 @@ title: Shirley Consulting
 email: clive@shirleyconsulting.co.uk
 description: > # this means to ignore newlines until "baseurl:"
   Engineering Excellence,
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "/" # the subpath of your site, e.g. /blog
 url: "http://macberrypro.com" # the base hostname & protocol for your site
 
 github: cshirley
