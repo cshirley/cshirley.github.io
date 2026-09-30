@@ -9,6 +9,10 @@ import { NAV, SITE } from '../site';
       <a href={SITE.links.github} rel="me">GitHub</a>
       <a href={SITE.links.linkedin} rel="me">LinkedIn</a>
       <a href="/feed.xml">RSS</a>
+      <a href="/privacy/">Privacy</a>
+      {SITE.gaMeasurementId && (
+        <button type="button" class="link-button" data-cookie-settings hidden>Cookie settings</button>
+      )}
     </nav>
   </div>
 </footer>

@@ -3,14 +3,36 @@ import { SITE } from '../site';
 
 const id = SITE.gaMeasurementId;
 ---
+{/*
+  Google Analytics 4 with Consent Mode v2 (basic): everything defaults to
+  denied and gtag.js is only fetched once the visitor opts in via the
+  cookie banner (see CookieConsent.astro). Choice is kept in localStorage.
+*/}
 {id && (
-  <>
-    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${id}`}></script>
-    <script is:inline define:vars={{ id }}>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() { dataLayer.push(arguments); }
-      gtag('js', new Date());
-      gtag('config', id);
-    </script>
-  </>
+  <script is:inline define:vars={{ id }}>
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { dataLayer.push(arguments); };
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'denied',
+    });
+    gtag('js', new Date());
+    gtag('config', id, { allow_google_signals: false, allow_ad_personalization_signals: false });
+
+    window.loadAnalytics = function () {
+      gtag('consent', 'update', { analytics_storage: 'granted' });
+      if (window.__gaLoaded) return;
+      window.__gaLoaded = true;
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + id;
+      document.head.appendChild(s);
+    };
+
+    try {
+      if (localStorage.getItem('cookie-consent') === 'granted') window.loadAnalytics();
+    } catch (e) {}
+  </script>
 )}

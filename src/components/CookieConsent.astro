@@ -1,0 +1,74 @@
+---
+import { SITE } from '../site';
+
+const enabled = Boolean(SITE.gaMeasurementId);
+---
+{enabled && (
+  <>
+    <div class="cookie-banner" role="region" aria-label="Cookie consent" data-cookie-banner hidden>
+      <p>
+        Can I use Google Analytics cookies to see which pages get read? No ads, no cross-site tracking.
+        <a href="/privacy/">Privacy &amp; cookies</a>
+      </p>
+      <div class="cookie-actions">
+        <button type="button" class="btn btn-ghost" data-cookie-choice="denied">Reject</button>
+        <button type="button" class="btn btn-ghost" data-cookie-choice="granted">Accept</button>
+      </div>
+    </div>
+
+    <script is:inline>
+      (() => {
+        const KEY = 'cookie-consent';
+        const banner = document.querySelector('[data-cookie-banner]');
+        if (!banner) return;
+
+        let stored = null;
+        try { stored = localStorage.getItem(KEY); } catch (e) {}
+
+        const show = () => { banner.hidden = false; };
+        const hide = () => { banner.hidden = true; };
+
+        // Remove GA cookies (_ga, _ga_<stream>) from every domain level they may be set on.
+        const clearGaCookies = () => {
+          const parts = location.hostname.split('.');
+          const domains = [''];
+          for (let i = 0; i < parts.length - 1; i++) domains.push('; domain=.' + parts.slice(i).join('.'));
+          document.cookie.split(';').forEach((c) => {
+            const name = c.split('=')[0].trim();
+            if (name === '_ga' || name.startsWith('_ga_') || name === '_gid') {
+              domains.forEach((d) => {
+                document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + d;
+              });
+            }
+          });
+        };
+
+        const choose = (value) => {
+          try { localStorage.setItem(KEY, value); } catch (e) {}
+          if (value === 'granted') {
+            window.loadAnalytics && window.loadAnalytics();
+          } else {
+            window.gtag && window.gtag('consent', 'update', { analytics_storage: 'denied' });
+            clearGaCookies();
+          }
+          hide();
+        };
+
+        banner.querySelectorAll('[data-cookie-choice]').forEach((btn) => {
+          btn.addEventListener('click', () => choose(btn.dataset.cookieChoice));
+        });
+
+        document.querySelectorAll('[data-cookie-settings]').forEach((el) => {
+          el.hidden = false;
+          el.addEventListener('click', (e) => {
+            e.preventDefault();
+            show();
+            banner.querySelector('button')?.focus();
+          });
+        });
+
+        if (stored !== 'granted' && stored !== 'denied') show();
+      })();
+    </script>
+  </>
+)}

@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE } from '../../site';
+---
+<BaseLayout title="Privacy & cookies" description="How this site uses cookies and Google Analytics, and how to change your choice.">
+  <section class="page-header">
+    <div class="container">
+      <p class="eyebrow">Privacy</p>
+      <h1>Privacy &amp; cookies</h1>
+      <p class="lead">This site collects as little as possible. No ads, no cross-site tracking, no selling data.</p>
+    </div>
+  </section>
+
+  <section class="container" style="padding-bottom: 6rem;">
+    <div class="prose">
+      <h2>Who I am</h2>
+      <p>
+        This is the personal site of {SITE.name}, based in {SITE.location}. For any privacy question or request,
+        email <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+      </p>
+
+      <h2>Analytics (only with your consent)</h2>
+      <p>
+        If you click <strong>Accept</strong> on the cookie banner, the site loads Google Analytics 4 to count page
+        views and see which articles get read. Google then collects the pages you visit, the referring site, your
+        browser and device type, and your approximate location (country or city). Google Analytics 4 does not log or store IP
+        addresses. Google Signals and ad personalisation are turned off.
+      </p>
+      <p>
+        Google Ireland Ltd processes this data on my behalf and may transfer it to the US under the EU–US Data
+        Privacy Framework and UK Extension. See <a href="https://policies.google.com/privacy">Google’s privacy
+        policy</a>. Analytics data is kept for 14 months.
+      </p>
+      <p>
+        The legal basis is your consent. If you click <strong>Reject</strong> or ignore the banner, Google Analytics is never
+        loaded.
+      </p>
+
+      <h2>Cookies and local storage</h2>
+      <table>
+        <thead>
+          <tr><th>Name</th><th>Purpose</th><th>Duration</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>_ga</code></td><td>Google Analytics: tells visits apart (only after consent)</td><td>2 years</td></tr>
+          <tr><td><code>_ga_&lt;id&gt;</code></td><td>Google Analytics: keeps session state (only after consent)</td><td>2 years</td></tr>
+          <tr><td><code>cookie-consent</code></td><td>Remembers your analytics choice (local storage)</td><td>Until cleared</td></tr>
+          <tr><td><code>theme</code></td><td>Remembers light/dark mode (local storage)</td><td>Until cleared</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Changing your mind</h2>
+      <p>
+        Use <a href="#" data-cookie-settings>Cookie settings</a> (also in the footer) at any time. If you reject,
+        the analytics cookies are deleted.
+      </p>
+
+      <h2>Your rights</h2>
+      <p>
+        Under UK GDPR you can ask to access or delete personal data, or complain to the
+        <a href="https://ico.org.uk/make-a-complaint/">Information Commissioner’s Office</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
