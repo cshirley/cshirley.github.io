@@ -2,7 +2,6 @@
 title: "Decommissioning a Telehealth Platform Without Losing the Records"
 description: "Switching off a platform is easy; keeping its patient records accessible for regulators, lawyers and GDPR requests for another decade is not. How we chose a single final resting place and built a simple, repeatable export."
 date: 2025-04-16 09:00:00 +0100
-draft: true
 categories:
 - Architecture
 tags:

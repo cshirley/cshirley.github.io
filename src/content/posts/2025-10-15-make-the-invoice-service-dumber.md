@@ -2,7 +2,6 @@
 title: "Make the Invoice Service Dumber"
 description: "A payment service that knows about referral credits, employer coverage, promotions and shipping has to change for every new business idea. Push business rules out into resolvers that produce line items, and the core never changes again."
 date: 2025-10-15 09:00:00 +0100
-draft: true
 categories:
 - Payments
 tags:

@@ -2,7 +2,6 @@
 title: "Load Testing Told Us Autoscaling Was Unsafe"
 description: "Adding pods made things worse. Before you switch on a Horizontal Pod Autoscaler, you need admission control, bulkheads and fan-out budgets. Otherwise more replicas just means more retries hitting the same bottleneck."
 date: 2026-02-11 09:00:00 +0000
-draft: true
 categories:
 - Architecture
 tags:

@@ -2,7 +2,6 @@
 title: "Take Payment as Close to Shipment as Possible"
 description: "A reusable request → fulfil pattern for products and services, with payment treated as just another eligibility gate. It works the same for direct-to-consumer and employer-funded customers."
 date: 2025-01-22 09:00:00 +0000
-draft: true
 categories:
 - Architecture
 tags:

@@ -2,7 +2,6 @@
 title: "Pause Is Not a Status: Modelling Holds as Overlays"
 description: "A requirement to 'pause' a care programme turned out to be four independent behaviours. Model it as a time-bounded hold with declarative effects rather than a lifecycle status, and one mechanism covers every kind of delay."
 date: 2026-06-10 09:00:00 +0100
-draft: true
 categories:
 - Architecture
 tags:

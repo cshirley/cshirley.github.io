@@ -2,7 +2,6 @@
 title: "Fix Developer Experience Before You Re-Platform"
 description: "When one feature means five coordinated PRs and a shared dev environment, a new runtime platform won't save you. A monorepo, a one-command local stack, contract tests and preview environments will, whether the humans or the AI agents are writing the code."
 date: 2026-08-05 09:00:00 +0100
-draft: true
 categories:
 - Engineering
 tags:

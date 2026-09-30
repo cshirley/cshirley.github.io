@@ -2,7 +2,6 @@
 title: "Building an AI-Native Development Workflow with Pi"
 description: "Eleven extensions, six skills, eighteen agents and a token budget: how I rebuilt my whole working day inside a terminal-first coding agent, from morning briefing to verified pull request."
 date: 2026-05-06 09:00:00 +0100
-draft: true
 categories:
 - AI
 tags:

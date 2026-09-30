@@ -2,7 +2,6 @@
 title: "I Rebuilt My Agent Pipeline Three Times. The Substrate Was the Problem."
 description: "Most agent setups optimise for capability. I optimised for attention — and built ACCORD, a Pi extension that turns a free-text request into a verifiable contract before anyone writes code."
 date: 2026-08-19 09:00:00 +0100
-draft: true
 categories:
 - AI
 tags:

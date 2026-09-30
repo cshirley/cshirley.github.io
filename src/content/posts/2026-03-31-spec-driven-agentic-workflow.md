@@ -2,7 +2,6 @@
 title: "A Spec-Driven Agentic Workflow With Claude Code Skills"
 description: "Five skills, thirteen single-purpose agents and a spec that travels with the code: how I structured AI-assisted delivery so every session starts fresh and every change is verified against written acceptance criteria."
 date: 2026-03-31 09:00:00 +0100
-draft: true
 categories:
 - AI
 tags:

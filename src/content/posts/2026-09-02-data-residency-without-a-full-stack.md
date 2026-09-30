@@ -2,7 +2,6 @@
 title: "Data Residency Without a Full In-Country Stack"
 description: "Entering a market that requires patient data to stay in-country doesn't have to mean cloning your whole platform. Split it into data cells and processing hubs, then hunt down the places data quietly comes to rest."
 date: 2026-09-02 09:00:00 +0100
-draft: true
 categories:
 - Architecture
 tags:

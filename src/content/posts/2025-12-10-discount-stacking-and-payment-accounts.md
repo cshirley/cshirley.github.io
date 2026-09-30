@@ -2,7 +2,6 @@
 title: "Discount Stacking and Multiple Payment Accounts: Writing the Rules Down First"
 description: "Two payments RFCs from the same week: a stacking policy for employer coverage, coupons and referral credits, and a design for several payment accounts in one deployment. Both are cheaper to decide before marketing and partnerships need them."
 date: 2025-12-10 09:00:00 +0000
-draft: true
 categories:
 - Payments
 tags:

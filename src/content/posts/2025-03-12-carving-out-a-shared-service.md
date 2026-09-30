@@ -2,7 +2,6 @@
 title: "Carving a Shared Service Out Into a Regional Environment"
 description: "When a regional business is divested, the shared services it depends on have to move too. A practical checklist for relocating a multi-tenant service and its data: stand up, copy, prune, re-point, verify."
 date: 2025-03-12 09:00:00 +0000
-draft: true
 categories:
 - Architecture
 tags:

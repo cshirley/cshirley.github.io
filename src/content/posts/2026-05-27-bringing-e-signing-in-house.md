@@ -2,7 +2,6 @@
 title: "Bringing E-Signing In-House: KMS Keys, PAdES and a Migration Nobody Should Notice"
 description: "A per-signature SaaS was costing about £310K a year. Designing an in-house Advanced Electronic Signature pipeline to replace it: the cryptography is the easy part; the migration design is what makes it safe."
 date: 2026-05-27 09:00:00 +0100
-draft: true
 categories:
 - Architecture
 tags:

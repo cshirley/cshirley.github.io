@@ -2,7 +2,6 @@
 title: "Search-Then-Create Is a Race Condition"
 description: "Conditional create on top of an eventually consistent search index will create duplicates under load. A small, strongly consistent write barrier fixes it — and the hard part is choosing the uniqueness key, not the lock."
 date: 2026-07-08 09:00:00 +0100
-draft: true
 categories:
 - Architecture
 tags:

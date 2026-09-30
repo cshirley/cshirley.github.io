@@ -2,7 +2,6 @@
 title: "The Cheaper Platform Isn't the Cheaper Migration"
 description: "A replacement workflow engine would have cut the licence bill by more than 90%. The honest business case said the question wasn't cost at all. How to write a platform-migration case that counts engineering time, opportunity cost and operational maturity honestly."
 date: 2026-09-16 09:00:00 +0100
-draft: true
 categories:
 - Architecture
 tags:

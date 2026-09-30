@@ -2,7 +2,6 @@
 title: "Designing for Human Latency: Task-Based Patient Interactions"
 description: "In chronic care, the normal latency of an interaction is days or weeks. Model those interactions as tasks, not synchronous flows, and you can control demand, set honest expectations and survive a cohort-sized spike."
 date: 2025-07-02 09:00:00 +0100
-draft: true
 categories:
 - Architecture
 tags:

@@ -2,7 +2,6 @@
 title: "Preparing a Platform for a TV Campaign: Infrastructure First, Authorisation First"
 description: "A TV advert means a traffic spike you can't schedule precisely, because catch-up viewing exists. Our plan: config-only scaling first, fix the one call every request makes, then add application-level protection with a go/no-go gate two weeks out."
 date: 2025-11-12 09:00:00 +0000
-draft: true
 categories:
 - Architecture
 tags:

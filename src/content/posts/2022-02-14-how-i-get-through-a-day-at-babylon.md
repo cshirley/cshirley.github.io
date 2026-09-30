@@ -2,7 +2,6 @@
 title: "This Is How I Get Through a Day at Babylon"
 description: "Time-blocking, batching context switches, and a modal, terminal-first setup on an iPad Pro: how a Principal Engineer protects focus while bouncing between teams."
 date: 2022-02-14 09:00:00 +0000
-draft: true
 categories:
 - Development
 tags:

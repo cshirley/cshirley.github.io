@@ -2,7 +2,6 @@
 title: "One List Price, Many Coupons: A Pricing Standard for Stripe"
 description: "Every promotion modelled as a new Stripe price multiplies into hundreds of IDs that drift. Here's the standard we adopted: prices are list prices, every adjustment is a coupon, and plans are versioned documents, not dashboard clicks."
 date: 2026-07-22 09:00:00 +0100
-draft: true
 categories:
 - Payments
 tags:

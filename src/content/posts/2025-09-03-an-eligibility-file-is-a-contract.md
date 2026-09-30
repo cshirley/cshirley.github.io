@@ -2,7 +2,6 @@
 title: "An Eligibility File Is a Contract"
 description: "B2B health programmes live or die on two files: who is eligible (in) and what happened (out). Design both as versioned contracts with clear keys, and you get easier onboarding, easier reporting and fewer awkward client calls."
 date: 2025-09-03 09:00:00 +0100
-draft: true
 categories:
 - Architecture
 tags:

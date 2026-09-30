@@ -2,7 +2,6 @@
 title: "Move the Smaller Population: Migrating Live Stripe Subscriptions Between Accounts"
 description: "When two businesses sharing one Stripe account need to separate, the question isn't how to move customers. It's which customers to move. Move the smaller, quieter population and leave the growing one alone."
 date: 2025-05-14 09:00:00 +0100
-draft: true
 categories:
 - Payments
 tags:

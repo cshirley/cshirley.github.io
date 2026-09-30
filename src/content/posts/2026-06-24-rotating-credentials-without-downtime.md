@@ -2,7 +2,6 @@
 title: "Rotating Credentials Without Downtime (and Knowing What They Touched)"
 description: "A rotation playbook for third-party credentials across environments and regions: overlapping validity, dual-running webhook secrets, a boring checklist, and the audit trail you need before an incident, not after."
 date: 2026-06-24 09:00:00 +0100
-draft: true
 categories:
 - Engineering
 tags:

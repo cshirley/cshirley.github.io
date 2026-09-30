@@ -2,7 +2,6 @@
 title: "When 'Shared Nothing' Means Duplicating Everything"
 description: "Isolating business operations from each other is a good instinct, until every operation carries its own client for the same third-party API and its own reading of the same data. Share contracts and integration clients; keep behaviour isolated."
 date: 2025-08-06 09:00:00 +0100
-draft: true
 categories:
 - Architecture
 tags:

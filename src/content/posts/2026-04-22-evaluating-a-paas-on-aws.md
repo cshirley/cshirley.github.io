@@ -2,7 +2,6 @@
 title: "Evaluating a PaaS That Runs in Your Own AWS Account"
 description: "We wanted a Heroku-like developer experience without leaving AWS or re-platforming our data. A requirements-first evaluation of managed runtimes found two gaps every vendor shared, and a few questions worth asking before any pilot."
 date: 2026-04-22 09:00:00 +0100
-draft: true
 categories:
 - Engineering
 tags:

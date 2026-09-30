@@ -2,7 +2,6 @@
 title: "Know Thy Runtime"
 description: "How a four-line change, AES decryption and Ruby's Global VM Lock turned into a P1 incident, and what it taught us about understanding the runtime beneath our code."
 date: 2022-03-28 09:00:00 +0100
-draft: true
 categories:
 - Development
 tags:
