@@ -12,7 +12,7 @@ export const SITE = {
     accord: 'https://github.com/cshirley/accord',
   },
   // Google Analytics 4 measurement ID (e.g. "G-XXXXXXXXXX"); empty = no tracking.
-  gaMeasurementId: '',
+  gaMeasurementId: 'G-CB3EKHBYF8',
 } as const;
 
 export type NavItem = { title: string; url: string };
