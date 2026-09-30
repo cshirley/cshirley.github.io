@@ -123,7 +123,7 @@ export const EXPERIENCE: Role[] = [
       'Own technical strategy and architectural direction for a global healthcare platform. Principal Engineer across all product pillars, setting cross-cutting architecture, reference patterns and standards, and bridging commercial intent and technical delivery through B2B2C expansion, GLP-1 product lines, US and Canadian market entry and the Babylon legacy sunset.',
     highlights: [
       'Architected and shipped a payments domain replacing provider-coupled code with a pluggable adapter model, order orchestrator and configuration-driven pricing engine across US and UK surfaces.',
-      'Brought NHS ePrescription signing in-house: per-prescriber AWS KMS keys, PAdES-signed PDFs and a feature-flagged rollout, saving ~£310K a year.',
+      'Brought NHS ePrescription signing in-house: per-prescriber AWS KMS keys, PAdES-signed PDFs and a feature-flagged rollout, removing a per-signature SaaS cost.',
       'Designed pharmacy claim submission and reconciliation with CVS, modelling NCPDP batches and X12 835 remittance natively in FHIR.',
       'Led the multi-quarter stability and scaling programme: back-pressure, bulkheads, circuit breakers, graceful shutdown and a performance-testing framework.',
       'Set the Canadian deployment architecture and a data-cell pattern that keeps at-rest patient data in-country for residency-constrained markets.',

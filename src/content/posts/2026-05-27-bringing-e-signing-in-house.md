@@ -1,6 +1,6 @@
 ---
 title: "Bringing E-Signing In-House: KMS Keys, PAdES and a Migration Nobody Should Notice"
-description: "A per-signature SaaS was costing about £310K a year. Designing an in-house Advanced Electronic Signature pipeline to replace it: the cryptography is the easy part; the migration design is what makes it safe."
+description: "A per-signature SaaS bill that grows with every prescription. Designing an in-house Advanced Electronic Signature pipeline to replace it: the cryptography is the easy part; the migration design is what makes it safe."
 date: 2026-05-27 09:00:00 +0100
 categories:
 - Architecture
@@ -14,7 +14,7 @@ author:
   display_name: Clive Shirley
 ---
 
-Some third-party services are priced per call, and that's fine until volume makes the unit price the dominant fact. Prescription signing is one of them for us. At roughly 35,000 prescriptions a month and a per-signature fee, the bill is around **£310,000 a year**, and it grows linearly with the business.
+Some third-party services are priced per call, and that's fine until volume makes the unit price the dominant fact. Prescription signing is one of them for us. At roughly 35,000 prescriptions a month and a per-signature fee, the bill is substantial, and it grows linearly with the business.
 
 Cost isn't the only problem:
 
