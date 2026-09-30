@@ -2,7 +2,6 @@
 title: "Modelling Batch Pharmacy Claims in FHIR"
 description: "FHIR has no ClaimBatch resource, and NCPDP batch files don't care about REST. How we composed Task, List, Claim, ClaimResponse, ExplanationOfBenefit and PaymentReconciliation into a claims lifecycle with at-least-once delivery that's safe to retry."
 date: 2026-10-07 09:00:00 +0100
-draft: true
 categories:
 - Architecture
 tags:

@@ -2,7 +2,6 @@
 title: "A Server-Driven Launcher for Partner App-to-App SSO"
 description: "Deep-linking users from your app into partners' apps and web apps, with their authentication context intact, without an app-store release every time a vendor changes a URL. A config-driven pattern, plus the token-custody feature we deliberately didn't build."
 date: 2026-12-02 09:00:00 +0000
-draft: true
 categories:
 - Architecture
 tags:

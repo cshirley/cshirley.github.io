@@ -2,7 +2,6 @@
 title: "Your Database Bill Is a Design Smell"
 description: "A document store, a search cluster and an analytics warehouse, each billed on its own growth curve. How we found that the cheapest architecture was already hiding behind our own abstraction seam."
 date: 2026-11-04 09:00:00 +0000
-draft: true
 categories:
 - Architecture
 tags:

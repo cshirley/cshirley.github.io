@@ -2,7 +2,6 @@
 title: "Shown = Charged: Time-Based Pricing Needs a Persisted Order"
 description: "If you re-compute the price when you take the money, any time-based discount can change the answer between what the customer saw and what they paid. The fix is to snapshot the outcome, not the inputs."
 date: 2026-10-21 09:00:00 +0100
-draft: true
 categories:
 - Payments
 tags:
