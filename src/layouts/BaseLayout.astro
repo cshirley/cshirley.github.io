@@ -1,0 +1,96 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Analytics from '../components/Analytics.astro';
+import { SITE } from '../site';
+import portrait from '../assets/clive-shirley-portrait.jpg';
+import { getImage } from 'astro:assets';
+
+interface Props {
+  title?: string;
+  description?: string;
+  type?: 'website' | 'article' | 'profile';
+  publishedTime?: Date;
+  noindex?: boolean;
+}
+
+const { title, description = SITE.description, type = 'website', publishedTime, noindex = false } = Astro.props;
+const pageTitle = title ? `${title} · ${SITE.name}` : SITE.title;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = await getImage({ src: portrait, width: 600, height: 600, format: 'jpg' });
+const ogImageUrl = new URL(ogImage.src, Astro.site).href;
+
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: SITE.name,
+  jobTitle: SITE.role,
+  url: Astro.site?.href,
+  image: ogImageUrl,
+  sameAs: [SITE.links.github, SITE.links.linkedin],
+  address: { '@type': 'PostalAddress', addressRegion: 'Hampshire', addressCountry: 'GB' },
+};
+---
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={SITE.name} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title={`${SITE.name} — Writing`} href="/feed.xml" />
+    <link rel="sitemap" href="/sitemap.xml" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#fafaf9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0b0c0e" media="(prefers-color-scheme: dark)" />
+
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title ?? SITE.title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    {publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
+    <meta name="twitter:card" content="summary" />
+
+    <script is:inline>
+      (() => {
+        const stored = localStorage.getItem('theme');
+        const dark = stored ? stored === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+        document.documentElement.classList.add('js');
+      })();
+    </script>
+    <script type="application/ld+json" set:html={JSON.stringify(personLd)} />
+    <Analytics />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      // Fade sections in as they scroll into view.
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) {
+              e.target.classList.add('is-visible');
+              io.unobserve(e.target);
+            }
+          }
+        },
+        { rootMargin: '0px 0px -8% 0px' },
+      );
+      document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+    </script>
+  </body>
+</html>

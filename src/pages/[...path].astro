@@ -1,0 +1,101 @@
+---
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import portrait from '../assets/clive-shirley-portrait.jpg';
+import { excerpt, formatDate, getPosts, isScheduled, postPath, postUrl, readingTime, type Post } from '../utils';
+
+// Blog posts keep their Jekyll permalinks, e.g.
+// /fswire/2013/01/01/fswire-architecture.html (build.format = 'preserve')
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post, i) => ({
+    params: { path: postPath(post) },
+    props: { post, newer: posts[i - 1], older: posts[i + 1] },
+  }));
+}
+
+interface Props { post: Post; newer?: Post; older?: Post }
+const { post, newer, older } = Astro.props;
+const { Content } = await render(post);
+const { title, description, date, categories, draft } = post.data;
+const ageYears = (Date.now() - date.valueOf()) / (365.25 * 24 * 3600 * 1000);
+---
+<BaseLayout title={title} description={excerpt(post, 30)} type="article" publishedTime={date} noindex={draft || isScheduled(post)}>
+  <article>
+    <header class="article-header">
+      <a class="back" href="/blog/"><Icon name="arrow" /> All writing</a>
+      <h1>{title}</h1>
+      {description && <p class="lead">{description}</p>}
+      <div class="meta">
+        <time datetime={date.toISOString()}>{formatDate(date, 'long')}</time>
+        {categories.map((c) => <span class="category">{c}</span>)}
+        <span>{readingTime(post)}</span>
+        {draft && <span class="badge-draft">Draft: not published</span>}
+        {isScheduled(post) && <span class="badge-draft">Scheduled</span>}
+      </div>
+    </header>
+
+    {ageYears > 5 && (
+      <div class="notice container">
+        Written in {date.getUTCFullYear()}. Technologies, companies and links mentioned may have moved on since.
+      </div>
+    )}
+
+    <div class="prose container">
+      <Content />
+    </div>
+
+    <footer class="article-footer container">
+      <div class="author-card">
+        <Image src={portrait} alt="" width={120} height={120} />
+        <div>
+          <strong>Clive Shirley</strong>
+          <p>Principal Software Engineer. Architecture, payments, healthcare platforms and AI-assisted delivery. <a href="/about/">More about me</a>.</p>
+        </div>
+      </div>
+      {(newer || older) && (
+        <nav class="pager" aria-label="More posts">
+          {older ? <a href={postUrl(older)}><span>← Older</span>{older.data.title}</a> : <div />}
+          {newer && <a class="next" href={postUrl(newer)}><span>Newer →</span>{newer.data.title}</a>}
+        </nav>
+      )}
+    </footer>
+  </article>
+</BaseLayout>
+
+<script>
+  // Markdown task lists render as disabled checkboxes with no accessible name.
+  document.querySelectorAll<HTMLInputElement>('.prose input[type="checkbox"]').forEach((box) => {
+    const text = box.parentElement?.textContent?.trim();
+    box.setAttribute('aria-label', text ? `${box.checked ? 'Done' : 'To do'}: ${text}` : 'Checklist item');
+  });
+
+  // Render ```mermaid blocks client-side; the library is only fetched when needed.
+  const blocks = [
+    ...document.querySelectorAll<HTMLElement>('.prose pre[data-language="mermaid"], .prose pre:has(> code.language-mermaid)'),
+  ];
+  if (blocks.length) {
+    const sources = blocks.map((pre) => pre.textContent ?? '');
+    const { default: mermaid } = await import('mermaid');
+    const render = async () => {
+      const dark = document.documentElement.dataset.theme === 'dark';
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: dark ? 'dark' : 'neutral',
+        fontFamily: 'Inter Variable, sans-serif',
+        themeVariables: dark ? { edgeLabelBackground: '#2a2d33' } : {},
+      });
+      blocks.forEach((pre, i) => {
+        pre.removeAttribute('data-processed');
+        pre.className = 'mermaid';
+        pre.removeAttribute('style');
+        pre.textContent = sources[i];
+      });
+      await mermaid.run({ nodes: blocks });
+    };
+    await render();
+    document.addEventListener('themechange', render);
+  }
+</script>

@@ -1,0 +1,39 @@
+---
+import Icon from './Icon.astro';
+import { NAV, SITE } from '../site';
+
+const path = Astro.url.pathname;
+const isActive = (url: string) =>
+  url === '/blog/' ? path.startsWith('/blog') || path.endsWith('.html') : path.startsWith(url);
+---
+<header class="site-header" id="site-header">
+  <div class="container">
+    <a class="brand" href="/" aria-label={`${SITE.name}, home`}>
+      <span class="brand-mark" aria-hidden="true">CS</span>
+      <span class="brand-name">{SITE.name}</span>
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      {NAV.map(({ title, url }) => (
+        <a href={url} aria-current={isActive(url) ? 'page' : undefined}>{title}</a>
+      ))}
+      <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Toggle dark mode">
+        <Icon name="moon" class="icon-moon" />
+        <Icon name="sun" class="icon-sun" />
+      </button>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.getElementById('site-header');
+  const onScroll = () => header?.toggleAttribute('data-scrolled', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  document.getElementById('theme-toggle')?.addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem('theme', next);
+    document.dispatchEvent(new CustomEvent('themechange', { detail: next }));
+  });
+</script>

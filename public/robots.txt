@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.shirleyconsulting.co.uk/sitemap.xml

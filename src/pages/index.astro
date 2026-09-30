@@ -1,0 +1,186 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import PostList from '../components/PostList.astro';
+import portrait from '../assets/clive-shirley-portrait.jpg';
+import { SITE } from '../site';
+import { EXPERIENCE, FOCUS_AREAS, INTRO, METRICS } from '../data/profile';
+import { getPosts } from '../utils';
+
+const posts = (await getPosts()).slice(0, 4);
+const roles = EXPERIENCE.slice(0, 5);
+---
+<BaseLayout type="profile">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <p class="status"><span class="status-dot"></span>Principal Engineer at eMed UK</p>
+        <h1>
+          Clive Shirley
+          <span class="role">Principal Software Engineer · Architect-practitioner</span>
+        </h1>
+        <p class="lead">
+          I design and ship <strong>safe change in regulated systems</strong>: payments, healthcare
+          interoperability, multi-region platforms and AI-assisted delivery.
+        </p>
+        <p class="lead" style="font-size: 1.02rem; margin-top: 1rem;">{INTRO}</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="/contact/">Get in touch <Icon name="arrow" /></a>
+          <a class="btn btn-ghost" href="/about/">About me</a>
+          <span class="socials">
+            <a class="icon-link" href={SITE.links.github} rel="me" aria-label="GitHub"><Icon name="github" /></a>
+            <a class="icon-link" href={SITE.links.linkedin} rel="me" aria-label="LinkedIn"><Icon name="linkedin" /></a>
+          </span>
+        </div>
+      </div>
+      <figure class="portrait">
+        <Image src={portrait} alt="Portrait of Clive Shirley" width={440} height={440} loading="eager" fetchpriority="high" />
+        <figcaption><Icon name="pin" />{SITE.location}</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Impact -->
+  <section class="section" aria-labelledby="impact">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <div>
+          <p class="eyebrow">Selected impact</p>
+          <h2 id="impact">Outcomes, not just output</h2>
+        </div>
+      </div>
+      <div class="grid" style="--min: 15rem" data-reveal>
+        {METRICS.map((m) => (
+          <div class="card metric">
+            <div class="metric-value">{m.value}</div>
+            <div class="metric-label">{m.label}</div>
+            <p>{m.detail}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Focus areas -->
+  <section class="section" aria-labelledby="focus">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <div>
+          <p class="eyebrow">What I do</p>
+          <h2 id="focus">Where I add the most value</h2>
+          <p>Cross-cutting architecture for platforms that move money, handle patient data and span jurisdictions, and the engineering culture to keep them healthy.</p>
+        </div>
+      </div>
+      <div class="grid" style="--min: 18rem" data-reveal>
+        {FOCUS_AREAS.map((f) => (
+          <article class="card">
+            <div class="focus-icon"><Icon name={f.icon} /></div>
+            <h3>{f.title}</h3>
+            <p>{f.body}</p>
+            <ul class="tags">{f.tags.map((t) => <li class="tag">{t}</li>)}</ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ACCORD -->
+  <section class="section" aria-labelledby="accord" id="open-source">
+    <div class="container">
+      <div class="feature" data-reveal>
+        <div>
+          <p class="eyebrow">Open source · MIT</p>
+          <h2 id="accord">ACCORD: reach agreement before you build</h2>
+          <p class="lead">
+            An agentic delivery harness for <a href="https://pi.dev/">Pi</a> that turns a free-text request into a
+            validated contract (brief, spec, plan and verification evidence) before anyone writes code. Built around
+            one metric: how little of an engineer’s attention it consumes.
+          </p>
+          <ul class="checklist">
+            <li>Phase agents run in isolated processes with schema-validated JSON state</li>
+            <li>Adversarial test review (Crucible) runs before any production code exists</li>
+            <li>Two deliberate human gates: contract approval and PR review</li>
+            <li>Per-acceptance-criterion evidence instead of “tests pass, ship it”</li>
+          </ul>
+          <div class="feature-actions">
+            <a class="btn btn-primary" href={SITE.links.accord}><Icon name="github" /> View on GitHub</a>
+          </div>
+        </div>
+        <div class="terminal" aria-label="Example ACCORD session">
+          <div class="terminal-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+          <pre><span class="t-prompt">❯</span> /dev PROJ-1234 add OAuth2 refresh token support
+<span class="t-dim">  pattern  implement/standard</span>
+<span class="t-dim">  align    → brief.md</span>
+<span class="t-dim">  spec     → spec.json  (AC-1 … AC-4)</span>
+<span class="t-dim">  plan     → plan.json  (TDD ordered)</span>
+<span class="t-dim">  tasks    test → review-test → code → review-code</span>
+
+<span class="t-prompt">❯</span> /dev finish
+  VERIFICATION COMPLETE
+  Verdict: <span class="t-warn">gaps (3/4 pass)</span>
+  AC-1: <span class="t-ok">pass</span>  auth.test.ts:42
+  AC-3: <span class="t-warn">fail</span>  no test for configurable TTL
+  AC-4: <span class="t-ok">pass</span>  eslint no-direct-jwt</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience -->
+  <section class="section" aria-labelledby="experience">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <div>
+          <p class="eyebrow">Experience</p>
+          <h2 id="experience">30+ years, from law firms to trading floors to healthcare</h2>
+        </div>
+        <a class="link-arrow" href="/about/#experience">Full career history <Icon name="arrow" /></a>
+      </div>
+      <ol class="timeline" data-reveal>
+        {roles.map((r) => (
+          <li>
+            <div class="period">{r.period}</div>
+            <div>
+              <h3>{r.title} <span class="company">· {r.company}</span>{r.note && <span class="note"> ({r.note})</span>}</h3>
+              <p class="summary">{r.summary}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Writing -->
+  <section class="section" aria-labelledby="writing">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <div>
+          <p class="eyebrow">Writing</p>
+          <h2 id="writing">Notes from the build</h2>
+          <p>Architecture, delivery and the occasional war story, from real-time finance to regulated healthcare.</p>
+        </div>
+        <a class="link-arrow" href="/blog/">All posts <Icon name="arrow" /></a>
+      </div>
+      <div data-reveal>
+        <PostList posts={posts} />
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="section">
+    <div class="container">
+      <div class="cta" data-reveal>
+        <p class="eyebrow">Contact</p>
+        <h2>Let’s talk architecture</h2>
+        <p class="lead">Whether it’s a regulated platform that needs to change safely, a payments domain that needs untangling, or AI-assisted delivery that needs guard-rails, I’m happy to compare notes.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href={`mailto:${SITE.email}`}><Icon name="mail" /> Email me</a>
+          <a class="btn btn-ghost" href={SITE.links.linkedin} rel="me"><Icon name="linkedin" /> LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
