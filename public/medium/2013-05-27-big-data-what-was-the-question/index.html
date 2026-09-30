@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Big Data - what was the question ?</title>
+<link rel="canonical" href="https://www.shirleyconsulting.co.uk/fswire/2013/05/27/big-data-what-was-the-question.html">
+<meta name="medium-tags" content="FSWire">
+<script>if (!new URLSearchParams(location.search).has('preview')) location.replace("https://www.shirleyconsulting.co.uk/fswire/2013/05/27/big-data-what-was-the-question.html");</script>
+<style>
+  /* Preview only: none of this is copied into Medium. */
+  body { max-width: 680px; margin: 3rem auto; padding: 0 1rem; font: 20px/1.6 Georgia, serif; color: #242424; }
+  h3 { font: 700 1.5em/1.25 system-ui, sans-serif; margin-top: 2em; }
+  h4 { font: 600 1.15em/1.3 system-ui, sans-serif; margin-top: 1.5em; }
+  pre { background: #f2f2f2; padding: 1em; font-size: 15px; overflow-x: auto; }
+  code { background: #f2f2f2; font-size: 0.85em; }
+  figure { margin: 2em 0; } img { max-width: 100%; }
+  figcaption { text-align: center; font-size: 0.75em; color: #6b6b6b; }
+  blockquote { border-left: 3px solid #242424; margin-left: 0; padding-left: 1.2em; font-style: italic; }
+</style>
+</head>
+<body>
+<article>
+<h1>Big Data - what was the question ?</h1>
+<p>So it's been a while, I have been locked in the basement here at FSWIRE central for the last few weeks analysing data and coding away at new product features (more on that in forthcoming posts). Which got me to thinking about what our focus is and the problem(s) we are trying to solve.</p>
+
+<p>As a summary we analysis 550M tweets per day for financial information and insight. We collate this into highly curated data feeds, which customers can consume and potentially act upon. The data collation and cleaning stages require huge amounts of computing resource in themselves, and are monitored by data-scientist who continually improve our cleaning/categorisation/context algorithms and feed the machine learning datasets with relevant new data (manually curated feedback loop for training data).</p>
+
+<p>This process is well defined and deterministic (in our eyes anyway). But this is just the first stage required by anyone whom wants to tap into the&nbsp;<em><strong>1 quintillion bytes of data generated each day</strong></em>&nbsp;(according to a recent study from IDC).</p>
+
+<p>The next stage is an iterative&nbsp;<em><strong>discovery process</strong></em>, an attempt to workout what to look for (and when to look for it). Generally we start with an assumption/hypothesis and then attempt to prove/disprove it through data and modelling. We query the data corpus, apply some funky statistical functions across various dimensions of the data (correlating to some other data-point) and then build models which correlate the data to actionable business processes. In this process we leverage huge computing clusters and many data-scientists who may (or may not) fully understand the domain/problem we are trying to solve.</p>
+
+<p>Here-in lies a major issue, the world cannot generate data-scientists at a fast enough rate to analysis even 1% of the daily data generated for a specific subset of problems. Which means,&nbsp;<em>is the hypothesis/query first approach the way we should go?</em></p>
+
+<p>Yet one has to start somewhere (and generally from a known working-practice), building a domain agnostic (or even specific)&nbsp;<em>autonomous discovery engine</em>&nbsp;is thwart with issues, particularly when validating results in a way that will be acceptable to institutions/enterprises that will leverage it. Using traditional back/regression testing mechanisms just won't cut it, hence we need to find a new way to validate the hypothesis we generate from the data (interesting switch from hypotheses centric too data centric learning).</p>
+
+<p>As an interim step we need to build tools that&nbsp;<em><strong>EMPOWER</strong></em>&nbsp;domain/knowledge/business experts thus speeding up/aiding in the discovery process to get critical information and insights faster. A less automated approach, but one which educates business in the usefulness of social data and it's application which we hope will in part address issues with traditional validation processes. Moreover the process of building these tools help us refine the algorithms and models used to discover what it is we are/should be looking for.</p>
+
+<p>FSWIRE has stage 1 complete including an API for developers and a Dashboard that EMPOWERS the business user. We have been working on the fully automated discovery platform leveraging bleeding edge machine learning techniques it chips away at the huge influx of daily data drawing domain specific hypothesis, detecting breaking market moving events and hopefully making the world a better place. Which means I get to go back to our basement now I have finished this post !</p>
+
+
+
+<hr>
+<p><em>Originally published at <a href="https://www.shirleyconsulting.co.uk/fswire/2013/05/27/big-data-what-was-the-question.html">www.shirleyconsulting.co.uk/fswire/2013/05/27/big-data-what-was-the-question.html</a>.</em></p>
+</article>
+</body>
+</html>

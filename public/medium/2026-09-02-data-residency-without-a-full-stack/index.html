@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Data Residency Without a Full In-Country Stack</title>
+<link rel="canonical" href="https://www.shirleyconsulting.co.uk/architecture/2026/09/02/data-residency-without-a-full-stack.html">
+<meta name="medium-tags" content="Architecture, data residency, multi-region, AWS, healthcare">
+<script>if (!new URLSearchParams(location.search).has('preview')) location.replace("https://www.shirleyconsulting.co.uk/architecture/2026/09/02/data-residency-without-a-full-stack.html");</script>
+<style>
+  /* Preview only: none of this is copied into Medium. */
+  body { max-width: 680px; margin: 3rem auto; padding: 0 1rem; font: 20px/1.6 Georgia, serif; color: #242424; }
+  h3 { font: 700 1.5em/1.25 system-ui, sans-serif; margin-top: 2em; }
+  h4 { font: 600 1.15em/1.3 system-ui, sans-serif; margin-top: 1.5em; }
+  pre { background: #f2f2f2; padding: 1em; font-size: 15px; overflow-x: auto; }
+  code { background: #f2f2f2; font-size: 0.85em; }
+  figure { margin: 2em 0; } img { max-width: 100%; }
+  figcaption { text-align: center; font-size: 0.75em; color: #6b6b6b; }
+  blockquote { border-left: 3px solid #242424; margin-left: 0; padding-left: 1.2em; font-style: italic; }
+</style>
+</head>
+<body>
+<article>
+<h1>Data Residency Without a Full In-Country Stack</h1>
+<h4>Entering a market that requires patient data to stay in-country doesn't have to mean cloning your whole platform. Split it into data cells and processing hubs, then hunt down the places data quietly comes to rest.</h4>
+<p>When a regulated product enters a new country, the first residency conversation usually goes like this: “Patient data has to stay in-country, so we need a full in-country stack.” That means ten or so repositories, their pipelines, their on-call rotas and their upgrade cycles, all duplicated for a market that might start with a few thousand users.</p>
+
+<p>While planning a Canadian launch for a healthcare platform already running in the UK and US, we worked through what residency <em>actually</em> requires. The answer was a much smaller footprint and a reusable pattern, with two preconditions that are easy to miss.</p>
+
+<h3>Start from the requirement, not the architecture</h3>
+
+<p>“Data at rest in Canada” means that <strong>every persistent medium holding a Canadian patient’s personal or health data physically resides in Canada</strong>. It says nothing about where stateless compute runs.</p>
+
+<p>So the job is to list every place data comes to rest. The obvious ones are easy: the primary database, the search index, object storage for attachments, encryption keys, and the backups and point-in-time recovery snapshots everyone forgets. The subtle ones are components that <em>look</em> like processing but quietly become storage:</p>
+
+<ul>
+<li><strong>Queues</strong> retain messages, for up to 14 days on some services.</li>
+<li><strong>Workflow engines</strong> persist process variables.</li>
+<li><strong>Analytics pipelines</strong> land raw events in a warehouse.</li>
+<li><strong>Logs and traces</strong> capture request bodies and identifiers.</li>
+<li><strong>Third-party SaaS</strong> stores whatever you send it.</li>
+</ul>
+
+<p>Once you think in terms of <em>at-rest surfaces</em>, the design falls out.</p>
+
+<h3>The pattern: data cells and processing hubs</h3>
+
+<p>Split the platform into two layers:</p>
+
+<ul>
+<li>A <strong>data cell</strong> per jurisdiction that needs one: the in-country stores, the region-bound functions and pipelines that AWS forces to sit next to them (stream triggers, index ingestion), and a <strong>thin data-access API</strong> that guards them.</li>
+<li>A <strong>processing hub</strong> per macro-region: shared, stateless compute (front ends, integrations, orchestration, event fan-out, auth) serving several jurisdictions over the network.</li>
+</ul>
+
+<figure><img src="https://www.shirleyconsulting.co.uk/medium/2026-09-02-data-residency-without-a-full-stack/images/01-diagram.png" alt="flowchart-v2 diagram"></figure>
+
+<p>For Canada, the in-country footprint becomes <strong>the data core plus its guardians</strong>, not the whole application stack. The same model extends globally: a North America hub, an EU/Africa hub and an APAC hub, each serving per-country cells wherever the law demands at-rest isolation.</p>
+
+<h4>Why a thin in-country API rather than cross-region access</h4>
+
+<p>We considered letting the hub’s data service reach Canadian stores directly across regions. On paper it’s the thinnest footprint, but in practice:</p>
+
+<ul>
+<li>The search cluster is VPC-bound, so you’d need cross-region peering or a transit gateway.</li>
+<li>Every call to a chatty single-table database pays cross-region round-trip time (about 15–20 ms per call).</li>
+<li>The data service would have to become <em>per-request</em> jurisdiction-aware, which is a significant refactor of something that currently validates a single jurisdiction at boot.</li>
+</ul>
+
+<p>A small data API deployed next to the stores avoids all three. The boundary stays crisp: <strong>data and its guardian in-country; everything else in the hub.</strong></p>
+
+<h4>Routing: one endpoint, a fail-closed router</h4>
+
+<p>Callers shouldn’t need to know which cell a patient lives in. A jurisdiction-aware router in front of the stateful services reads the caller’s token, routes to the right cell, <strong>fails closed</strong> if it can’t decide, and never logs payloads. Existing clients keep a single static endpoint.</p>
+
+<h3>Precondition A: events carry references, not data</h3>
+
+<p>This is the one that makes hub processing compliant, and it’s easy to get wrong because the event bus usually “just works”.</p>
+
+<p>If your change-data-capture stream publishes <strong>full resource bodies</strong> to topics and queues, then a hub-side consumer in the US will park Canadian patient data at rest in US queues, US workflow state and the US warehouse. The fix is the <strong>claim-check</strong> pattern:</p>
+
+<ol>
+<li>Put a <code>jurisdiction</code> attribute on <strong>every</strong> event. Without it, commingling is silent and consumers can’t defensively assert where data belongs.</li>
+<li>Publish <code>{ resourceType, id, jurisdiction, partition, subject }</code>, <strong>not the body</strong>. Hub consumers fetch what they need, on demand, from the cell’s API.</li>
+<li>Apply the same filtering to <em>every</em> sink. It’s common for the event-bus branch to be filtered while the analytics branch exports everything.</li>
+</ol>
+
+<p>Workflow engines follow the same rule: process state holds identifiers, not business data. (This matches good workflow hygiene anyway: payloads in process variables are a versioning headache.)</p>
+
+<h3>Precondition B: SaaS and analytics are at-rest surfaces too</h3>
+
+<p>Serving a jurisdiction from another region doesn’t exempt your vendors. If you send them Canadian patient data, <strong>they</strong> become an at-rest surface. Walk the list category by category:</p>
+
+<figure><img src="https://www.shirleyconsulting.co.uk/medium/2026-09-02-data-residency-without-a-full-stack/images/02-table.png" alt="Table: Category · Typical treatment"></figure>
+
+<p><strong>Analytics</strong> deserves its own review. Per-region landing zones and warehouses are the right shape, so give the new jurisdiction its own. Then check the <strong>cross-region shares</strong>: a global reporting layer that unions regional warehouses can quietly pull patient-level data out of the cell. For the new jurisdiction, share only aggregated or de-identified marts, tokenise before export, or leave analytics disabled at launch.</p>
+
+<h3>Observability: the quiet leak</h3>
+
+<p>Logs and traces routinely capture identifiers, and sometimes whole payloads. If the hub ships logs to a vendor tenant in another region, data leaves the country <strong>regardless of where your databases sit</strong>. Either route the cell’s telemetry to an in-country tenant, or scrub at the emitter, and test the scrubbing.</p>
+
+<h3>Availability: know your blast radius</h3>
+
+<p>A hub is shared, so a <strong>hub outage is a macro-region incident</strong>: if the North America hub is impaired, US <em>and</em> Canadian patients are affected. A <strong>cell outage stays jurisdiction-scoped</strong>. Plan for that explicitly:</p>
+
+<ul>
+<li>Per-jurisdiction and per-hub SLOs, so incident comms are honest.</li>
+<li>Circuit breakers and health-aware routing on hub-to-cell calls.</li>
+<li>A highly available router, because it’s on every request.</li>
+<li>In-country disaster recovery per cell, since <strong>failing a cell over to another hub isn’t DR unless your lawyers say it is</strong>.</li>
+<li>Game days per hub and per cell.</li>
+</ul>
+
+<h3>When the pattern doesn’t fit</h3>
+
+<p>The thin-API approach works when the at-rest data is <em>records</em>. It doesn’t work when the data <strong>is the product</strong>, such as video consultations, recordings or scans. A residency-constrained market either gets a genuine in-country deployment of that capability or launches without it. “Data core plus guardians” is a platform story, not always a whole-offering story, so say so early.</p>
+
+<h3>The general lesson</h3>
+
+<p>Residency is a <strong>storage</strong> requirement. Architect for it by placing <em>state</em> deliberately and keeping compute shared. Then assume data leaks through every queue, workflow, warehouse, log line and vendor until you’ve proved otherwise. The cheapest in-country stack is the one that only contains what the law actually requires.</p>
+
+
+<hr>
+<p><em>Originally published at <a href="https://www.shirleyconsulting.co.uk/architecture/2026/09/02/data-residency-without-a-full-stack.html">www.shirleyconsulting.co.uk/architecture/2026/09/02/data-residency-without-a-full-stack.html</a>.</em></p>
+</article>
+</body>
+</html>

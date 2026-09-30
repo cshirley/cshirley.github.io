@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>One List Price, Many Coupons: A Pricing Standard for Stripe</title>
+<link rel="canonical" href="https://www.shirleyconsulting.co.uk/payments/2026/07/22/one-list-price-many-coupons.html">
+<meta name="medium-tags" content="Payments, Stripe, pricing, subscriptions, configuration">
+<script>if (!new URLSearchParams(location.search).has('preview')) location.replace("https://www.shirleyconsulting.co.uk/payments/2026/07/22/one-list-price-many-coupons.html");</script>
+<style>
+  /* Preview only: none of this is copied into Medium. */
+  body { max-width: 680px; margin: 3rem auto; padding: 0 1rem; font: 20px/1.6 Georgia, serif; color: #242424; }
+  h3 { font: 700 1.5em/1.25 system-ui, sans-serif; margin-top: 2em; }
+  h4 { font: 600 1.15em/1.3 system-ui, sans-serif; margin-top: 1.5em; }
+  pre { background: #f2f2f2; padding: 1em; font-size: 15px; overflow-x: auto; }
+  code { background: #f2f2f2; font-size: 0.85em; }
+  figure { margin: 2em 0; } img { max-width: 100%; }
+  figcaption { text-align: center; font-size: 0.75em; color: #6b6b6b; }
+  blockquote { border-left: 3px solid #242424; margin-left: 0; padding-left: 1.2em; font-style: italic; }
+</style>
+</head>
+<body>
+<article>
+<h1>One List Price, Many Coupons: A Pricing Standard for Stripe</h1>
+<h4>Every promotion modelled as a new Stripe price multiplies into hundreds of IDs that drift. Here's the standard we adopted: prices are list prices, every adjustment is a coupon, and plans are versioned documents, not dashboard clicks.</h4>
+<p>Pricing is one of those domains where every individual decision looks harmless. Marketing wants a first-month offer, so someone creates a new Stripe price. A partner wants a discount for their employees: another price. A commitment plan needs cheaper refills: a price per dose, per month. A year later you have hundreds of <code>price_…</code> IDs, half of them aliases for each other, and nobody can say with confidence what a given customer <em>should</em> be charged.</p>
+
+<p>This post describes the pricing standard we adopted on a multi-market subscription health platform to stop that happening. It isn’t specific to healthcare, or even to Stripe, but Stripe’s model makes the trade-off particularly visible.</p>
+
+<h3>The golden rule: default to a coupon</h3>
+
+<p>Every pricing change forces one decision: <strong>do I add a new price, or a coupon?</strong> The answer should almost always be a coupon.</p>
+
+<figure><img src="https://www.shirleyconsulting.co.uk/medium/2026-07-22-one-list-price-many-coupons/images/01-table.png" alt="Table: You want to… · New price? · Coupon?"></figure>
+
+<p><strong>Why:</strong> prices multiply combinatorially. Dose × promotion × cohort × month × payment account quickly becomes hundreds of IDs to create in Stripe, mirror in configuration and keep in sync. A coupon is a single, reusable, condition-bounded, auditable adjustment layered on top of one stable list price. Reconciliation, refunds and reporting all get simpler when every charge is <em>list price + named adjustments</em>, not a forest of bespoke prices.</p>
+
+<p>We had a live example of the alternative. One legacy plan modelled its onboarding bundle as a parallel ladder of per-dose prices (eight or so of them), plus alias entries that pointed at the <em>same</em> Stripe IDs under different names, and no coupon layer at all. A study cohort had its discount baked into a flat price. Every change to the offer meant new prices, and the front end couldn’t render consistent “was/now” pricing because there was nothing to compare against.</p>
+
+<h3>Pricing plans are documents, not dashboard state</h3>
+
+<p>The second half of the standard is <em>where</em> pricing lives. A <strong>pricing plan</strong> is a versioned document in a Git repository, validated against a JSON Schema and bundled to each environment. It’s never edited at runtime. A plan declares:</p>
+
+<ul>
+<li><strong>Identity and lifecycle:</strong> a stable, versioned ID (<code>-v1</code>, <code>-v2</code>) and an <code>enabled</code> flag. <em>Deprecation is <code>enabled: false</code> plus a new version, never deletion</em>, because live subscriptions reference old plans.</li>
+<li><strong>Discovery filters:</strong> which organisation, registration code or programme a plan applies to.</li>
+<li><strong>Payment routing:</strong> which payment account the charge goes to (more on that below).</li>
+<li><strong>Products and prices:</strong> each price carries the provider’s price ID, the amount in minor units for display and validation, a lookup key (such as a medication code) to select the right price for the chosen option, and a selection group, so that six per-dose prices appear to the customer as a single option.</li>
+<li><strong>Coupons and coupon bundles:</strong> discounts with explicit conditions such as usage caps, validity periods and scoping, plus month-windowed bundles for rolling offers.</li>
+</ul>
+
+<p>Consumers never see the raw document. A pricing API resolves the right plan for a customer and phase and returns the chargeable products and applicable coupons. The payments domain turns them into invoice line items and discounts. The front end renders what the API returns: <em>no environment-variable price IDs, no feature-flag payloads carrying prices.</em></p>
+
+<figure><img src="https://www.shirleyconsulting.co.uk/medium/2026-07-22-one-list-price-many-coupons/images/02-diagram.png" alt="flowchart-v2 diagram"></figure>
+
+<h3>Stacking and payment accounts</h3>
+
+<p>Two companion decisions were made last winter and still hold: <a href="https://www.shirleyconsulting.co.uk/payments/2025/12/10/discount-stacking-and-payment-accounts.html">one promotional discount, best value wins, on top of contractual coverage, with earned credits last and revenue guardrails underneath; and adapter affinity for multiple payment accounts</a>. The standard builds on both. Each plan names its payment account, and application code refers to logical price and coupon keys that are resolved for that account at runtime.</p>
+
+<h3>Keeping configuration and Stripe in lock-step</h3>
+
+<p>A document-based standard only works if the documents match reality. Three small scripts close the loop:</p>
+
+<ul>
+<li><strong>Reconcile:</strong> a CI guard that checks every price ID and product mapping in the catalogue against the live provider. It reads only.</li>
+<li><strong>Create:</strong> for new catalogue rows with an empty price ID, create the price in the provider and write the new ID back.</li>
+<li><strong>Backfill:</strong> populate product mappings from existing price IDs.</li>
+</ul>
+
+<h3>The review checklist</h3>
+
+<p>The standard is enforced where it matters: in pull-request review of plan changes.</p>
+
+<ul>
+<li>☐  Every discount is a coupon or coupon bundle, not a new price.</li>
+<li>☐  No two prices share a provider ID (no aliases).</li>
+<li>☐  Per-option prices share a selection group.</li>
+<li>☐  Coupons have deliberate conditions: period, scope and usage caps.</li>
+<li>☐  Time-windowed discounts use month-windowed bundles.</li>
+<li>☐  The payment account is the intended one.</li>
+<li>☐  Environment-specific IDs are in overrides, not the base file.</li>
+<li>☐  Superseded plans and prices are versioned and disabled, never deleted.</li>
+<li>☐  Schema validation passes for every environment.</li>
+</ul>
+
+<h3>The general lesson</h3>
+
+<p>A price list is a <strong>catalogue</strong>; a promotion is a <strong>policy</strong>. Mixing them turns every marketing idea into a data-migration problem. Keep list prices few and stable, express everything else as named, conditioned adjustments, keep both in version control, and write the stacking rules down before you need them.</p>
+
+
+<hr>
+<p><em>Originally published at <a href="https://www.shirleyconsulting.co.uk/payments/2026/07/22/one-list-price-many-coupons.html">www.shirleyconsulting.co.uk/payments/2026/07/22/one-list-price-many-coupons.html</a>.</em></p>
+</article>
+</body>
+</html>

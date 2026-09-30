@@ -50,6 +50,33 @@ Markdown content. Raw HTML is fine, and ```mermaid code blocks render as diagram
 Posts are published at `/<categories>/<yyyy>/<mm>/<dd>/<slug>.html`, the URL scheme the old Jekyll
 site used, so existing links keep working.
 
+## Cross-posting to Medium
+
+Medium's [Import a story](https://medium.com/p/import) only accepts a public URL, so the exporter
+publishes a Medium-friendly copy of the post on this site for the importer to read.
+
+```bash
+npm run medium -- payment-close-to-shipment --publish   # file id, slug, or a unique part of one
+git add public/medium && git commit -m "Medium export: payment-close-to-shipment" && git push
+```
+
+1. Once the deploy finishes, import the printed URL at medium.com/p/import:
+   `https://www.shirleyconsulting.co.uk/medium/<post-id>/`
+2. In the Medium draft, check the images and add up to 5 tags. Under **Story settings → Advanced
+   settings → Customize canonical link**, make sure the canonical link is the original post, not the
+   `/medium/` copy.
+3. Publish. You can delete `public/medium/<post-id>/` afterwards.
+
+`scripts/medium-export.mjs` starts the dev server, renders the post in headless Chrome and rewrites
+it using only what Medium supports: h3/h4 headings, plain `<pre>` code blocks, figures and absolute
+links. Mermaid diagrams and tables become PNG screenshots, because Medium supports neither. The copy
+has a canonical link to the original post and sends human visitors there (Medium's importer doesn't
+run JavaScript). Add `?preview` to the URL to view the copy itself. It isn't listed in the sitemap.
+
+Without `--publish`, the export goes to the git-ignored `medium-export/<post-id>/` with relative
+images, for previewing locally or copying and pasting into the Medium editor. Needs Google Chrome,
+or a Playwright Chromium (`npx playwright-core install chromium`).
+
 ## Deployment
 
 Pushing to `master` runs `.github/workflows/pages.yml`, which builds the site and deploys `dist/`

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Discount Stacking and Multiple Payment Accounts: Writing the Rules Down First</title>
+<link rel="canonical" href="https://www.shirleyconsulting.co.uk/payments/2025/12/10/discount-stacking-and-payment-accounts.html">
+<meta name="medium-tags" content="Payments, Stripe, discounts, RFC, multi-tenancy">
+<script>if (!new URLSearchParams(location.search).has('preview')) location.replace("https://www.shirleyconsulting.co.uk/payments/2025/12/10/discount-stacking-and-payment-accounts.html");</script>
+<style>
+  /* Preview only: none of this is copied into Medium. */
+  body { max-width: 680px; margin: 3rem auto; padding: 0 1rem; font: 20px/1.6 Georgia, serif; color: #242424; }
+  h3 { font: 700 1.5em/1.25 system-ui, sans-serif; margin-top: 2em; }
+  h4 { font: 600 1.15em/1.3 system-ui, sans-serif; margin-top: 1.5em; }
+  pre { background: #f2f2f2; padding: 1em; font-size: 15px; overflow-x: auto; }
+  code { background: #f2f2f2; font-size: 0.85em; }
+  figure { margin: 2em 0; } img { max-width: 100%; }
+  figcaption { text-align: center; font-size: 0.75em; color: #6b6b6b; }
+  blockquote { border-left: 3px solid #242424; margin-left: 0; padding-left: 1.2em; font-style: italic; }
+</style>
+</head>
+<body>
+<article>
+<h1>Discount Stacking and Multiple Payment Accounts: Writing the Rules Down First</h1>
+<h4>Two payments RFCs from the same week: a stacking policy for employer coverage, coupons and referral credits, and a design for several payment accounts in one deployment. Both are cheaper to decide before marketing and partnerships need them.</h4>
+<p>Two questions landed on the payments domain at the same time, and both were the kind that get answered badly under pressure:</p>
+
+<ol>
+<li><strong>What happens when a customer has more than one discount?</strong> Employer coverage, a promotion code, a win-back coupon and referral credit could all apply to the same invoice.</li>
+<li><strong>How do we take payments into more than one account?</strong> New programmes and partners needed their own payment accounts, but the platform supported one account per provider per deployment.</li>
+</ol>
+
+<p>Each got an RFC before anyone had to improvise. Here’s what they proposed.</p>
+
+<h3>Part 1: a discount-stacking policy</h3>
+
+<h4>Where we were</h4>
+
+<p>The existing behaviour had grown up feature by feature. Provider coupons and promotion codes were applied first, <em>then</em> employer coverage (fixed contributions, then percentages), then referral credits (up to three per invoice, oldest first, each applied all-or-nothing). There was no written policy for combining them, so marketing couldn’t predict the depth of a campaign’s discount and support had nothing to point to. Applying promotions <em>before</em> contractual coverage also meant the employer’s contribution was calculated on an already-discounted amount.</p>
+
+<h4>Principles</h4>
+
+<p>The RFC started from five principles: <strong>transparency</strong> (customers understand what applied and why), <strong>revenue protection</strong> (minimum payment thresholds), <strong>customer traction</strong> (maximise perceived value), <strong>flexibility</strong> (configurable per campaign) and <strong>simplicity</strong> (easy to explain on a receipt).</p>
+
+<h4>Three tiers, applied in order</h4>
+
+<figure><img src="https://www.shirleyconsulting.co.uk/medium/2025-12-10-discount-stacking-and-payment-accounts/images/01-diagram.png" alt="flowchart-v2 diagram"></figure>
+
+<ol>
+<li><strong>Contractual coverage first.</strong> An employer’s contribution is an obligation, not a promotion, so it isn’t subject to promotional limits.</li>
+<li><strong>One promotional discount: best value wins.</strong> Calculate the value of each available coupon or code against the <em>post-coverage</em> subtotal and apply the best. <strong>Keep the unused ones for future orders.</strong> If two are equal, prefer the one the customer typed in, because they made the effort.</li>
+<li><strong>Earned credits last.</strong> Referral credit stacks with the chosen promotion (it’s earned, not given) and can be <strong>partially applied</strong>.</li>
+<li><strong>Guardrails.</strong> A minimum payment of the higher of a percentage of the subtotal and an absolute floor, plus a cap on total discount.</li>
+</ol>
+
+<h4>Why not let promotions stack?</h4>
+
+<ul>
+<li>Stacked percentages and fixed amounts erode margin quickly.</li>
+<li>Multiple codes invite gaming.</li>
+<li>Marketing can’t forecast discount depth.</li>
+<li>“Best discount wins” is easy to explain, and it removes the “I didn’t get the better offer” complaint entirely.</li>
+</ul>
+
+<p>And why let credits stack with the best promotion? Because blocking earned value punishes your most engaged customers, and the discount cap still protects revenue.</p>
+
+<h4>Configurable, but with sane defaults</h4>
+
+<p>Stacking rules live in a per-campaign configuration (which combinations are allowed, the application order, revenue protection and credit rules), so marketing can run an exception on purpose without it becoming the default by accident.</p>
+
+<h3>Part 2: several payment accounts, one deployment</h3>
+
+<h4>The problem</h4>
+
+<p>The payments architecture supported multiple payment <em>providers</em>, but not multiple <em>accounts</em> for the same provider in one deployment. New programme types, partners with their own commercial arrangements, and regional entities all needed separate accounts.</p>
+
+<h4>The design</h4>
+
+<ul>
+<li><strong>A single JSON configuration</strong> (injected as a secret, never committed) lists every payment account, its provider-agnostic settings and the adapter class to instantiate.</li>
+<li><strong>Fail fast:</strong> invalid or incomplete configuration stops the application at startup, because a payments misconfiguration should never wait until the first charge to surface.</li>
+<li><strong>Exactly one default</strong> adapter, for predictable fallback.</li>
+<li><strong>Selection by identifier.</strong> Adapters are registered against the platform’s existing identifier format, so an organisation or a programme offering can each map to an account, or both.</li>
+<li><strong>Logical price and coupon keys.</strong> Application code refers to logical keys, and each adapter resolves them to its own provider IDs at runtime. Code doesn’t need to know which account it’s charging.</li>
+</ul>
+
+<h4>The hard part: customers don’t move</h4>
+
+<p>Provider customers, saved cards, subscriptions and invoice history are <strong>account-specific and non-transferable</strong>. A patient moving from one programme to another, changing organisation, relocating, or graduating from a study to a commercial plan can’t simply be re-pointed.</p>
+
+<p>The rule for the first version is <strong>adapter affinity</strong>: a customer stays on the account they onboarded with, recorded on their care plan. Existing care plans without a record use the default (incumbent) account. Existing plans keep working through a reverse lookup from provider price IDs. Deliberate migrations between accounts are a separate, planned operation, never a side effect.</p>
+
+<h3>The general lesson</h3>
+
+<p>Payments policy is product policy, and it’s much cheaper to agree it in an RFC than to reverse-engineer it from incidents. Write the stacking rules before the campaign, and write the account-routing rules before the partnership. In both cases, <strong>make the safe behaviour the default and the exception explicit.</strong></p>
+
+
+<hr>
+<p><em>Originally published at <a href="https://www.shirleyconsulting.co.uk/payments/2025/12/10/discount-stacking-and-payment-accounts.html">www.shirleyconsulting.co.uk/payments/2025/12/10/discount-stacking-and-payment-accounts.html</a>.</em></p>
+</article>
+</body>
+</html>

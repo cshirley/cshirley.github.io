@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fix Developer Experience Before You Re-Platform</title>
+<link rel="canonical" href="https://www.shirleyconsulting.co.uk/engineering/2026/08/05/fix-dx-before-replatforming.html">
+<meta name="medium-tags" content="Engineering, developer experience, monorepo, preview environments, Kubernetes">
+<script>if (!new URLSearchParams(location.search).has('preview')) location.replace("https://www.shirleyconsulting.co.uk/engineering/2026/08/05/fix-dx-before-replatforming.html");</script>
+<style>
+  /* Preview only: none of this is copied into Medium. */
+  body { max-width: 680px; margin: 3rem auto; padding: 0 1rem; font: 20px/1.6 Georgia, serif; color: #242424; }
+  h3 { font: 700 1.5em/1.25 system-ui, sans-serif; margin-top: 2em; }
+  h4 { font: 600 1.15em/1.3 system-ui, sans-serif; margin-top: 1.5em; }
+  pre { background: #f2f2f2; padding: 1em; font-size: 15px; overflow-x: auto; }
+  code { background: #f2f2f2; font-size: 0.85em; }
+  figure { margin: 2em 0; } img { max-width: 100%; }
+  figcaption { text-align: center; font-size: 0.75em; color: #6b6b6b; }
+  blockquote { border-left: 3px solid #242424; margin-left: 0; padding-left: 1.2em; font-style: italic; }
+</style>
+</head>
+<body>
+<article>
+<h1>Fix Developer Experience Before You Re-Platform</h1>
+<h4>When one feature means five coordinated PRs and a shared dev environment, a new runtime platform won't save you. A monorepo, a one-command local stack, contract tests and preview environments will, whether the humans or the AI agents are writing the code.</h4>
+<p>Two conversations were running in parallel on our team. One was about <strong>developer experience</strong>: “It takes too long to ship a feature, and we can’t show the business anything until it’s merged.” The other was about the <strong>runtime</strong>: “Kubernetes is a lot to operate. Could a managed platform give us a Heroku-style experience on AWS?”</p>
+
+<p>It’s tempting to treat the second as the answer to the first. Our evidence said otherwise.</p>
+
+<h3>Diagnose the bottleneck from evidence</h3>
+
+<p>Before proposing anything, we looked at the repositories and the backlog.</p>
+
+<p><strong>Features are decomposed per repository.</strong> In the issue tracker, a single business outcome (accepting a new patient cohort, for example) routinely became three or four tickets titled by the repo they touched: the core data service, the GraphQL backend-for-frontend, the programme definitions, the web front end. One outcome meant several PRs, merged in the right order and verified together.</p>
+
+<p><strong>Deployment is shared-environment by construction.</strong> Every service deployed through shared workflows into a <em>fixed</em> environment (development, staging, production) in a single namespace. The “feature deploy” workflow ran one branch at a time per repo and <strong>overwrote</strong> shared development. Two engineers couldn’t have independent backend states. The only per-change preview anywhere was on the front end, and it wasn’t connected to a matching backend.</p>
+
+<p><strong>Local isolation stopped at the repo boundary.</strong> The core data service had an excellent local setup: emulated AWS services and full in-memory functional tests. The integration service had a local workflow engine. The backend-for-frontend ran locally but resolved data against shared dev. <strong>No single command brought up the whole system with seeded data.</strong></p>
+
+<p><strong>Releases were per-service and frequent.</strong> One service cut around a dozen releases in a day. That’s great for flow, and a coordination tax for any feature spanning several services.</p>
+
+<p><strong>Conclusion:</strong> the bottleneck was the lack of an <strong>isolated, end-to-end, multi-repo target</strong>, for engineers, QA, business demos <em>and</em> AI agents. None of that depends on which runtime runs production.</p>
+
+<h3>Optimise for two wins</h3>
+
+<p>We framed the goal as two outcomes:</p>
+
+<ol>
+<li><strong>Show progress to the business and get feedback without merging to trunk.</strong></li>
+<li><strong>Let a developer, or an AI agent, make a cross-functional change and verify it locally, in isolation.</strong></li>
+</ol>
+
+<h3>The options (complementary, not competing)</h3>
+
+<figure><img src="https://www.shirleyconsulting.co.uk/medium/2026-08-05-fix-dx-before-replatforming/images/01-table.png" alt="Table: Option · What it is · Unlocks · Watch out for"></figure>
+
+<p>One constraint turned out to be a forcing function: a legacy SaaS workflow engine that couldn’t run meaningfully on a laptop. That was one more reason to move actively changing workflows to an engine with a local dev server.</p>
+
+<h3>The recommendation: sequence low-risk first</h3>
+
+<p><strong>Win 2 first, because it’s cheap and compounding:</strong></p>
+
+<ol>
+<li>Consolidate the tightly coupled backend services into a <strong>monorepo</strong>.</li>
+<li>Give everyone a <strong>one-command local stack</strong> that runs the real chart.</li>
+<li>Add <strong>contract tests</strong> on the busiest seams, plus CDC event replay.</li>
+</ol>
+
+<p><strong>Then Win 1:</strong></p>
+
+<ol>
+<li>Stand up <strong>preview environments on the platform you already run</strong>, with off-the-shelf tooling rather than bespoke glue.</li>
+</ol>
+
+<p>The end state, for engineers and agents alike, is <code>make up</code> for the inner loop, a preview URL per feature for the outer loop, and contracts as the guard-rail.</p>
+
+<h3>So what about the runtime?</h3>
+
+<p>Earlier this year we <a href="https://www.shirleyconsulting.co.uk/engineering/2026/04/22/evaluating-a-paas-on-aws.html">evaluated managed platforms that run in our own AWS account</a>. A serverless-container platform remains a credible option for <em>runtime maintenance</em>, since our unified Node stack fits it well. But the evaluation’s lessons still apply: messaging stays in infrastructure-as-code, the security edge must be proven first, and <strong>multi-region, the gnarliest part of our setup, is exactly what managed platforms automate least</strong>.</p>
+
+<p>Our pragmatic path was to <strong>rebuild the authorisation edge in a runtime-portable way first</strong> (we had to anyway, with the widely used community ingress controller being retired), using a standard external-authorisation filter and a shared auth library. Then decide between managed Kubernetes and a serverless container platform on <strong>cost and operational evidence</strong>, rather than having the architecture force the choice.</p>
+
+<p>Re-platforming production wasn’t a prerequisite for either developer-experience win.</p>
+
+<h3>The general lesson</h3>
+
+<p>Developer-experience pain usually lives in the <strong>seams</strong>: between repos, between environments, between “works on my machine” and “works with everyone else’s changes”. A new runtime changes where production runs; it doesn’t change the seams. Fix the inner loop and the preview loop first, keep the runtime decision portable, and make it on evidence.</p>
+
+
+<hr>
+<p><em>Originally published at <a href="https://www.shirleyconsulting.co.uk/engineering/2026/08/05/fix-dx-before-replatforming.html">www.shirleyconsulting.co.uk/engineering/2026/08/05/fix-dx-before-replatforming.html</a>.</em></p>
+</article>
+</body>
+</html>

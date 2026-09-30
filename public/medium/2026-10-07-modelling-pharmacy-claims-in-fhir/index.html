@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Modelling Batch Pharmacy Claims in FHIR</title>
+<link rel="canonical" href="https://www.shirleyconsulting.co.uk/architecture/2026/10/07/modelling-pharmacy-claims-in-fhir.html">
+<meta name="medium-tags" content="Architecture, HL7 FHIR, NCPDP, X12 835, DynamoDB">
+<script>if (!new URLSearchParams(location.search).has('preview')) location.replace("https://www.shirleyconsulting.co.uk/architecture/2026/10/07/modelling-pharmacy-claims-in-fhir.html");</script>
+<style>
+  /* Preview only: none of this is copied into Medium. */
+  body { max-width: 680px; margin: 3rem auto; padding: 0 1rem; font: 20px/1.6 Georgia, serif; color: #242424; }
+  h3 { font: 700 1.5em/1.25 system-ui, sans-serif; margin-top: 2em; }
+  h4 { font: 600 1.15em/1.3 system-ui, sans-serif; margin-top: 1.5em; }
+  pre { background: #f2f2f2; padding: 1em; font-size: 15px; overflow-x: auto; }
+  code { background: #f2f2f2; font-size: 0.85em; }
+  figure { margin: 2em 0; } img { max-width: 100%; }
+  figcaption { text-align: center; font-size: 0.75em; color: #6b6b6b; }
+  blockquote { border-left: 3px solid #242424; margin-left: 0; padding-left: 1.2em; font-style: italic; }
+</style>
+</head>
+<body>
+<article>
+<h1>Modelling Batch Pharmacy Claims in FHIR</h1>
+<h4>FHIR has no ClaimBatch resource, and NCPDP batch files don't care about REST. How we composed Task, List, Claim, ClaimResponse, ExplanationOfBenefit and PaymentReconciliation into a claims lifecycle with at-least-once delivery that's safe to retry.</h4>
+<p>US pharmacy claims are an old world meeting a new one. The pharmacy benefit manager (PBM) wants a nightly batch file in the NCPDP format, fixed-width and positional. Your platform stores everything as HL7 FHIR resources behind a REST API. Payment arrives even later, as an X12 835 remittance.</p>
+
+<p>This post describes how we modelled that lifecycle natively in FHIR, and the operational store underneath that makes it safe to retry. Most of the lessons apply to any batch integration with a partner that correlates on your identifiers.</p>
+
+<h3>The lifecycle</h3>
+
+<figure><img src="https://www.shirleyconsulting.co.uk/medium/2026-10-07-modelling-pharmacy-claims-in-fhir/images/01-diagram.png" alt="flowchart-v2 diagram"></figure>
+
+<h3>FHIR has no batch resource, so compose one</h3>
+
+<p>A nightly submission is modelled by composing standard resources, each with a single responsibility:</p>
+
+<figure><img src="https://www.shirleyconsulting.co.uk/medium/2026-10-07-modelling-pharmacy-claims-in-fhir/images/02-table.png" alt="Table: Concern · Resource · Role"></figure>
+
+<p>One trap to avoid: <strong>don’t use <code>Bundle</code> of type <code>batch</code> as the batch tracker.</strong> That type exists for batching REST requests to a FHIR server, not for domain batches sent to a partner. A <code>collection</code> bundle is fine as an optional audit snapshot of the payload.</p>
+
+<h3>Don’t inline the manifest</h3>
+
+<p>The first draft put every claim reference on the batch <code>Task</code> or in one <code>List</code>. That breaks at scale:</p>
+
+<ul>
+<li>DynamoDB items max out at <strong>400 KB</strong>, which is roughly 2,000–4,000 embedded references.</li>
+<li>Large FHIR <code>List</code> payloads hit practical server limits well before that.</li>
+<li>Deriving a count by loading and counting every entry is slow and fragile.</li>
+</ul>
+
+<p>Instead:</p>
+
+<ul>
+<li>In the operational store, the batch header holds <strong>scalars only</strong> (claim count, receipt ID, status, file name, timestamps), with <strong>one child item per claim</strong> under the same partition, listed through an index.</li>
+<li>In FHIR, use <strong>sharded <code>List</code> pages</strong> and/or an <strong>inverse link</strong>: an extension on each <code>Claim</code> pointing to its batch <code>Task</code>, so “claims in batch X” is a search.</li>
+<li>Persist the claim count as a scalar at acknowledgement time.</li>
+<li>Remember that DynamoDB transactions accept at most <strong>25 actions</strong>, so post-acknowledgement writes for large batches become idempotent chunks: header first, then membership rows and status flips in pages.</li>
+</ul>
+
+<h3>The transaction reference is your idempotency key</h3>
+
+<p>Each claim in an NCPDP file carries a numeric <strong>transaction reference</strong> (7–12 digits) that <em>you</em> generate and the PBM echoes back in the adjudication response. It’s your correlation ID and your deduplication key, so three rules apply:</p>
+
+<ol>
+<li><strong>Allocate it when the claim is created (as a draft), not at batch time.</strong> If you mint it at batch time and the batch fails before acknowledgement, a retry mints a <em>new</em> reference and breaks deduplication on the partner’s side.</li>
+<li><strong>Never change it.</strong> The same value goes on every resubmission of that claim.</li>
+<li><strong>Use a central, monotonic numeric allocator</strong>, such as an atomic counter or a database sequence. Don’t use random numbers, and don’t derive it from a resource ID.</li>
+</ol>
+
+<h3>At-least-once delivery, then state change</h3>
+
+<p>The nightly job runs in a deliberate order:</p>
+
+<ol>
+<li><strong>Extract</strong> draft pharmacy claims through an index.</li>
+<li><strong>Translate</strong> them into the fixed-width layout: product to NDC code, identifier to transaction reference, and so on.</li>
+<li><strong>Transmit</strong> the file to the partner’s gateway.</li>
+<li><strong>Only after the partner acknowledges receipt</strong>, write state: create the batch <code>Task</code> (receipt ID, claim count), the <code>List</code> pages and the inverse links, flip each <code>Claim</code> from <code>draft</code> to <code>active</code>, and create a queued <code>ClaimResponse</code> per claim linked back to the claim and the batch.</li>
+</ol>
+
+<p>If the network drops mid-flight, nothing local has changed. The retry sends the same claims with the same references, and the partner deduplicates. That’s <strong>at-least-once delivery with idempotent receipt</strong>, which is the only honest guarantee across a file-transfer boundary.</p>
+
+<h3>Matching responses</h3>
+
+<p>When the adjudication file arrives, the batch <code>Task</code> moves to <code>adjudicating</code>. Run <strong>integrity checks before processing any records</strong>. The key one is that the number of adjudication records <strong>must equal the claim count persisted at submission</strong>. If they differ, process nothing and investigate. Only when the counts match does each row get matched to its claim by transaction reference (through an index keyed on the reference), completing the <code>ClaimResponse</code> with the partner’s disposition and any structured NCPDP reject codes (such as “product not covered”).</p>
+
+<p>Settlement arrives later as an 835. A <code>PaymentReconciliation</code> is created for the remittance, keyed on the payment trace number, with one <code>ExplanationOfBenefit</code> per claim pointing back to the <code>Claim</code> and its <code>ClaimResponse</code>. The batch <code>Task</code> reaches <code>reconciled</code> when every claim in it has settled.</p>
+
+<p>Because everything is standard FHIR, operational dashboards are plain searches: in-flight claims (<code>ClaimResponse?outcome=queued</code>), an ageing report of adjudicated claims with no payout yet, and tracing the claims behind a given payment.</p>
+
+<h3>Two stores, clear roles</h3>
+
+<p>The <strong>operational store</strong> (single-table DynamoDB) handles the hot path: reference allocation, claim lifecycle, batch membership and response matching, with indexes for “claim by reference”, “claims in batch” and “drafts to extract”. The <strong>FHIR store</strong> is the <strong>canonical API and audit view</strong>, synchronised at defined lifecycle boundaries. Keeping the two roles explicit avoids the temptation to run a nightly batch job through a REST API one resource at a time.</p>
+
+<h3>The general lessons</h3>
+
+<ol>
+<li><strong>Compose standard resources</strong> before inventing custom ones, and give each a single job.</li>
+<li><strong>Never inline unbounded lists</strong> in a header item or resource. Use child rows and inverse links.</li>
+<li><strong>Generate partner correlation IDs early and make them immutable.</strong> They’re your retry safety.</li>
+<li><strong>Transmit first, then change state</strong>, and let the partner’s deduplication absorb retries.</li>
+</ol>
+
+
+<hr>
+<p><em>Originally published at <a href="https://www.shirleyconsulting.co.uk/architecture/2026/10/07/modelling-pharmacy-claims-in-fhir.html">www.shirleyconsulting.co.uk/architecture/2026/10/07/modelling-pharmacy-claims-in-fhir.html</a>.</em></p>
+</article>
+</body>
+</html>

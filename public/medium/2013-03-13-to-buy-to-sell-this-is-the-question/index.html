@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>To Buy to Sell - this is the Question</title>
+<link rel="canonical" href="https://www.shirleyconsulting.co.uk/fswire/2013/03/13/to-buy-to-sell-this-is-the-question.html">
+<meta name="medium-tags" content="FSWire">
+<script>if (!new URLSearchParams(location.search).has('preview')) location.replace("https://www.shirleyconsulting.co.uk/fswire/2013/03/13/to-buy-to-sell-this-is-the-question.html");</script>
+<style>
+  /* Preview only: none of this is copied into Medium. */
+  body { max-width: 680px; margin: 3rem auto; padding: 0 1rem; font: 20px/1.6 Georgia, serif; color: #242424; }
+  h3 { font: 700 1.5em/1.25 system-ui, sans-serif; margin-top: 2em; }
+  h4 { font: 600 1.15em/1.3 system-ui, sans-serif; margin-top: 1.5em; }
+  pre { background: #f2f2f2; padding: 1em; font-size: 15px; overflow-x: auto; }
+  code { background: #f2f2f2; font-size: 0.85em; }
+  figure { margin: 2em 0; } img { max-width: 100%; }
+  figcaption { text-align: center; font-size: 0.75em; color: #6b6b6b; }
+  blockquote { border-left: 3px solid #242424; margin-left: 0; padding-left: 1.2em; font-style: italic; }
+</style>
+</head>
+<body>
+<article>
+<h1>To Buy to Sell - this is the Question</h1>
+<p>When we at FSWIRE first set out on this journey into social data for finance, we worked on the premise that social data could answer any financial question and predict the future. A financial crystal ball so to speak. Our approach, to use social sentiment to predict stock price movement in hindsight this was hugely naive. Yet inspired by research triggered by&nbsp;<em>Johan Bollen and Huina Mao, professors of informatics and computing at Indiana University-Bloomington</em>, among others (see&nbsp;<a href="http://www.socialmoodconference.com/wordpress/wp-content/uploads/2012/01/10_BollenMao_SOCSummit.pdf">Social Mood&nbsp;</a>Conference,&nbsp;<a href="http://www.battleofthequants.com/Research/sdarticle.pdf">Battle of the Quants</a>). Adding fuel to the fire was Paul Hawtin launching Dement Capital Markets and their alleged $40M investment fund licensing the work from Bollen. So there must be something to it - right? So we ventured on.</p>
+
+<p>There has been much copy covering the aforementioned entities so I will let you draw your own conclusion about whether this was hype, tripe or ... well you get the idea.</p>
+
+<p>Anyway it is not as straight forward as it would initially seem. Sentiment of short, medium and long form text is a commodity service which is easy to engineer (if you feel the need I would suggest you start with Bayes and/or Support Vector Machines); we have rolled our own but this is more historic than anything. Anyhow sentiment alone does not produce the insight required for individuals to make decisions with, more-over one needs to look at all dimensions of the data, and fundamentally ensure that data you are analysis is suitably curated. This is a key aspect in all research done to date, for example Bollen manually manipulated the source dataset, removing content that can affect the results which is common practice.</p>
+
+<p>So somewhat covertly the problem shifts from deriving sentiment analytics on social content, to one of accurate real-time curation of context sensitive content on which to generate analytics. Therefore we are now deciding what is relevant and applicable to a particular financial entity within a specific vertical/context.</p>
+
+<p>Easy peasy - well not so fast man, this is fine if we know what type of content is applicable which is simple to model statically, but the interesting stuff happens dynamically and more often then not we only know it is relevant after the crucial event has occurred. So the bigger question is how do we find content that we do not know about and define a model which leverages the context and time sensitive data for the domain and entity we are interested in. Ah trending I hear you say, hmm no say I, it is much more complex than that.</p>
+
+<p>As an aside there was some&nbsp;<a href="http://www.wired.co.uk/news/archive/2012-11/02/algorithm-predicts-twitter-trends">research</a>&nbsp;released by professors at MIT showing a new trending algorithm that was identifying trends before twitters own. My only comment it is easy to identify breaking trends before they break if you know they are going to trend!</p>
+
+<p>Hindsight is a wonderful thing which is a luxury we do not have!</p>
+
+<p>So I guess you could say we have pivoted, kind-of. Our focus over the last 6 months has been in the following areas</p>
+
+<ol>
+<li>Improving our Financial curation models</li>
+<li>Event detection and correlation to financial entities</li>
+<li>Social Strength Indicators (SSI ®), which uses stock price to measure the impact of social data, breaking news and unknown futuristic events on a companies stock price</li>
+</ol>
+
+<figure><img src="https://www.shirleyconsulting.co.uk/medium/2013-03-13-to-buy-to-sell-this-is-the-question/images/01-ssi.png" alt="SSI"></figure>
+<p>To this end we have just added our custom SSI measure to the summary chart which indicates how well our model relates to stock price based purely on social data, it's authority and dissemination throughout the Internet in real-time which is kinda cool! What is more interesting is how this measure closely tracks price by just using our analysis of social data.</p>
+
+<p>Pop over and see how your favourite stocks are doing.</p>
+
+
+<hr>
+<p><em>Originally published at <a href="https://www.shirleyconsulting.co.uk/fswire/2013/03/13/to-buy-to-sell-this-is-the-question.html">www.shirleyconsulting.co.uk/fswire/2013/03/13/to-buy-to-sell-this-is-the-question.html</a>.</em></p>
+</article>
+</body>
+</html>

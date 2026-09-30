@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Rotating Credentials Without Downtime (and Knowing What They Touched)</title>
+<link rel="canonical" href="https://www.shirleyconsulting.co.uk/engineering/2026/06/24/rotating-credentials-without-downtime.html">
+<meta name="medium-tags" content="Engineering, security, secrets management, AWS, webhooks">
+<script>if (!new URLSearchParams(location.search).has('preview')) location.replace("https://www.shirleyconsulting.co.uk/engineering/2026/06/24/rotating-credentials-without-downtime.html");</script>
+<style>
+  /* Preview only: none of this is copied into Medium. */
+  body { max-width: 680px; margin: 3rem auto; padding: 0 1rem; font: 20px/1.6 Georgia, serif; color: #242424; }
+  h3 { font: 700 1.5em/1.25 system-ui, sans-serif; margin-top: 2em; }
+  h4 { font: 600 1.15em/1.3 system-ui, sans-serif; margin-top: 1.5em; }
+  pre { background: #f2f2f2; padding: 1em; font-size: 15px; overflow-x: auto; }
+  code { background: #f2f2f2; font-size: 0.85em; }
+  figure { margin: 2em 0; } img { max-width: 100%; }
+  figcaption { text-align: center; font-size: 0.75em; color: #6b6b6b; }
+  blockquote { border-left: 3px solid #242424; margin-left: 0; padding-left: 1.2em; font-style: italic; }
+</style>
+</head>
+<body>
+<article>
+<h1>Rotating Credentials Without Downtime (and Knowing What They Touched)</h1>
+<h4>A rotation playbook for third-party credentials across environments and regions: overlapping validity, dual-running webhook secrets, a boring checklist, and the audit trail you need before an incident, not after.</h4>
+<p>Credential rotation is the kind of security work that nobody does until they have to, and then everyone does it at once, under pressure, at the worst possible time. After a platform-wide security review, we turned rotation from an emergency into a routine: a written playbook for every third-party credential our integration layer depends on, plus an audit of how credential <em>usage</em> is traced.</p>
+
+<p>Here are the parts that generalise.</p>
+
+<h3>Know the shape of the problem first</h3>
+
+<p>Before you rotate anything, map where credentials live and who reads them:</p>
+
+<ul>
+<li><strong>Every environment × every region.</strong> Parameter stores are regional. A secret updated in one region doesn’t exist in the other. With three environments in separate cloud accounts and two regions each, “rotate the payment key” means six updates, not one.</li>
+<li><strong>Regional applicability.</strong> Some integrations only exist in one market. Verify, rather than assume, which regions actually hold a parameter.</li>
+<li><strong>Every consumer.</strong> API pods and background workers read secrets at deploy or sync time. Serverless functions may resolve them at <em>deploy</em> time through infrastructure code. CI pipelines hold their own copies for tests and deploys. <strong>Runtime secrets and CI secrets must both be updated.</strong></li>
+<li><strong>Ownership.</strong> Some credentials belong to other teams’ stores. Rotate them there, but verify them everywhere you depend on them.</li>
+</ul>
+
+<p>We keep an <strong>inventory table</strong>: integration, parameter name, the environment variable it maps to, and vendor-specific rotation notes (where the button is, whether overlapping keys are supported, whether a compromise means a new application rather than a new key).</p>
+
+<h3>Keep secret values out of infrastructure code</h3>
+
+<p>Infrastructure code should manage a secret’s <strong>existence, type, encryption key and tags</strong>, and explicitly <em>ignore changes to its value</em>. Values are set directly in the secret store by the person rotating them. That keeps secrets out of state files and plan output, and stops a routine <code>apply</code> from reverting a freshly rotated key.</p>
+
+<h3>The rotation workflow</h3>
+
+<ol>
+<li><strong>Prepare.</strong> Open a change ticket naming the credential, environments, regions and window. Confirm the target account and region. List the consumers.</li>
+<li><strong>Rotate at the vendor, with overlap where possible.</strong> Prefer vendors that support two active keys, or an old and a new signing secret at once. Enable the new credential <em>before</em> decommissioning the old one.</li>
+<li><strong>Update the secret store</strong> in each account and region, and update CI secrets where they exist.</li>
+<li><strong>Roll the consumers:</strong> API pods, workers, and any functions that resolve secrets at deploy time.</li>
+<li><strong>Verify:</strong> smoke test, then watch monitoring for a fixed period (we use 30 minutes).</li>
+<li><strong>Revoke the old credential at the vendor.</strong></li>
+<li><strong>Close the ticket.</strong></li>
+</ol>
+
+<p>Go <strong>development → staging → production</strong>, completing both regions before promoting to the next environment.</p>
+
+<h4>Webhook signing secrets need dual-running</h4>
+
+<p>Inbound webhooks are the easiest place to cause an outage, because <em>the vendor</em> sends the traffic:</p>
+
+<ol>
+<li>Add the new signing secret at the vendor while the old one remains valid.</li>
+<li>Update your secret store and roll out.</li>
+<li>Confirm inbound webhooks validate, in both the vendor’s dashboard and your logs.</li>
+<li>Remove the old secret at the vendor.</li>
+</ol>
+
+<p>If a vendor doesn’t support overlapping secrets, schedule a short window and <strong>expect</strong> brief webhook failures. Make sure your handlers and the vendor’s retry policy can absorb them.</p>
+
+<h3>A deliberately boring checklist</h3>
+
+<p>Copy it for each environment and region combination:</p>
+
+<pre>[ ] Environment and cloud account verified
+[ ] Region verified; CLI/console session on the right account + region
+[ ] New credential generated at vendor (matching env tenant)
+[ ] Secret store parameter updated
+[ ] CI secret updated (if applicable)
+[ ] Vendor webhook/callback config updated (if applicable)
+[ ] API pods rolled out
+[ ] Worker pods rolled out (if applicable)
+[ ] Functions verified / redeployed (if applicable)
+[ ] Smoke test passed
+[ ] Monitoring clear for 30 minutes
+[ ] Old credential revoked at vendor
+[ ] Change ticket closed</pre>
+
+<p>Checklists feel patronising right up until the rotation where someone updates the wrong region at 11pm.</p>
+
+<h3>Rotation is half the story: can you answer “what did this credential do?”</h3>
+
+<p>Rotation limits future damage. When something goes wrong, the question you’ll be asked is about the <em>past</em>: <strong>what did credential X access or change, and when?</strong> Work out whether you can answer that <em>before</em> the incident.</p>
+
+<p>We audited how our platform authenticates callers and traces credential use, and found the usual layered picture:</p>
+
+<ul>
+<li><strong>Resource-level audit events</strong> for data changes. These are the primary trail, and they’re only as useful as the identity they record, so make sure the <em>credential</em> (or client), not just the resolved user, is captured.</li>
+<li><strong>Structured logs</strong> for authentication failures and errors. Useful, but retention and query-ability vary.</li>
+<li><strong>Distributed tracing.</strong> Excellent for correlating a request’s path, but only if trace context actually propagates through queues and asynchronous workers.</li>
+<li><strong>Scope enforcement</strong> controls what a credential <em>can</em> do, which is authorisation, not audit. Don’t confuse the two when someone asks what it <em>did</em>.</li>
+</ul>
+
+<p>The exercise surfaced <strong>gaps in token-usage traceability</strong>: paths where you could see <em>that</em> something happened but not reliably <em>which credential</em> did it. Common gaps are worth checking on any platform:</p>
+
+<ul>
+<li><strong>Are reads audited?</strong> Many audit trails record only writes, which makes a credential’s read activity (often the part that matters in a data-exposure incident) invisible.</li>
+<li><strong>Are failed authentications audited, or only logged?</strong> Rejected tokens that exist only in short-retention logs are hard to investigate later.</li>
+<li><strong>Does the audit record the credential and client, or only the resolved subject?</strong> If only the subject is recorded, you’ll be joining tables by hand mid-incident.</li>
+<li><strong>Is there a “last used” timestamp per credential?</strong> Without one, finding dormant credentials that are safe to revoke is guesswork.</li>
+<li><strong>Does auth caching at the edge hide repeat use?</strong> Per-pod caches of authorisation decisions reduce how often the authoriser sees a token, so make sure the audit sits <em>behind</em> the cache.</li>
+<li><strong>Are sensitive headers redacted from auth logs?</strong></li>
+</ul>
+
+<p>We wrote the investigation queries down (“what did credential X change?”, “which client is this?”, “did auth fail?”, “what scopes does this token have?”) so they’re ready before they’re needed. It was far cheaper than working them out during an incident review.</p>
+
+<h3>The general lesson</h3>
+
+<p>Make rotation <strong>routine</strong>: inventory every credential, keep values out of infrastructure code, prefer overlapping validity, dual-run webhook secrets, and follow the same checklist every time. Then test your audit trail by asking the incident question on a quiet day: <em>what did this credential touch?</em> If you can’t answer it quickly, that’s your next piece of work.</p>
+
+
+<hr>
+<p><em>Originally published at <a href="https://www.shirleyconsulting.co.uk/engineering/2026/06/24/rotating-credentials-without-downtime.html">www.shirleyconsulting.co.uk/engineering/2026/06/24/rotating-credentials-without-downtime.html</a>.</em></p>
+</article>
+</body>
+</html>

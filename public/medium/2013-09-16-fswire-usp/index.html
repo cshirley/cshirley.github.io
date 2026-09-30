@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>USP for FSWire Ltd ?</title>
+<link rel="canonical" href="https://www.shirleyconsulting.co.uk/fswire/2013/09/16/fswire-usp.html">
+<meta name="medium-tags" content="FSWire, Cloud, twitter, USP">
+<script>if (!new URLSearchParams(location.search).has('preview')) location.replace("https://www.shirleyconsulting.co.uk/fswire/2013/09/16/fswire-usp.html");</script>
+<style>
+  /* Preview only: none of this is copied into Medium. */
+  body { max-width: 680px; margin: 3rem auto; padding: 0 1rem; font: 20px/1.6 Georgia, serif; color: #242424; }
+  h3 { font: 700 1.5em/1.25 system-ui, sans-serif; margin-top: 2em; }
+  h4 { font: 600 1.15em/1.3 system-ui, sans-serif; margin-top: 1.5em; }
+  pre { background: #f2f2f2; padding: 1em; font-size: 15px; overflow-x: auto; }
+  code { background: #f2f2f2; font-size: 0.85em; }
+  figure { margin: 2em 0; } img { max-width: 100%; }
+  figcaption { text-align: center; font-size: 0.75em; color: #6b6b6b; }
+  blockquote { border-left: 3px solid #242424; margin-left: 0; padding-left: 1.2em; font-style: italic; }
+</style>
+</head>
+<body>
+<article>
+<h1>USP for FSWire Ltd ?</h1>
+<h3><strong>The Problem</strong></h3>
+
+<p>Personal and business interactions and have now moved to the Internet leading to an explosion data that can be mined to generate operation insight for SMB and Enterprises alike. A 2013 IDC report, estimated that the world generates 1 quintillion bytes of data per day, yet we are only able to analysis less than 1% of this information regardless of vertical.</p>
+
+<p>To utilise even a fraction of this data, businesses must go through a series of steps with identify and sanitise the information they are interested in.</p>
+
+<p>This requires the following expertise:</p>
+
+<ol>
+<li><strong></strong><strong>Domain,</strong>&nbsp;for the vertical(s) the business operates within, allowing said businesses to build rules that identify pertinent data.</li>
+<li><strong></strong><strong>Data</strong>, to define patterns and models that can be used to match/find/process future&nbsp;<em>pertinent</em>&nbsp;data, as well as models that exclude irrelevant data.</li>
+<li><strong></strong><strong>Engineering,</strong>&nbsp;to implement the necessary machine logic and processes to collect, sanitise and categorise content so that it can be used by the organisation to drive business decisions</li>
+<li><strong></strong><strong>Business</strong>, to create the business intelligence that will utilise said data and drive business decisions</li>
+</ol>
+
+<p>With this in place the storage and compute power required to process such vast amounts of data in real time is significant. Furthermore the aforementioned steps/tasks that an organisation must go through/implement are not static in nature, content structure changes daily, thus continued data analysis to determine optimal strategies and their implementation adds too the running costs of any solution.</p>
+
+<p><strong>At FSWIRE we solve this for pain points I through III, for every area in financial services</strong></p>
+
+<h3>How FSWIRE solves this problem for customers</h3>
+
+<p><strong>(The Twitter Example)</strong></p>
+
+<p>450M tweets per day (310K tweets/minute or 5.1K tweets/second - average) are pushed through the twitter Eco-system composed of any type of message content. Each tweet consists of unstructured text of 140 characters in size which may include embedded links to other information sources including web-pages and media. This equates to around 1 TB of message data, yet each message is augmented with a slew of additional content such as information about the author, location, tags etc. increasing data size to around 2 TB per day (2.1-2.3 MB/Sec) delivered as a stream of JSON structured data.</p>
+
+<p>To process this one needs an effective/efficient mechanism for filtering the useful content (generally using text processing methodologies which are compute intensive). Subsequently content needs to be structured into a taxonomy fit for its business purpose.</p>
+
+<figure><img src="https://www.shirleyconsulting.co.uk/medium/2013-09-16-fswire-usp/images/01-fswire-funnel-filter.png" alt="Funnel Filter"></figure>
+<p> Funnel Filter</p>
+
+<p>At FSWIRE we do this by implementing a specialised multi-stage funnel filter allowing the removal of noise at various stages resulting in a highly pertinent stream of data structure around a multi dimensional taxonomy (see figure: funnel filter).</p>
+
+<p>To provide some clarity on processing requirements, one should understand that some tweets are discarded at most stages with the pre-filtering stage reducing content from around 450 to 50 million messages per day.</p>
+
+<ol>
+<li>Pre-filtering is an efficient phase but still requires each tweet to be processed/matched against each of our 130K pre-filtering rules, which equates to around 59 Trillion rule applications per day.</li>
+<li>Junk Filtering follows, which uses a Bayesian based machine learning model applied to each of the 50M resulting tweets.</li>
+<li>The Black/White list filters are compiled of around 100K rules that are also applied to each of the resulting 50M tweets (around 5 trillion rule matches).</li>
+<li>Our language analysis includes the use of bloom filters which allows us to identify and discard non-supported languages.</li>
+<li>Context and sentiment analysis utilize a cross-reference machine learning solution consisting of SVM (support vector machines) and Naive Bayesian models</li>
+<li>The taxonomy engine currently applies each of the 200K rule matches/queries to each tweet identifying which asset/market segment/jurisdiction a tweet belongs too (10 trillion query matches a day). This is a process intensive task as the taxonomy rules range from simple string matches through too multiple boolean like queries.</li>
+<li>The final stages identify the authority of a tweet based on its author and URL domain as well as analysing any linked web-page for context/sentiment and further entity information.</li>
+</ol>
+
+<p>As we have outlined each stage is CPU intensive, particularly the stages that require extensive text processing. To achieve this, FSWIRE operates a cloud scalable solution currently employing 300 processing nodes solely for the implementation of the aforementioned stages (excluding any data storage infrastructure) which spread the processing of:</p>
+
+<p><strong>64 Trillion rule matches/day + 10 Trillion data queries/day</strong></p>
+
+<h3>Unique Selling Point</h3>
+
+<p><strong>Flexible:</strong>&nbsp;Whether you want to enable your users to be able to follow people, tickers, commodities, currency pairs, key words… the FSWIRE platform delivers relevant content in real-time via our streaming API. We can customise our platform so that your users are able to decide “how much filtering” they want (i.e. removal of noise, irrelevant tweets or tweeters)</p>
+
+<p><strong>Speed to Market:</strong>&nbsp;The FSWIRE platform has been under development for 2 years. Our platform has been designed from the bottom-up specifically for financial professionals. Via a streaming API customers are able to access this platform quickly and efficiently.</p>
+
+<p><strong>Cost Savings:</strong>&nbsp;FSWIRE is built on a fully-resilient and highly-scalable platform that is capable of analysing huge quantities of real-time data. We have invested heavily in the development of proprietary machine learning algorithm(s) for processing unstructured data, with the view that as the quantity and velocity of daily information increases so does their ability to influence the financial markets, the importance of having a solution that can extract the&nbsp;<em><strong>relevant</strong></em>&nbsp;information from&nbsp;<em><strong>“noise”</strong></em>&nbsp;is paramount.</p>
+
+<p><strong>Domain Knowledge:</strong>&nbsp;FSWIRE has been built by financial markets experts for financial markets professionals. We have used our domain knowledge to help us identify the pertinent information from the irrelevant information.</p>
+
+<p><strong>Compliant:</strong>&nbsp;Whether a bank, fund or general investment broker our solution is compliant with all financial regulations across all business boarders.</p>
+
+<p><strong>We do this so you do not have to !</strong></p>
+
+
+<hr>
+<p><em>Originally published at <a href="https://www.shirleyconsulting.co.uk/fswire/2013/09/16/fswire-usp.html">www.shirleyconsulting.co.uk/fswire/2013/09/16/fswire-usp.html</a>.</em></p>
+</article>
+</body>
+</html>

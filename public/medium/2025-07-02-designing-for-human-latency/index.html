@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Designing for Human Latency: Task-Based Patient Interactions</title>
+<link rel="canonical" href="https://www.shirleyconsulting.co.uk/architecture/2025/07/02/designing-for-human-latency.html">
+<meta name="medium-tags" content="Architecture, HL7 FHIR, workflows, async, healthcare">
+<script>if (!new URLSearchParams(location.search).has('preview')) location.replace("https://www.shirleyconsulting.co.uk/architecture/2025/07/02/designing-for-human-latency.html");</script>
+<style>
+  /* Preview only: none of this is copied into Medium. */
+  body { max-width: 680px; margin: 3rem auto; padding: 0 1rem; font: 20px/1.6 Georgia, serif; color: #242424; }
+  h3 { font: 700 1.5em/1.25 system-ui, sans-serif; margin-top: 2em; }
+  h4 { font: 600 1.15em/1.3 system-ui, sans-serif; margin-top: 1.5em; }
+  pre { background: #f2f2f2; padding: 1em; font-size: 15px; overflow-x: auto; }
+  code { background: #f2f2f2; font-size: 0.85em; }
+  figure { margin: 2em 0; } img { max-width: 100%; }
+  figcaption { text-align: center; font-size: 0.75em; color: #6b6b6b; }
+  blockquote { border-left: 3px solid #242424; margin-left: 0; padding-left: 1.2em; font-style: italic; }
+</style>
+</head>
+<body>
+<article>
+<h1>Designing for Human Latency: Task-Based Patient Interactions</h1>
+<h4>In chronic care, the normal latency of an interaction is days or weeks. Model those interactions as tasks, not synchronous flows, and you can control demand, set honest expectations and survive a cohort-sized spike.</h4>
+<p>Most web software assumes a request is answered in milliseconds. Chronic-care programmes run on a different clock. A patient orders a blood-test kit, it ships, they take the sample when they can, the lab processes it, a clinician reviews it. Or a clinical team asks for more information and waits for the patient to reply. The <em>normal</em> latency of these interactions is <strong>hours, days or weeks</strong>, especially when anything physical has to be shipped.</p>
+
+<p>This summer we designed a feature that made the implications concrete, and I wrote up an approach that has shaped how we build these journeys since.</p>
+
+<h3>The feature: a blood test offered after six months</h3>
+
+<p>The requirement was simple to state:</p>
+
+<ul>
+<li><strong>180 days after a patient’s first injection</strong> on a weight-management programme, offer them a blood test.</li>
+<li>The offer stays open until they <strong>accept or decline</strong>, or it <strong>expires after 30 days</strong>.</li>
+<li>The offer can also be raised by a clinician or by customer support, not just by the schedule.</li>
+</ul>
+
+<p>The trap is in the first bullet. If you hope demand spreads naturally over time, it won’t. Patients who started in the same month hit the milestone in the same week. At platform scale the offer goes to a large <strong>cohort at once</strong>, and demand outstrips expected peak capacity: kit fulfilment, courier collections, lab throughput and support calls all spike together. Failure at that scale means frustrated patients, missed steps in their care plan and a flood of support requests.</p>
+
+<h3>Model the interaction as a task</h3>
+
+<p>The asynchronous alternative is to represent each system-to-patient interaction as a <strong>task</strong> with its own lifecycle, instead of a synchronous flow triggered by an event.</p>
+
+<p>FHIR provides the pieces:</p>
+
+<ul>
+<li>An <strong><code>ActivityDefinition</code></strong> describes <em>the kind of thing</em> we offer: its code, description, kind and timing.</li>
+<li>A <strong><code>Task</code></strong> instantiates it for a specific patient: <code>for</code> the patient, <code>focus</code> on the relevant care plan, a <strong><code>requestedPeriod</code></strong> (when we want it done), a requester (a clinician or the system), the patient as the requested performer, and typed <strong>inputs and outputs</strong>.</li>
+<li>The task’s <strong>status</strong> tracks the conversation: offered, accepted, declined, expired, completed.</li>
+<li>The accepted task leads to the actual order, here a blood-test service request.</li>
+</ul>
+
+<figure><img src="https://www.shirleyconsulting.co.uk/medium/2025-07-02-designing-for-human-latency/images/01-diagram.png" alt="flowchart-v2 diagram"></figure>
+
+<p>The trigger can be event-driven (a completed refill questionnaire generates a change event, and the task is created from it), clinician-initiated or support-initiated. The same task model covers all three.</p>
+
+<h3>What that buys you</h3>
+
+<ul>
+<li><strong>Rate control.</strong> Because the offer is data with a requested period, the system decides <em>when</em> it’s released. You can meter offers to match what fulfilment and lab partners can sustain, instead of releasing a whole cohort at once.</li>
+<li><strong>Honest expectations.</strong> The task can carry the promise we can actually keep, for example a delivery window rather than “right away”. A partner’s delay then becomes a <em>met expectation</em> rather than a failure the patient has to chase.</li>
+<li><strong>Resilience to external delays.</strong> Retries, partner outages and slow responses are absorbed by the task’s lifecycle, not by a user waiting on a spinner.</li>
+<li><strong>One pattern for many journeys.</strong> Information requests from clinicians, check-ins and re-orders all fit the same shape.</li>
+</ul>
+
+<h3>Not everything should be asynchronous</h3>
+
+<p>Some interactions genuinely need an immediate answer, and forcing them into tasks just adds delay. The aim is to push <strong>as much as reasonably possible</strong> into a task-based model, so the platform is predictable under load and the patient gets a better experience, because the system stops promising things it doesn’t control.</p>
+
+<h3>The general lesson</h3>
+
+<p>When humans and physical goods are in the loop, latency isn’t a defect to hide; it’s a feature to design for. Make the interaction a first-class task, control the rate it’s offered at, and set the expectation up front. Your partners, your support team and your patients will all notice the difference on the day a cohort hits its milestone.</p>
+
+
+<hr>
+<p><em>Originally published at <a href="https://www.shirleyconsulting.co.uk/architecture/2025/07/02/designing-for-human-latency.html">www.shirleyconsulting.co.uk/architecture/2025/07/02/designing-for-human-latency.html</a>.</em></p>
+</article>
+</body>
+</html>

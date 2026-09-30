@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Make the Invoice Service Dumber</title>
+<link rel="canonical" href="https://www.shirleyconsulting.co.uk/payments/2025/10/15/make-the-invoice-service-dumber.html">
+<meta name="medium-tags" content="Payments, SOLID, refactoring, TypeScript, Stripe">
+<script>if (!new URLSearchParams(location.search).has('preview')) location.replace("https://www.shirleyconsulting.co.uk/payments/2025/10/15/make-the-invoice-service-dumber.html");</script>
+<style>
+  /* Preview only: none of this is copied into Medium. */
+  body { max-width: 680px; margin: 3rem auto; padding: 0 1rem; font: 20px/1.6 Georgia, serif; color: #242424; }
+  h3 { font: 700 1.5em/1.25 system-ui, sans-serif; margin-top: 2em; }
+  h4 { font: 600 1.15em/1.3 system-ui, sans-serif; margin-top: 1.5em; }
+  pre { background: #f2f2f2; padding: 1em; font-size: 15px; overflow-x: auto; }
+  code { background: #f2f2f2; font-size: 0.85em; }
+  figure { margin: 2em 0; } img { max-width: 100%; }
+  figcaption { text-align: center; font-size: 0.75em; color: #6b6b6b; }
+  blockquote { border-left: 3px solid #242424; margin-left: 0; padding-left: 1.2em; font-style: italic; }
+</style>
+</head>
+<body>
+<article>
+<h1>Make the Invoice Service Dumber</h1>
+<h4>A payment service that knows about referral credits, employer coverage, promotions and shipping has to change for every new business idea. Push business rules out into resolvers that produce line items, and the core never changes again.</h4>
+<p>Most payment code starts small: take a list of prices, create an invoice, charge it. Then the business grows. Employers cover part of the cost. Referral credits arrive. Promotion codes. Shipping rates. Each feature adds a parameter and a branch to the one service that creates invoices, until it knows about <em>every</em> commercial idea the company has ever had.</p>
+
+<p>This autumn I reviewed our invoice-creation service against the SOLID principles, with one practical question in mind: <strong>how many files do we have to change to add a new kind of line item?</strong></p>
+
+<h3>What the service did</h3>
+
+<p>It was responsible for all of the following:</p>
+
+<ul>
+<li>validating requested items and enriching them with price and product data;</li>
+<li>applying credits and employer coverage through a chain of “enricher” services;</li>
+<li>creating the base invoice with the payment adapter;</li>
+<li>adding every line item, both the requested ones and those added by the enrichers;</li>
+<li>applying promotion codes, with error handling;</li>
+<li>managing shipping rates.</li>
+</ul>
+
+<p>Its interface reflected that: a patient ID, items, coverages, available and pending credits, a promotion code, a shipping rate and metadata. Most of them optional, and all of them the service’s problem.</p>
+
+<h3>The SOLID scorecard</h3>
+
+<ul>
+<li><strong>Single responsibility: violated.</strong> Invoice creation, price enrichment, credits and discounts, promotions, shipping and adapter orchestration all lived in one class.</li>
+<li><strong>Open/closed: partially violated.</strong> The enricher pattern was a good start, since new enrichers could be written without touching the core. But the enricher chain was hard-coded in the constructor, the service knew about specific business concepts, and <strong>a new line-item type still meant modifying the service</strong>.</li>
+<li><strong>Liskov substitution: good.</strong> Enrichers implemented a common interface consistently.</li>
+</ul>
+
+<h3>Two ways forward</h3>
+
+<p><strong>Keep the “do everything” service</strong> and keep extending it. Every new idea means another optional parameter, another branch, and another set of tests on the riskiest class in the payments domain.</p>
+
+<p><strong>Make it a pure line-item service.</strong> The core only knows about line items, one optional promotion code, metadata and which payment adapter to use:</p>
+
+<pre>interface CreateInvoiceService {
+  call(params: {
+    patientId: string;
+    lineItems: InvoiceLineItem[];
+    promotionCode?: string;
+    metadata: Record&lt;string, string&gt;;
+    paymentAdapter: PaymentAdapter;
+  }): Promise&lt;Invoice&gt;;
+}
+
+// Business rules become resolvers that *produce* line items
+interface ReferralCreditResolver {
+  resolveToLineItems(patientId: string, credits: ReferralCredit[]): Promise&lt;InvoiceLineItem[]&gt;;
+}</pre>
+
+<p>Referral credits, employer coverage, shipping, and eventually loyalty points, gift cards or taxes each become a <strong>resolver</strong> that turns a business concept into line items. An <strong>orchestrator</strong> composes them for each use case and hands the result to the core.</p>
+
+<figure><img src="https://www.shirleyconsulting.co.uk/medium/2025-10-15-make-the-invoice-service-dumber/images/01-diagram.png" alt="flowchart-v2 diagram"></figure>
+
+<h3>Why the dumber service wins</h3>
+
+<ol>
+<li><strong>No core changes for new line items.</strong> New commercial ideas are new resolvers.</li>
+<li><strong>Composition over configuration.</strong> Business logic is assembled in higher-level services, not threaded through one constructor.</li>
+<li><strong>Testability.</strong> Each resolver is tested on its own, and the core’s tests stop growing.</li>
+<li><strong>Cleaner dependencies.</strong> The core depends only on payment concepts.</li>
+<li><strong>Easier refactoring.</strong> Business rules can move without touching the code that talks to the payment provider.</li>
+</ol>
+
+<h3>The migration path</h3>
+
+<ol>
+<li><strong>Extract</strong> the line-item resolution logic from the current service into separate resolvers, and simplify the core to line items only.</li>
+<li><strong>Add an orchestrator</strong> that composes the resolvers, move consumers to it, and keep backward compatibility while they migrate.</li>
+<li><strong>Extend</strong> by adding resolvers, never by editing the core.</li>
+</ol>
+
+<h3>The general lesson</h3>
+
+<p>The closer code sits to money, the less it should know about marketing. Keep the component that talks to your payment provider <strong>boring and closed for modification</strong>, and let business rules compete, change and retire in the layer above it.</p>
+
+
+<hr>
+<p><em>Originally published at <a href="https://www.shirleyconsulting.co.uk/payments/2025/10/15/make-the-invoice-service-dumber.html">www.shirleyconsulting.co.uk/payments/2025/10/15/make-the-invoice-service-dumber.html</a>.</em></p>
+</article>
+</body>
+</html>

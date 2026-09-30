@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How I Work Today: Terminal, Agents and a Second Brain</title>
+<link rel="canonical" href="https://www.shirleyconsulting.co.uk/development/2026/09/30/how-i-work-today.html">
+<meta name="medium-tags" content="Development, productivity, tmux, Neovim, Pi">
+<script>if (!new URLSearchParams(location.search).has('preview')) location.replace("https://www.shirleyconsulting.co.uk/development/2026/09/30/how-i-work-today.html");</script>
+<style>
+  /* Preview only: none of this is copied into Medium. */
+  body { max-width: 680px; margin: 3rem auto; padding: 0 1rem; font: 20px/1.6 Georgia, serif; color: #242424; }
+  h3 { font: 700 1.5em/1.25 system-ui, sans-serif; margin-top: 2em; }
+  h4 { font: 600 1.15em/1.3 system-ui, sans-serif; margin-top: 1.5em; }
+  pre { background: #f2f2f2; padding: 1em; font-size: 15px; overflow-x: auto; }
+  code { background: #f2f2f2; font-size: 0.85em; }
+  figure { margin: 2em 0; } img { max-width: 100%; }
+  figcaption { text-align: center; font-size: 0.75em; color: #6b6b6b; }
+  blockquote { border-left: 3px solid #242424; margin-left: 0; padding-left: 1.2em; font-style: italic; }
+</style>
+</head>
+<body>
+<article>
+<h1>How I Work Today: Terminal, Agents and a Second Brain</h1>
+<h4>Four years on from my Babylon-era setup: agent skills in Pi, tmux and Neovim as the whole IDE, Gmail in the editor, dotfiles that build a machine in one command, a PARA notes repo as a second brain, and the same session from desk, iPad or iPhone over Tailscale and mosh.</h4>
+<p>In 2022 I wrote about <a href="https://www.shirleyconsulting.co.uk/development/2022/02/14/how-i-get-through-a-day-at-babylon.html">how I got through a day at Babylon</a>:
+time blocking, batching context switches, and a modal, terminal-first setup on
+an iPad Pro. Four years on the principles are the same, but the tools have
+changed a lot. The biggest change is that I now spend my day directing agents
+rather than typing every line myself.</p>
+
+<figure><img src="https://www.shirleyconsulting.co.uk/medium/2026-09-30-how-i-work-today/images/02-babylon-ipad-setup-2022.jpg" alt="My 2022 setup at Babylon: M1 iPad Pro running full-screen, terminal-first"><figcaption>2022: iPad Pro, SSH into the MacBook</figcaption></figure>
+
+<figure><img src="https://www.shirleyconsulting.co.uk/medium/2026-09-30-how-i-work-today/images/03-how-i-work-2026-desk.jpg" alt="My desk in 2026: Planck keyboard, Keychron Nape Pro trackball and a terminal-first setup"><figcaption>2026: Planck, Nape Pro, tmux and agents</figcaption></figure>
+
+<h3>TL;DR</h3>
+
+<ol>
+<li>Still terminal-first: tmux + Neovim is the whole IDE.</li>
+<li>AI agents (Pi) live in tmux panes next to the editor and run the
+repetitive parts of the SDLC through skills.</li>
+<li>Mail, Jira and my notes are all plain text in the same terminal.</li>
+<li>One <code>install.sh</code> turns a new Mac (or a FreeBSD/Linux VPS) into my machine.</li>
+<li>A markdown repo organised with PARA is my second brain and the agents’ memory.</li>
+<li>Desk, iPad or iPhone: I get the same tmux session via Blink, mosh and Tailscale.</li>
+<li>Input: a Planck ortholinear keyboard and, most recently, a Keychron Nape Pro trackball.</li>
+</ol>
+
+<h3>The Terminal Is Still the IDE</h3>
+
+<p>The core idea from 2022 still holds: <strong>one task, one screen, no distractions</strong>.
+The difference is that tmux now does more of the work.</p>
+
+<h4>tmux</h4>
+
+<p>Every piece of work gets its own tmux session. A small script, <code>work</code>, turns a
+ticket into a place to work:</p>
+
+<pre>work add STEP-123            # git worktree off origin/main + tmux session named STEP-123
+work remove STEP-123         # checks everything is pushed, then removes worktree, branch and session</pre>
+
+<p>That gives me one session per ticket, each with its own worktree. Parallel work
+doesn’t interfere, and switching tasks is <code>prefix s</code>, which is quick enough that
+a context switch costs very little.</p>
+
+<p>The rest of the config is kept small on purpose:</p>
+
+<ul>
+<li><strong>vi everywhere</strong>: <code>mode-keys vi</code>, <code>status-keys vi</code>, and
+<code>vim-tmux-navigator</code> so <code>C-h/j/k/l</code> move between Neovim splits and tmux
+panes without me thinking about which one I’m in.</li>
+<li><strong>Persistence</strong>: <code>tmux-resurrect</code> + <code>tmux-continuum</code>. Sessions survive
+reboots, and that matters when I’m reattaching from a phone.</li>
+<li><strong>OSC 52 clipboard</strong>: yank in tmux or Neovim and it lands on whichever
+device I’m typing on, even over SSH (more on that below).</li>
+<li><strong>AI menu on <code>prefix a</code></strong>: pick <code>pi</code> or <code>accord</code> and <code>tmux-ai</code> splits the
+pane. It finds the Neovim instance in the current session through
+<code>neovim-remote</code> and passes its open buffers to the agent as <code>@file</code>
+references, so the agent starts with the files I’m looking at.</li>
+<li><strong>Agent sidebar</strong>: a fork of <code>tmux-agent-sidebar</code> lists every running agent
+across sessions with its state (running, waiting, idle, error), and sends a
+desktop notification when one finishes or needs a decision.</li>
+</ul>
+
+<p>The last two changed how I work the most. I can have three or four agents
+running in different ticket sessions, and the sidebar tells me which one needs
+me next. It’s the same batching of context switches I described in 2022, but
+the agents now decide when the switch happens.</p>
+
+<h4>Neovim</h4>
+
+<p>Neovim is NvChad-based with LSP, conform, DAP, neotest, fugitive and gitsigns,
+plus a <code>local/</code> plugin directory for my own tools:</p>
+
+<ul>
+<li><strong>Jira and Confluence</strong> plugins, so tickets and pages open as buffers.</li>
+<li><strong>Markdown preview</strong> and a <strong>frontmatter</strong> plugin. Whenever I save a note in
+my documentation repo it fills in <code>id</code>, <code>title</code>, <code>date</code>, <code>updated</code>,
+<code>author</code> and bumps <code>version</code>.</li>
+<li><strong>Mail</strong>, covered next.</li>
+</ul>
+
+<h4>Gmail in the Editor</h4>
+
+<p>Email is the most distracting app I use, so I stopped using it as an app. Gmail
+syncs to a local Maildir and I read it in Neovim:</p>
+
+<ul>
+<li><strong><a href="https://github.com/gauteh/lieer">lieer</a> (<code>gmi</code>)</strong> syncs Gmail over the
+Gmail API to <code>~/.mail</code>, turning Gmail labels into notmuch tags and back.</li>
+<li><strong>notmuch</strong> indexes and tags the mail.</li>
+<li><strong><a href="https://github.com/yousefakbar/notmuch.nvim">notmuch.nvim</a></strong> gives me
+threads and messages as Neovim buffers, with a background <code>gmi sync</code>.</li>
+</ul>
+
+<p>I made a few changes to fit my habits. <code>:Inbox</code> is overridden to
+<code>tag:inbox and not tag:sent</code>, deleting a thread adds <code>trash</code> so the deletion
+reaches Gmail, and <code>&lt;C-g&gt;&lt;C-g&gt;</code> sends. Mail is now something I open during a
+context-switch block and then close, like any other buffer. There’s no badge
+counting up in the corner.</p>
+
+<p>Agents get Gmail another way. They use the Google Workspace API (and an MCP
+server as a fallback), so they can search mail and draft replies without
+touching my Maildir.</p>
+
+<h3>Agents, Skills and the Morning Run</h3>
+
+<p>I covered the details in
+<a href="https://www.shirleyconsulting.co.uk/ai/2026/05/06/ai-native-workflow-with-pi.html">Building an AI-Native Development Workflow with Pi</a>,
+so here is the short version of how it looks today.</p>
+
+<p><a href="https://pi.dev/">Pi</a> is my main agent. On top of it sits <strong>ACCORD</strong>, my own
+harness (Agentic Contract for Collaborative Objectives, Requirements, and
+Rigorous Delivery). It turns a request into validated artifacts
+(<code>brief.md</code>, <code>spec.json</code>, <code>plan.json</code>, <code>verify.json</code>) and runs adversarial
+test review, code and verification phases in isolated subagents. For a ticket
+I run <code>accord drive &lt;TICKET&gt;</code>. Smaller jobs use single-purpose <strong>skills</strong>:</p>
+
+<figure><img src="https://www.shirleyconsulting.co.uk/medium/2026-09-30-how-i-work-today/images/01-table.png" alt="Table: Skill · What it does"></figure>
+
+<p>The tools load progressively. A session starts lean, and Git, Jira, Slack or
+Gmail tools only load when the task needs them, so I’m not spending context on
+tools I won’t use.</p>
+
+<p>The <strong>morning run</strong> is a launchd job (<code>pi-morning</code>) that runs before I sit
+down. It doesn’t use an LLM. It collects Jira, Slack mentions, Calendar and
+Gmail, writes the day’s entry in my work journal, and emails my weekly
+objectives to my line manager once a week. Most mornings I read one markdown
+file and start work.</p>
+
+<p>Some guardrails sit around all of this. A command gate stops destructive
+commands until I approve them. <code>plan</code> mode keeps an agent read-only while it
+explores. Secrets never live in the repo.</p>
+
+<h3>Dotfiles: One Command to My Machine</h3>
+
+<p>Everything above lives in one repo,
+<a href="https://github.com/cshirley/dotfiles">dotfiles</a>, which is cloned to
+<code>~/src/github.com/cshirley/dotfiles</code> and symlinked as <code>~/.config</code>:</p>
+
+<pre>git clone git@github.com:cshirley/dotfiles.git ~/src/github.com/cshirley/dotfiles
+ln -s ~/src/github.com/cshirley/dotfiles ~/.config
+~/.config/install.sh            # full install
+~/.config/install.sh --links    # just re-link after a pull
+~/.config/install.sh --vps      # headless server, no GPG/pass bootstrap</pre>
+
+<p>It covers zsh (Starship, lazy-loaded modules), tmux, Neovim, Ghostty, git,
+ssh/sshd, notmuch, launchd agents, a <code>Brewfile</code>, and the entire Pi agent
+config: extensions, skills, agents, MCP and model tiers. The same repo
+bootstraps macOS and a FreeBSD/Linux VPS.</p>
+
+<p>A few design decisions have held up well:</p>
+
+<ul>
+<li><strong>Symlink, don’t copy.</strong> <code>install.sh</code> only creates links, and it refuses to
+overwrite a real file. Every change is a git diff.</li>
+<li><strong>Secrets stay out.</strong> Personal keys and <code>secrets.env</code> live in an encrypted
+vault at <code>~/private</code> (a sparse bundle on macOS, gocryptfs on Linux),
+managed with <code>pass</code>, and <code>secrets-export</code> writes them out at runtime.
+Gitleaks and shellcheck run as pre-commit hooks and in CI.</li>
+<li><strong>Validated.</strong> <code>dotfiles-validate</code> runs the same checks locally as in CI, so
+a broken config doesn’t reach a new machine.</li>
+</ul>
+
+<p>A new laptop takes me about as long as the Homebrew download.</p>
+
+<h3>A Second Brain in Markdown</h3>
+
+<p>My <code>documentation</code> repo is a plain-markdown vault organised with the
+<a href="https://fortelabs.com/blog/para/">PARA method</a>:</p>
+
+<pre>1-projects/   active work, by year (this blog's drafts live here)
+2-areas/      ongoing responsibilities
+3-resources/  reference: tools, keyboards, iPad, engineering notes
+4-archive/    finished work
+work-journal.md
+Todo.md</pre>
+
+<p>It’s the second brain for me and for my agents:</p>
+
+<ul>
+<li><strong>The work journal is shared state.</strong> The morning run writes into it, I tick
+items off during the day, and an evening reconciliation marks what actually
+happened, so tomorrow’s carry-over is accurate.</li>
+<li><strong>Agents read it as context.</strong> The repo has its own agent instructions
+(diagram rules, structure, conventions), so an agent asked to “draft a post
+about X” or “write up that incident” knows where things go and how they
+should look.</li>
+<li><strong>Everything is text.</strong> Mermaid, PlantUML and Excalidraw diagrams, clipped
+articles and keyboard firmware configs all sit in git. They can be grepped,
+diffed and synced to every device.</li>
+</ul>
+
+<p>Frontmatter stays consistent because Neovim adds it on save, and I never have
+to think about it.</p>
+
+<h3>Same Desk, Anywhere</h3>
+
+<p>In 2022 I SSHed from an iPad Pro into my MacBook. The idea hasn’t changed, but
+the connection is now much more reliable:</p>
+
+<ul>
+<li><strong>Tailscale</strong> puts the Mac, a VPS, the iPad and the iPhone on one private
+network. There are no open ports and no dynamic DNS. The Mac is reachable
+by name wherever I am.</li>
+<li><strong>A user-space <code>sshd</code></strong> on the Mac, hardened: ed25519 public keys only, no
+passwords, a modern cipher/MAC/KEX list, one allowed user.</li>
+<li><strong><a href="https://blink.sh/">Blink Shell</a></strong> on iPad and iPhone connects with
+<strong>mosh</strong>, so the session survives network changes, sleep and flaky
+hotel Wi-Fi.</li>
+<li><strong>tmux</strong> keeps the session. I attach to the same session I left at my desk,
+with the same agents still running and the same Neovim buffers open.</li>
+</ul>
+
+<p>A few small fixes make it feel native. Neovim detects <code>SSH_CONNECTION</code> /
+<code>MOSH_CONNECTION</code> and switches to OSC 52 copy with an empty remote paste
+provider, so copying goes to the iPad’s clipboard and pasting uses Blink’s own
+<code>Cmd+V</code>. A Pi extension stops the agent TUI’s blinking cursor from leaking
+into other panes over mosh, and SSH config never forwards my agent to hosts
+I don’t own.</p>
+
+<p>The result is one workspace whether I’m at my desk, on an iPad on the way to
+the office or in a café, or on an iPhone in a queue. The iPhone isn’t for
+writing code, but it’s plenty for checking an agent’s progress, approving a
+gated command or replying to a review comment.</p>
+
+<figure><img src="https://www.shirleyconsulting.co.uk/medium/2026-09-30-how-i-work-today/images/04-how-i-work-2026-ipad.jpg" alt="iPad Pro and iPhone running Blink, attached to the same tmux session as the desk"><figcaption>On the move: office days and cafés, same tmux session over Blink and mosh</figcaption></figure>
+
+<h3>Input: Planck and Nape Pro</h3>
+
+<p>The last layer is the physical one.</p>
+
+<figure><img src="https://www.shirleyconsulting.co.uk/medium/2026-09-30-how-i-work-today/images/05-how-i-work-2026-input.jpg" alt="Planck ortholinear keyboard and Keychron Nape Pro trackball"></figure>
+
+<p><strong>Planck (ortholinear, 40%).</strong> A 4x12 grid with keys in straight columns, no
+number row, and layers for everything else. Along with my Geonix rev 2, a
+Planck-compatible board, it’s all I type on. The layouts are QMK/VIA JSON
+files in my documentation repo, and the flashing steps are written down next
+to them, so rebuilding a board is repeatable. The most useful key is
+<code>LCTL_T(KC_ESC)</code>: tap for Escape, hold for Ctrl. In a vi, tmux and Neovim
+setup that one key does a lot of work. Once you’re used to the layers, your
+hands barely leave home row, and that fits a keyboard-driven setup well.</p>
+
+<p><strong>Keychron Nape Pro (trackball).</strong> My newest addition. I use the mouse much
+less than most people, but I still need it for browsers, design tools and the
+odd GUI. A trackball stays in one place, so I don’t reach across the desk and
+the hand movement stays small, which suits the rest of the setup. It’s early
+days, but it has already replaced the mouse.</p>
+
+<h3>What Hasn’t Changed</h3>
+
+<p>Looking back at the 2022 post, the core ideas are the same:</p>
+
+<ul>
+<li><strong>Permission to focus.</strong> Time blocks, and batching the small stuff between them.</li>
+<li><strong>Modal UI.</strong> Full-screen, one task at a time, and now one tmux session per task.</li>
+<li><strong>The terminal is portable.</strong> Anything with a TTY is a workstation.</li>
+</ul>
+
+<p>What’s new is who does the typing. Most of my day now goes on deciding what
+to build, reviewing what the agents produced, and keeping the system that runs
+them sharp. The setup exists to make that loop fast and keep it free of
+distractions, from any desk.</p>
+
+<p>Still plenty of coffee, though. That hasn’t changed either.</p>
+
+
+<hr>
+<p><em>Originally published at <a href="https://www.shirleyconsulting.co.uk/development/2026/09/30/how-i-work-today.html">www.shirleyconsulting.co.uk/development/2026/09/30/how-i-work-today.html</a>.</em></p>
+</article>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Evaluating a PaaS That Runs in Your Own AWS Account</title>
+<link rel="canonical" href="https://www.shirleyconsulting.co.uk/engineering/2026/04/22/evaluating-a-paas-on-aws.html">
+<meta name="medium-tags" content="Engineering, platform engineering, AWS, Kubernetes, ECS">
+<script>if (!new URLSearchParams(location.search).has('preview')) location.replace("https://www.shirleyconsulting.co.uk/engineering/2026/04/22/evaluating-a-paas-on-aws.html");</script>
+<style>
+  /* Preview only: none of this is copied into Medium. */
+  body { max-width: 680px; margin: 3rem auto; padding: 0 1rem; font: 20px/1.6 Georgia, serif; color: #242424; }
+  h3 { font: 700 1.5em/1.25 system-ui, sans-serif; margin-top: 2em; }
+  h4 { font: 600 1.15em/1.3 system-ui, sans-serif; margin-top: 1.5em; }
+  pre { background: #f2f2f2; padding: 1em; font-size: 15px; overflow-x: auto; }
+  code { background: #f2f2f2; font-size: 0.85em; }
+  figure { margin: 2em 0; } img { max-width: 100%; }
+  figcaption { text-align: center; font-size: 0.75em; color: #6b6b6b; }
+  blockquote { border-left: 3px solid #242424; margin-left: 0; padding-left: 1.2em; font-style: italic; }
+</style>
+</head>
+<body>
+<article>
+<h1>Evaluating a PaaS That Runs in Your Own AWS Account</h1>
+<h4>We wanted a Heroku-like developer experience without leaving AWS or re-platforming our data. A requirements-first evaluation of managed runtimes found two gaps every vendor shared, and a few questions worth asking before any pilot.</h4>
+<p>Running your own Kubernetes is a commitment: cluster upgrades, ingress controllers, Helm charts, and engineers writing Terraform to ship an API. We wanted to know whether a managed platform could give our developers a <strong>Heroku-like experience</strong> while we <strong>stayed on AWS</strong> and kept the managed data services we already relied on.</p>
+
+<p>This is how we ran the evaluation, and the lessons that generalise.</p>
+
+<h3>Start with requirements, not vendors</h3>
+
+<p>We wrote the requirements down before looking at a single product page:</p>
+
+<figure><img src="https://www.shirleyconsulting.co.uk/medium/2026-04-22-evaluating-a-paas-on-aws/images/01-table.png" alt="Table: # · Requirement"></figure>
+
+<p>Two more pieces of context shaped everything. First, <strong>we can’t run the whole system on a laptop</strong>: the runtime depends on AWS messaging and data services <em>and</em> third-party SaaS (payments, CRM, workflow orchestration, messaging, pharmacy and lab partners), so shared development environments are where real integration testing happens. Second, we’re <strong>trunk-based</strong>: <code>main</code> is always deployable and is the only thing promoted through environments and regions.</p>
+
+<p>Writing the requirements down removed several vendors immediately, and one had shut down entirely during the evaluation. That’s a useful reminder to check a vendor’s pulse, not just its feature matrix.</p>
+
+<h3>Two gaps every vendor shared</h3>
+
+<h4>Gap 1: messaging isn’t first-class</h4>
+
+<p>None of the remaining platform-as-a-service vendors treated SNS, SQS or Kinesis as first-class resources. You define topics and queues elsewhere and inject their ARNs as environment variables. Runtime access works; lifecycle management doesn’t.</p>
+
+<p>That leaves a <strong>Terraform-shaped hole</strong>. No pure PaaS will own your tables, streams, search domains, topics, queues and subscription filter policies. The realistic options are:</p>
+
+<ol>
+<li><strong>Accept a split.</strong> The platform owns compute, CI/CD and developer experience; slimmed-down infrastructure-as-code owns data and messaging. That can still remove most of your compute Terraform.</li>
+<li><strong>Vendor-orchestrated IaC.</strong> Some platforms run your Terraform as part of an environment’s lifecycle, so developers don’t touch it, but you still write it.</li>
+</ol>
+
+<h4>Gap 2: promotion and regional rollout</h4>
+
+<p>None of the vendors had first-class environment promotion or regional rollout. Most rebuild each environment independently from a branch, and multi-region means “separate environments you deploy yourself”. Approval gates were missing or undocumented, and canary support ranged from built-in to “on the roadmap”. If you run separate regional stacks for data residency, that’s the capability you need most and will find least.</p>
+
+<p>That changes what you’re buying: <strong>the bottom half of a release pipeline</strong> (compute experience, deploy mechanics, rollback), while you still build the top half (promotion gates and regional sequencing). That’s still a significant reduction in toil, but it isn’t the whole pipeline.</p>
+
+<h3>Questions to ask before a pilot</h3>
+
+<ul>
+<li><strong>Can you keep your security edge?</strong> If every service relies on forward-auth at ingress (NGINX <code>auth_request</code> or similar), a platform built on a load balancer without an equivalent needs a workaround such as an edge function, a Lambda target or a sidecar. That’s a blocker to prove out first, not a detail.</li>
+<li><strong>Does its delivery model fit yours?</strong> Branch-to-environment platforms (push to branch X, deploy to environment X) fight trunk-based teams that deploy one build from <code>main</code> to every environment through API-triggered promotion.</li>
+<li><strong>What’s the exit story?</strong> A small vendor is less risky if everything it creates is standard managed infrastructure in <em>your</em> account.</li>
+<li><strong>Are preview environments as valuable as they look?</strong> Single-service previews that point at a shared development data plane can only validate surface-level behaviour when your system depends on real queues and SaaS sandboxes.</li>
+<li><strong>Where’s the hotfix path?</strong> Every platform demos the happy path. Ask how you’d push an urgent fix to one environment in one region.</li>
+<li><strong>Is the product still shipping?</strong> Check the changelog, and ask for reference customers at your scale.</li>
+</ul>
+
+<h3>Where we landed</h3>
+
+<p>Two pilots, deliberately different: one <strong>ECS-native platform with no Kubernetes at all</strong>, which met the most requirements and deploys into our own VPC with native IAM task roles, and one <strong>Kubernetes-based platform with full escape hatches</strong>, from a larger vendor, in case we find we need Kubernetes-level flexibility after all. Both pilots focus on the <em>persistent</em> environments (dev, staging, production) rather than preview environments, and the first question for each is the auth edge.</p>
+
+<h3>The general lesson</h3>
+
+<p>Evaluate platforms against <strong>your</strong> hardest requirements (security edge, delivery model, regional rollout), not their best demos. And accept early that “no more Terraform” really means “much less Terraform”: data and messaging will stay yours to manage.</p>
+
+
+<hr>
+<p><em>Originally published at <a href="https://www.shirleyconsulting.co.uk/engineering/2026/04/22/evaluating-a-paas-on-aws.html">www.shirleyconsulting.co.uk/engineering/2026/04/22/evaluating-a-paas-on-aws.html</a>.</em></p>
+</article>
+</body>
+</html>

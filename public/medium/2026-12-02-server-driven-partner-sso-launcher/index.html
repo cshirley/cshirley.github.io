@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>A Server-Driven Launcher for Partner App-to-App SSO</title>
+<link rel="canonical" href="https://www.shirleyconsulting.co.uk/architecture/2026/12/02/server-driven-partner-sso-launcher.html">
+<meta name="medium-tags" content="Architecture, identity, OAuth 2.0, PKCE, SAML">
+<script>if (!new URLSearchParams(location.search).has('preview')) location.replace("https://www.shirleyconsulting.co.uk/architecture/2026/12/02/server-driven-partner-sso-launcher.html");</script>
+<style>
+  /* Preview only: none of this is copied into Medium. */
+  body { max-width: 680px; margin: 3rem auto; padding: 0 1rem; font: 20px/1.6 Georgia, serif; color: #242424; }
+  h3 { font: 700 1.5em/1.25 system-ui, sans-serif; margin-top: 2em; }
+  h4 { font: 600 1.15em/1.3 system-ui, sans-serif; margin-top: 1.5em; }
+  pre { background: #f2f2f2; padding: 1em; font-size: 15px; overflow-x: auto; }
+  code { background: #f2f2f2; font-size: 0.85em; }
+  figure { margin: 2em 0; } img { max-width: 100%; }
+  figcaption { text-align: center; font-size: 0.75em; color: #6b6b6b; }
+  blockquote { border-left: 3px solid #242424; margin-left: 0; padding-left: 1.2em; font-style: italic; }
+</style>
+</head>
+<body>
+<article>
+<h1>A Server-Driven Launcher for Partner App-to-App SSO</h1>
+<h4>Deep-linking users from your app into partners' apps and web apps, with their authentication context intact, without an app-store release every time a vendor changes a URL. A config-driven pattern, plus the token-custody feature we deliberately didn't build.</h4>
+<p>B2B2C products accumulate partners, and partners have apps. An employer’s wellbeing provider, an insurer’s health-coaching service: your members expect to tap a tile in <em>your</em> app and land, signed in, in <em>theirs</em>.</p>
+
+<p>Built naively, every integration becomes bespoke client code: a hard-coded URL, a protocol-specific flow, and a mobile release whenever the vendor changes a domain or parameter. This post describes the generic pattern we designed instead, and why we drew a firm line at <em>handoff</em>.</p>
+
+<h3>The challenges</h3>
+
+<ul>
+<li><strong>Decoupled maintenance.</strong> Vendor auth paths, domains and parameters change. Those changes should ship as configuration, not as an app-store release.</li>
+<li><strong>Graceful handoff.</strong> Open the partner’s native app via Universal Links (iOS) or App Links (Android) if it’s installed; fall back to the browser or the app store if not.</li>
+<li><strong>One client contract across different protocols.</strong> Partners use OAuth 2.0 / OIDC with PKCE, SAML 2.0 or custom SSO gateways.</li>
+<li><strong>Per-partner cardinality.</strong> A partner may expose zero, one or several third-party apps.</li>
+<li><strong>Mixed targets.</strong> Some integrations have no native app at all, just SSO into a partner-hosted web app.</li>
+</ul>
+
+<h3>The pattern: destinations are data</h3>
+
+<p>The rule is that <strong>destination logic lives in partner configuration, not in the client</strong>. Each partner definition can carry an optional list of third-party apps, authored in the same version-controlled definitions repository as everything else about the partner, validated by schema, and served to the app through the <em>existing</em> GraphQL partner query. No new service or endpoint is needed.</p>
+
+<pre>thirdPartyApps:
+  - id: coaching
+    name: "Partner Coaching"
+    target: native               # native | web
+    protocol: saml               # saml | oauth2_pkce | custom_sso
+    baseUrl: "https://sso.partner.example/saml/redirect"
+    queryParams: { relayState: "dashboard" }
+    iosScheme: "partnercoaching://"
+    androidPackage: "com.partner.coaching"
+    storeFallbackUrl: "https://apps.apple.com/app/id000000000"
+  - id: wellbeing
+    name: "Partner Wellbeing"
+    target: web                  # no native app
+    presentation: in_app_browser # in_app_browser | system_browser
+    protocol: oauth2_pkce
+    baseUrl: "https://wellbeing.partner.example/sso/authorize"
+    queryParams: { client_id: "…", response_type: "code", scope: "openid profile" }
+    redirectUri: "ourapp://thirdparty/wellbeing/callback"   # OUR scheme, never theirs</pre>
+
+<p>A single client component, the <strong>launcher</strong>, reads the entry, builds the URL, injects per-launch security values, and hands off:</p>
+
+<figure><img src="https://www.shirleyconsulting.co.uk/medium/2026-12-02-server-driven-partner-sso-launcher/images/01-diagram.png" alt="flowchart-v2 diagram"></figure>
+
+<p>Environment-specific values (sandbox versus production gateways) live in overrides, so <strong>non-production builds can never hand off into production partner accounts</strong>.</p>
+
+<h3>Security rules that make it safe</h3>
+
+<ul>
+<li><strong>Per-launch secrets come from the client, never the config.</strong> For OAuth entries, the app generates <code>state</code> and the PKCE verifier and challenge on every launch, and keeps the verifier in memory only for the lifetime of the handoff. Configuration holds only static, non-sensitive template parameters.</li>
+<li><strong>SAML stays vendor-side.</strong> Relay state and entity IDs are static and non-sensitive; the assertion exchange happens between the identity provider and the partner.</li>
+<li><strong>The redirect URI is the trust boundary.</strong> For web targets it must be <strong>our</strong> registered scheme or universal link, never the partner’s domain, and an exact match on the partner’s allow-list with no wildcards. A test on the definitions enforces this. A partner-domain redirect would let the callback leave our control.</li>
+<li><strong>Prefer the in-app browser</strong> (SFSafariViewController / Chrome Custom Tabs) for PKCE flows. It isolates the session and keeps the user in the app’s UX.</li>
+<li><strong>Declare what you query.</strong> Every native scheme must be listed in the iOS <code>LSApplicationQueriesSchemes</code>, and every Android package needs a <code>&lt;queries&gt;</code> entry for Android 11+ package visibility. It’s easy for config and manifests to drift, so it’s worth checking them against each other in CI.</li>
+</ul>
+
+<h3>The feature we deliberately didn’t build</h3>
+
+<p>The obvious next step is to complete the flow: exchange the returned code for tokens server-side (with the GraphQL layer acting as a backend-for-frontend), so the app could call partner APIs too. We designed it, then <strong>rejected it for current scope</strong>:</p>
+
+<ul>
+<li><strong>A new class of secret.</strong> The backend would have to hold and rotate a client secret per partner app. Today it holds <em>no</em> partner credentials.</li>
+<li><strong>A new attack surface.</strong> A token-exchange endpoint, if compromised, yields live partner API access. The current pattern’s worst case is disclosure of static configuration.</li>
+<li><strong>Server-side session state.</strong> The backend would have to mint and validate its own nonces rather than pass through client state.</li>
+<li><strong>Refresh-token custody.</strong> Keeping refresh tokens off the device makes the backend a long-lived per-user, per-partner token store, with retention and breach-impact implications.</li>
+<li><strong>No uniform contract.</strong> SAML partners need an extra assertion-grant hop to get any token at all, and custom SSO gateways may have no token endpoint.</li>
+<li><strong>Nobody needed it.</strong> The objective was <em>handoff</em>. No partner API call was required.</li>
+</ul>
+
+<p>If a genuine requirement appears, it gets its own spec, scoped per partner, and it should prefer <strong>proxying the API calls server-side</strong> so the device never sees a partner token.</p>
+
+<h3>Choosing OIDC where you can</h3>
+
+<p>Where a partner offered both, we preferred OIDC over SAML. It keeps native app-to-app handoff open (SAML’s browser-POST binding is awkward on mobile), it has PKCE for public clients, and it composes with the same launcher contract.</p>
+
+<h3>The general lesson</h3>
+
+<p>When integrations multiply, <strong>move the variability into data</strong> and keep one small, well-tested client path. Be just as deliberate about the boundary: an SSO <em>handoff</em> and a <em>token-custody service</em> have very different risk profiles, and scope creep between them is how credential stores appear by accident.</p>
+
+
+<hr>
+<p><em>Originally published at <a href="https://www.shirleyconsulting.co.uk/architecture/2026/12/02/server-driven-partner-sso-launcher.html">www.shirleyconsulting.co.uk/architecture/2026/12/02/server-driven-partner-sso-launcher.html</a>.</em></p>
+</article>
+</body>
+</html>
