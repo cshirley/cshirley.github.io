@@ -1,0 +1,54 @@
+---
+layout: post
+title: Coding In the Cloud [practical fact or developer fiction] part 2
+date: 2014-12-29 20:29:40.000000000 +00:00
+type: post
+published: true
+status: publish
+categories:
+- Development
+tags:
+- Cloud
+- mosh
+- ovh
+- tmux
+- vim
+- vps
+meta:
+  _edit_last: '22041244'
+author:
+  email: clive@shirleyconsulting.co.uk
+  display_name: Clive Shirley
+---
+<p><a title="iPhone 6 Plus" href="http://www.apple.com/iphone-6/" target="_blank">iPhone 6 Plus</a> in my back pocket means one can be productive any place there is a cell connection (in theory). Coding in the cloud via a MacBook Air for a good few months prior to the start of this experiment provided the confident that given access to a ssh client I could code from any platform.</p>
+<p>The iPhone 6 Plus is an excellent device when paired with a HD monitor and Bluetooth keyboard (in this case a<a title="Filco MINILA Air" href="http://www.keyboardco.com/keyboard/uk-majestouch-minila-air-68-key-tactile-action-bluetooth-keyboard.asp" target="_blank"> Filco MINILA Air</a> from my desk and recently a <a title="Logitech Keys-to-go" href="http://www.logitech.com/en-gb/product/keys-to-go-ipad" target="_blank">Logitech Keys-To-Go</a> when out of the office). This setup provided a truly task oriented approach to my day job while carrying around relatively little kit.</p>
+<p>When on site, the same setup works providing a monitor is available; otherwise working from the iPhone's screen proves tiresome for anything but the simplest tasks (I.e. emergency bug fixes/deployments). At one point I did consider trying out <a title="Google VR Headset" href="https://www.google.com/get/cardboard/" target="_blank">Google's cardboard VR</a> headset adapter for smart phones but decided against it (purely for cosmetic reasons).</p>
+<p>It is safe to say the general premiss works for this 43 year old engineer and resonates with younger members of the engineering teams I work with (it certainly has a 'cool' factor associated with it). Productivity with respect to coding work was the same as from my MBA (when in the office at least). I did find limitations with some of the tools used for build specifications/design documents which still required the use of my MBA. Word on the iPhone is not really useful for anything other than reading and minor edits.</p>
+<p>After a mixed 6 weeks of coding from the iPhone it is clear the device, while capable is not suitable for true nomad type development. Moreover it works only the lines of say the <a title="TangoPC" href="http://www.tangopc.com" target="_blank">TangoPC</a> - a device that needs some kind of docking station at each site you want to work from. The big bonus is seamlessly switch from WIFI to 4G connection when on the move (although I am still waiting for Mosh support from one of the ssh apps to really make this seamless).</p>
+<p>While I have not ditched the iPhone completely I have moved on to an iPad Air 2 with 4G/LTE. Same tools, better screen when working from a coffee-shop or on the train. My new setup is....</p>
+<h5><strong>Hardware</strong></h5>
+<ul>
+<li>iPad Air 2 4G/LTE</li>
+<li><a title="Surface Pad" href="https://twelvesouth.com/product/surfacepad-for-ipad" target="_blank">Twelve South Surface Pad</a></li>
+<li><a title="Logitech Keys-To-Go" href="http://www.logitech.com/en-gb/product/keys-to-go-ipad" target="_blank">Logitech Keys-To-Go</a></li>
+<li>Three mobile 10 GB/month plan with international roaming</li>
+<li>Apple HDMI lightning connector</li>
+<li><a title="MU Tablet" href="http://www.themu.co.uk/pages/mu-tablet" target="_blank">MU tablet USB adapter</a></li>
+</ul>
+<h5><strong>Software</strong></h5>
+<ul>
+<li><a title="OVH" href="https://www.ovh.co.uk/vps/vps-classic.xml" target="_blank">OVH Classic VPS</a></li>
+<li>IOS 8.1</li>
+<li>WebSSH (excellent 256 colour support in vim/tmux)</li>
+<li>Dropbox</li>
+<li>Word</li>
+<li>Omni Graffle</li>
+<li>Omni Plan</li>
+<li>Skype</li>
+<li>MIHTool</li>
+<li>GitHub</li>
+<li>Dash</li>
+<li>Flipboard</li>
+<li>Safari</li>
+</ul>
+<p>See <a title="Coding in the Cloud [practical fact or developer fiction]" href="/development/2014/10/04/coding-in-the-cloud-practical-fact-or-developer-fiction.html">Coding in the Cloud [practical fact or developer fiction]</a> for my previous instalment on this topic.</p>

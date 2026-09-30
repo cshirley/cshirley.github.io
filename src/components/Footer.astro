@@ -1,0 +1,14 @@
+---
+import { NAV, SITE } from '../site';
+---
+<footer class="site-footer">
+  <div class="container">
+    <p>&copy; {new Date().getFullYear()} {SITE.name}</p>
+    <nav aria-label="Footer">
+      {NAV.map(({ title, url }) => <a href={url}>{title}</a>)}
+      <a href={SITE.links.github} rel="me">GitHub</a>
+      <a href={SITE.links.linkedin} rel="me">LinkedIn</a>
+      <a href="/feed.xml">RSS</a>
+    </nav>
+  </div>
+</footer>

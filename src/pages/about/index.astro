@@ -1,0 +1,114 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import portrait from '../../assets/clive-shirley-portrait.jpg';
+import { SITE } from '../../site';
+import { EDUCATION, EXPERIENCE, PRINCIPLES, STACK, SUMMARY } from '../../data/profile';
+---
+<BaseLayout
+  title="About"
+  type="profile"
+  description="Clive Shirley is a Principal Software Engineer with 30+ years’ experience across healthcare, fintech, trading and legal technology, specialising in safe change in regulated systems."
+>
+  <section class="page-header">
+    <div class="container">
+      <p class="eyebrow">About</p>
+      <h1>Architect-practitioner</h1>
+      <p class="lead">Hands on the keyboard, designs on the page, and guidance that makes the team successful.</p>
+    </div>
+  </section>
+
+  <section class="container" style="padding-bottom: 4rem;">
+    <div class="about-intro">
+      <div class="prose">
+        {SUMMARY.map((p) => <p>{p}</p>)}
+        <p>
+          Lately I have been focused on how teams adopt AI safely. I architected an internal agentic development
+          harness at eMed and wrote <a href={SITE.links.accord}>ACCORD</a>, an open-source harness that holds
+          AI-generated changes to the same checkable standards as human ones.
+        </p>
+      </div>
+      <aside class="about-aside">
+        <Image src={portrait} alt="Portrait of Clive Shirley" width={340} height={340} />
+        <dl class="facts">
+          <div><dt>Role</dt><dd>Principal Software Engineer, eMed UK</dd></div>
+          <div><dt>Based in</dt><dd>{SITE.location}</dd></div>
+          <div><dt>Education</dt><dd>{EDUCATION.degree}, {EDUCATION.school}</dd></div>
+        </dl>
+        <div class="hero-actions" style="margin-top: 0;">
+          <a class="icon-link" href={`mailto:${SITE.email}`} aria-label="Email"><Icon name="mail" /></a>
+          <a class="icon-link" href={SITE.links.github} rel="me" aria-label="GitHub"><Icon name="github" /></a>
+          <a class="icon-link" href={SITE.links.linkedin} rel="me" aria-label="LinkedIn"><Icon name="linkedin" /></a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="how">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">How I work</p>
+          <h2 id="how">Principles</h2>
+        </div>
+      </div>
+      <div class="grid" style="--min: 15rem">
+        {PRINCIPLES.map((p) => (
+          <div class="card">
+            <h3>{p.title}</h3>
+            <p>{p.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="experience" id="experience">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Career</p>
+          <h2>Experience</h2>
+        </div>
+      </div>
+      <ol class="timeline">
+        {EXPERIENCE.map((r) => (
+          <li>
+            <div class="period">{r.period}</div>
+            <div>
+              <h3>{r.title} <span class="company">· {r.company}</span>{r.note && <span class="note"> ({r.note})</span>}</h3>
+              <p class="summary">{r.summary}</p>
+              {r.highlights && <ul class="highlights">{r.highlights.map((h) => <li>{h}</li>)}</ul>}
+            </div>
+          </li>
+        ))}
+        <li>
+          <div class="period">{EDUCATION.period}</div>
+          <div>
+            <h3>{EDUCATION.degree} <span class="company">· {EDUCATION.school}</span></h3>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="stack">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Toolbox</p>
+          <h2 id="stack">Technical stack</h2>
+        </div>
+      </div>
+      <div class="stack">
+        {STACK.map((s) => (
+          <div>
+            <h3>{s.group}</h3>
+            <ul class="tags">{s.items.map((i) => <li class="tag">{i}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

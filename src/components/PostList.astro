@@ -1,0 +1,23 @@
+---
+import { excerpt, formatDate, isScheduled, postUrl, readingTime, type Post } from '../utils';
+
+interface Props { posts: Post[] }
+const { posts } = Astro.props;
+---
+<ul class="post-list">
+  {posts.map((post) => (
+    <li>
+      <a class="post-item" href={postUrl(post)}>
+        <div class="meta">
+          <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+          {post.data.categories[0] && <span class="category">{post.data.categories[0]}</span>}
+          <span>{readingTime(post)}</span>
+          {post.data.draft && <span class="badge-draft">Draft</span>}
+          {isScheduled(post) && <span class="badge-draft">Scheduled</span>}
+        </div>
+        <h3>{post.data.title}</h3>
+        <p>{excerpt(post)}</p>
+      </a>
+    </li>
+  ))}
+</ul>
