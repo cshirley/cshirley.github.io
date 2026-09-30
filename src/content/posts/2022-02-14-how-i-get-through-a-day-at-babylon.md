@@ -15,12 +15,15 @@ author:
 
 ## TL;DR
 
-1. How do I get through the day:
-2. Lots of coffee/diet coke
-3. Focused Time Blocking
-4. Consolidate context switching into periods between focus time
-5. Modal UI (full-screen apps ONLY - iPad)
-6. Avoid Zoom meetings 😉
+How do I get through the day:
+
+1. Lots of coffee/diet coke
+2. Focused Time Blocking
+3. Consolidate context switching into periods between focus time
+4. Modal UI (full-screen apps ONLY - iPad)
+5. Avoid Zoom meetings 😉
+
+![My 2022 working setup: M1 iPad Pro running full-screen, terminal-first](/assets/babylon-ipad-setup-2022.jpeg)
 
 ## Overview
 
