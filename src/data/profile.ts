@@ -13,11 +13,6 @@ export type Metric = { value: string; label: string; detail: string };
 
 export const METRICS: Metric[] = [
   {
-    value: '£310K',
-    label: 'saved per year',
-    detail: 'Replaced a third-party NHS ePrescription signing service with an in-house AES pipeline (~35K prescriptions a month).',
-  },
-  {
     value: '2 days → 30s',
     label: 'partner provisioning',
     detail: 'B2B onboarding automation across 700+ client organisations and ~3M members; setup errors cut from ~7% to under 1%.',
