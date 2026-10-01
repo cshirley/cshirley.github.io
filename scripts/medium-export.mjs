@@ -100,6 +100,8 @@ async function loadPosts() {
         id,
         slug,
         title: String(fm.title ?? slug),
+        // UTC, matching the date in the post URL.
+        published: `${date.getUTCDate()} ${MONTHS[date.getUTCMonth()]} ${date.getUTCFullYear()}`,
         description: fm.description ? String(fm.description) : '',
         tags: [...(fm.categories ?? []), ...(fm.tags ?? [])].map(String),
         unpublished: fm.draft === true || fm.published === false || date.valueOf() > Date.now(),
@@ -302,6 +304,8 @@ function toMediumHtml({ site, canonical, shots, images }) {
     .replace(/<\/(p|h3|h4|pre|blockquote|ul|ol|figure|hr)>/g, '</$1>\n');
 }
 
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
 const escapeHtml = (s) =>
   s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
@@ -338,7 +342,7 @@ ${opts.publish ? redirect(canonical) : ''}<style>
 <h1>${escapeHtml(post.title)}</h1>
 ${description}${body}
 <hr>
-<p><em>Originally published at <a href="${canonical}">${canonical.replace(/^https?:\/\//, '')}</a>.</em></p>
+<p><em>Originally published at <a href="${canonical}">${canonical.replace(/^https?:\/\//, '')}</a> on ${post.published}.</em></p>
 </article>
 </body>
 </html>
