@@ -29,7 +29,24 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
+      # Content doesn't change between pushes, so the daily scheduled rebuild skips this.
+      - name: Spell check (cspell + British -ise style)
+        if: github.event_name != 'schedule'
+        run: npm run check:spelling
+      # Fails on invalid front matter (src/content.config.ts, src/data/taxonomy.ts).
       - run: npm run build
+      # Post-build checks block deploys on push and PRs. On the daily scheduled rebuild they only
+      # report, so a check can't hold back a scheduled post.
+      - name: Check internal links
+        run: npm run check:links
+        continue-on-error: ${{ github.event_name == 'schedule' }}
+      - name: Check published URLs still exist
+        run: npm run check:urls
+        continue-on-error: ${{ github.event_name == 'schedule' }}
+      # Drafts and scheduled posts aren't in dist/, so check their links in a separate build.
+      - name: Check links in drafts and scheduled posts
+        if: github.event_name != 'schedule'
+        run: npm run check:links:drafts
       - if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
         with:
@@ -45,3 +62,10 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+      # Fetch every sitemap URL plus the feed from the live site. Runs on scheduled rebuilds too,
+      # to confirm a scheduled post went live. The script uses only Node built-ins (no npm ci).
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: scripts
+      - name: Smoke test live site
+        run: node scripts/smoke-test.mjs "${{ steps.deployment.outputs.page_url }}"

@@ -50,6 +50,36 @@ Markdown content. Raw HTML is fine, and ```mermaid code blocks render as diagram
 Posts are published at `/<categories>/<yyyy>/<mm>/<dd>/<slug>.html`, the URL scheme the old Jekyll
 site used, so existing links keep working.
 
+Categories and tags must come from `src/data/taxonomy.ts`. To use a new tag, add it there first.
+Posts dated 2016 or later need a `description` of 80–320 characters. The build fails with a clear
+message if any of these rules is broken.
+
+## Checks
+
+```bash
+npm run verify              # everything CI runs before deploy: spelling, build + the checks below
+npm run check:spelling      # cspell (en-GB) + British -ise house style, posts and site copy
+npm run check:links         # every internal link/image in dist/ resolves (no network)
+npm run check:urls          # every URL in urls.snapshot.txt still exists
+npm run check:links:drafts  # links in drafts and scheduled posts (builds into dist-drafts/)
+npm run urls:update         # record current URLs in urls.snapshot.txt
+npm run smoke               # fetch every sitemap URL + feed on the live site (or pass a base URL)
+```
+
+Spelling is British English (`cspell.config.yaml`). Code, inline code, HTML tags and link URLs are
+skipped. Add correct but unknown words (names, products, jargon) to `cspell-words.txt`. To allow a word in
+one post only, add `<!-- cspell:ignore word -->` to it. `-ize`/`-yze` spellings fail
+(`scripts/check-spelling-style.mjs`) because the dictionary accepts both forms but the site uses `-ise`.
+
+Run `npm run build && npm run urls:update` and commit `urls.snapshot.txt` after a post goes live,
+so its URL is protected from then on. If `check:urls` fails, a published page has moved (usually a
+changed category, date or slug). Revert the change or add the old URL to `redirects` in
+`astro.config.mjs`.
+
+In CI these checks block deploys on push and pull requests. On the daily scheduled rebuild they only
+report, so they can't hold back a scheduled post. After every deploy, including scheduled ones, the
+smoke test checks the live site.
+
 ## Cross-posting to Medium
 
 Medium's [Import a story](https://medium.com/p/import) only accepts a public URL, so the exporter

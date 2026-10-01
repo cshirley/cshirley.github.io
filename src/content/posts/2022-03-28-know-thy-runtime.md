@@ -54,7 +54,7 @@ increased the number of workers assuming this would start reducing the job
 backlog. It did not.
 
 On closer inspection we could see the queues were still increasing (albeit at
-a slower rate). Pod CPU utilization was only hitting 50%, hmm but it was a
+a slower rate). Pod CPU utilisation was only hitting 50%, hmm but it was a
 constant 50% (1/2 a CPU), ah we were being throttled by Kubernetes (another
 runtime). So, we upped our request and limit settings to ensure we got 2 CPUs
 (4x more per pod).
@@ -110,13 +110,13 @@ pattern):
 To keep everything safe and consistent within the VM there needs to be a way to
 control concurrent access to key data structures which led to the need for a
 Global Interpreter Lock which is a mechanism used in computer language
-interpreters to synchronize the execution of threads so that only one thread can
+interpreters to synchronise the execution of threads so that only one thread can
 execute at a time.
 
 An interpreter which uses GIL will always allow exactly one thread and one
 thread only to execute at a time, even if run on a multi-core processor.
 
-Thus the GIL explains why we did not see CPU utilization hit above 100% even
+Thus the GIL explains why we did not see CPU utilisation hit above 100% even
 when we explicitly increased the number of threads. While the threads were
 scheduled across multiple cores the VMs interpreter would only allow 1 thread to
 execute at a time. Therefore only 1 core (for the CRuby process) was active each

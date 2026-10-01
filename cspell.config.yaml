@@ -1,0 +1,41 @@
+# Spell check for posts and site copy: `npm run spell`. Runs in CI.
+# British English only, so US spellings ("color", "organize") are flagged.
+# Unknown but correct words (names, products, jargon) go in cspell-words.txt.
+version: "0.2"
+language: en-GB
+files:
+  - src/content/posts/*.md
+  - src/data/*.ts
+  - src/pages/**/*.astro
+  - src/site.ts
+ignorePaths:
+  - src/data/taxonomy.ts
+dictionaryDefinitions:
+  - name: site-words
+    path: ./cspell-words.txt
+    addWords: true
+dictionaries:
+  - site-words
+patterns:
+  - name: fenced-code
+    pattern: /^([ \t]*)(`{3,}|~{3,})[\s\S]*?^\1\2[ \t]*$/gm
+  - name: inline-code
+    pattern: /`[^`\n]+`/g
+  - name: html-tag
+    pattern: /<[^>\n]+>/g
+  # Acrostics with bold initials: **A**gentic **C**ontract ...
+  - name: bold-initial
+    pattern: /\*\*[A-Za-z]\*\*[a-z]+/g
+  - name: ga-measurement-id
+    pattern: /G-[A-Z0-9]{6,}/g
+ignoreRegExpList: [ga-measurement-id]
+languageSettings:
+  # cspell's default markdown settings add the html and npm dictionaries, which accept US
+  # spellings like "color". Raw HTML tags are ignored by the html-tag pattern instead.
+  - languageId: markdown
+    dictionaries: ["!html", "!npm"]
+    ignoreRegExpList: [fenced-code, inline-code, html-tag, bold-initial]
+overrides:
+  # Link label is a US-English URL slug (time.com).
+  - filename: src/content/posts/2014-10-04-coding-in-the-cloud-practical-fact-or-developer-fiction.md
+    ignoreWords: [favorite]
