@@ -90,18 +90,29 @@ export const PRINCIPLES = [
 ];
 
 export const STACK: { group: string; items: string[] }[] = [
-  { group: 'Languages', items: ['TypeScript / Node', 'Ruby (Rails)', 'JavaScript'] },
+  { group: 'Languages', items: ['TypeScript / Node', 'Ruby (Rails)', 'JavaScript', 'Python', 'Java', 'Go', 'Bash / shell', 'Lua (Neovim)'] },
+  {
+    group: 'Earlier career',
+    items: ['C# / .NET', 'BlackBerry (Java)', 'Objective-C (iOS)', 'T-SQL', 'C / C++', 'ASP.NET', 'XSLT'],
+  },
   {
     group: 'APIs & data',
-    items: ['GraphQL', 'REST', 'HL7 FHIR', 'DynamoDB', 'OpenSearch', 'Postgres', 'MongoDB', 'Redis / Valkey', 'Kafka'],
+    items: ['GraphQL (Apollo)', 'REST', 'HL7 FHIR', 'DynamoDB', 'OpenSearch', 'Postgres', 'MongoDB', 'Redis / Valkey', 'Kafka'],
   },
   {
     group: 'Platform',
-    items: ['Kubernetes', 'AWS (KMS, SSM, Lambda, SNS/SQS)', 'Docker', 'Terraform', 'Temporal', 'Camunda'],
+    items: ['Kubernetes', 'Flux (GitOps)', 'AWS (KMS, SSM, Lambda, SNS/SQS)', 'Docker', 'Terraform', 'Nx monorepos', 'LocalStack', 'Tilt', 'Temporal', 'Camunda'],
   },
   { group: 'Identity & integrations', items: ['Auth0', 'OIDC / OAuth 2.0', 'SAML 2.0', 'Salesforce', 'NCPDP', 'X12'] },
   { group: 'Payments', items: ['Stripe', 'Braintree', 'BACS', 'Multi-provider adapters'] },
-  { group: 'Tooling', items: ['Jest', 'RSpec', 'CI/CD', 'Observability (metrics, tracing, logs)'] },
+  { group: 'Testing & delivery', items: ['Jest', 'Vitest', 'Playwright', 'Cypress', 'k6', 'RSpec', 'Gherkin (BDD)', 'CI/CD', 'pre-commit', 'gitleaks'] },
+  { group: 'Observability', items: ['OpenTelemetry', 'Datadog', 'Sentry', 'Metrics, tracing and logs'] },
+  { group: 'Frontend', items: ['React', 'Next.js', 'Tailwind CSS', 'Radix UI', 'urql', 'Zod'] },
+  { group: 'Agentic tooling', items: ['Pi', 'ACCORD', 'AGENTS.md', 'Bun', 'Biome'] },
+  {
+    group: 'Developer environment',
+    items: ['Neovim', 'tmux', 'mosh', 'Ghostty', 'zsh / fish', 'ripgrep', 'fzf', 'GnuPG / pass', 'Astro'],
+  },
 ];
 
 export type Role = {
