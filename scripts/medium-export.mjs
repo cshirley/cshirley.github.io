@@ -5,6 +5,7 @@
  *   npm run medium -- <post>… [--out dir] [--image-base https://…]
  *   npm run medium -- <post>… --publish
  *   npm run medium -- --all [--live]
+ *   npm run medium -- --list          print the ids of live posts as JSON and exit
  *
  * <post> is a file id (2026-05-06-ai-native-workflow-with-pi), a slug (ai-native-workflow-with-pi)
  * or any unique part of one. Drafts and scheduled posts can be exported too.
@@ -45,6 +46,7 @@ const { values: opts, positionals } = parseArgs({
   options: {
     all: { type: 'boolean', default: false },
     live: { type: 'boolean', default: false },
+    list: { type: 'boolean', default: false },
     out: { type: 'string', default: 'medium-export' },
     'image-base': { type: 'string' },
     publish: { type: 'boolean', default: false },
@@ -52,7 +54,7 @@ const { values: opts, positionals } = parseArgs({
   },
 });
 
-if (opts.help || (!opts.all && positionals.length === 0)) {
+if (opts.help || (!opts.all && !opts.list && positionals.length === 0)) {
   console.log(`Usage: npm run medium -- <post>… [--out dir] [--image-base https://host/path]
        npm run medium -- <post>… --publish
        npm run medium -- --all
@@ -452,6 +454,10 @@ async function exportPost(browser, origin, post) {
 }
 
 const allPosts = await loadPosts();
+if (opts.list) {
+  console.log(JSON.stringify(allPosts.filter((p) => !p.unpublished && !p.id.startsWith('_')).map((p) => p.id)));
+  process.exit(0);
+}
 let posts = pickPosts(allPosts);
 if (opts.live) {
   for (const p of posts.filter((p) => p.unpublished)) console.log(`- ${p.id}: draft or scheduled, skipped (--live)`);

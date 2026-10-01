@@ -1,1 +1,254 @@
-{}
+{
+  "2013-01-01-fswire-architecture": {
+    "mediumId": "4cd277b66445",
+    "url": "https://medium.com/@clive-shirley/4cd277b66445",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:11:27.843Z"
+  },
+  "2026-10-01-medley-one-command-local-stack": {
+    "mediumId": "bf8dea658e78",
+    "url": "https://medium.com/@clive-shirley/bf8dea658e78",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:13:39.715Z"
+  },
+  "2026-09-30-how-i-work-today": {
+    "mediumId": "d998a3db25b9",
+    "url": "https://medium.com/@clive-shirley/d998a3db25b9",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:13:42.435Z"
+  },
+  "2026-09-16-cheaper-platform-isnt-cheaper-migration": {
+    "mediumId": "ac22d77b2e15",
+    "url": "https://medium.com/@clive-shirley/ac22d77b2e15",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:13:43.348Z"
+  },
+  "2026-09-02-data-residency-without-a-full-stack": {
+    "mediumId": "dce446720df7",
+    "url": "https://medium.com/@clive-shirley/dce446720df7",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:13:44.807Z"
+  },
+  "2026-08-19-substrate-was-the-problem": {
+    "mediumId": "79257cc03ecd",
+    "url": "https://medium.com/@clive-shirley/79257cc03ecd",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:13:52.682Z"
+  },
+  "2026-08-05-fix-dx-before-replatforming": {
+    "mediumId": "06e8cb4e1a88",
+    "url": "https://medium.com/@clive-shirley/06e8cb4e1a88",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:13:53.681Z"
+  },
+  "2026-07-22-one-list-price-many-coupons": {
+    "mediumId": "9877b57078fb",
+    "url": "https://medium.com/@clive-shirley/9877b57078fb",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:13:55.307Z"
+  },
+  "2026-07-08-search-then-create-is-a-race": {
+    "mediumId": "7950aecf88bd",
+    "url": "https://medium.com/@clive-shirley/7950aecf88bd",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:13:56.872Z"
+  },
+  "2026-06-24-rotating-credentials-without-downtime": {
+    "mediumId": "1d62041b139d",
+    "url": "https://medium.com/@clive-shirley/1d62041b139d",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:13:57.900Z"
+  },
+  "2026-06-10-pause-is-not-a-status": {
+    "mediumId": "816abee9c196",
+    "url": "https://medium.com/@clive-shirley/816abee9c196",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:13:59.510Z"
+  },
+  "2026-05-27-bringing-e-signing-in-house": {
+    "mediumId": "0ae454d6c6ce",
+    "url": "https://medium.com/@clive-shirley/0ae454d6c6ce",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:14:00.622Z"
+  },
+  "2026-05-06-ai-native-workflow-with-pi": {
+    "mediumId": "0f92e05dc364",
+    "url": "https://medium.com/@clive-shirley/0f92e05dc364",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:14:05.057Z"
+  },
+  "2026-04-22-evaluating-a-paas-on-aws": {
+    "mediumId": "066bb288678b",
+    "url": "https://medium.com/@clive-shirley/066bb288678b",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:14:06.245Z"
+  },
+  "2026-03-31-spec-driven-agentic-workflow": {
+    "mediumId": "604438f7fbf1",
+    "url": "https://medium.com/@clive-shirley/604438f7fbf1",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:14:07.762Z"
+  },
+  "2026-02-11-load-testing-autoscaling-unsafe": {
+    "mediumId": "7c885a83245e",
+    "url": "https://medium.com/@clive-shirley/7c885a83245e",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:14:08.780Z"
+  },
+  "2025-12-10-discount-stacking-and-payment-accounts": {
+    "mediumId": "997f0105759f",
+    "url": "https://medium.com/@clive-shirley/997f0105759f",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:14:09.719Z"
+  },
+  "2025-11-12-preparing-for-a-tv-campaign": {
+    "mediumId": "0bd4b1b8c0cf",
+    "url": "https://medium.com/@clive-shirley/0bd4b1b8c0cf",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:14:10.674Z"
+  },
+  "2025-10-15-make-the-invoice-service-dumber": {
+    "mediumId": "a817f5de2e59",
+    "url": "https://medium.com/@clive-shirley/a817f5de2e59",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:14:11.917Z"
+  },
+  "2025-09-03-an-eligibility-file-is-a-contract": {
+    "mediumId": "15956ba16033",
+    "url": "https://medium.com/@clive-shirley/15956ba16033",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:14:13.145Z"
+  },
+  "2025-08-06-when-shared-nothing-duplicates-everything": {
+    "mediumId": "b468c515a29e",
+    "url": "https://medium.com/@clive-shirley/b468c515a29e",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:14:13.765Z"
+  },
+  "2025-07-02-designing-for-human-latency": {
+    "mediumId": "900661225ba5",
+    "url": "https://medium.com/@clive-shirley/900661225ba5",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:14:14.948Z"
+  },
+  "2025-05-14-migrating-stripe-subscriptions-between-accounts": {
+    "mediumId": "2215d2a73812",
+    "url": "https://medium.com/@clive-shirley/2215d2a73812",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:14:15.413Z"
+  },
+  "2025-04-16-decommissioning-a-telehealth-platform": {
+    "mediumId": "ba7b9bf31163",
+    "url": "https://medium.com/@clive-shirley/ba7b9bf31163",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:14:16.172Z"
+  },
+  "2025-03-12-carving-out-a-shared-service": {
+    "mediumId": "8c57884019ca",
+    "url": "https://medium.com/@clive-shirley/8c57884019ca",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:14:16.694Z"
+  },
+  "2025-01-22-payment-close-to-shipment": {
+    "mediumId": "7970ffebb179",
+    "url": "https://medium.com/@clive-shirley/7970ffebb179",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:14:17.855Z"
+  },
+  "2022-03-28-know-thy-runtime": {
+    "mediumId": "fa570bbd5071",
+    "url": "https://medium.com/@clive-shirley/fa570bbd5071",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:14:18.338Z"
+  },
+  "2022-02-14-how-i-get-through-a-day-at-babylon": {
+    "mediumId": "b6ff17cc48b8",
+    "url": "https://medium.com/@clive-shirley/b6ff17cc48b8",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:14:19.396Z"
+  },
+  "2015-12-07-delivering-teir-1-retail-bank-platforms": {
+    "mediumId": "04f3d6788b63",
+    "url": "https://medium.com/@clive-shirley/04f3d6788b63",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:14:20.059Z"
+  },
+  "2014-12-29-coding-in-the-cloud-practical-fact-or-developer-fiction-part-2": {
+    "mediumId": "9a97c4867bf7",
+    "url": "https://medium.com/@clive-shirley/9a97c4867bf7",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:14:20.576Z"
+  },
+  "2014-10-04-coding-in-the-cloud-practical-fact-or-developer-fiction": {
+    "mediumId": "95a25abb36d8",
+    "url": "https://medium.com/@clive-shirley/95a25abb36d8",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:14:21.401Z"
+  },
+  "2013-09-16-fswire-usp": {
+    "mediumId": "7e1e40a6927f",
+    "url": "https://medium.com/@clive-shirley/7e1e40a6927f",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:14:22.164Z"
+  },
+  "2013-05-27-big-data-what-was-the-question": {
+    "mediumId": "2e1b7e042494",
+    "url": "https://medium.com/@clive-shirley/2e1b7e042494",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:14:22.583Z"
+  },
+  "2013-04-08-real-time-sentiment-analytics-social-finance-api": {
+    "mediumId": "2bccd272d2ea",
+    "url": "https://medium.com/@clive-shirley/2bccd272d2ea",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:14:23.555Z"
+  },
+  "2013-03-13-to-buy-to-sell-this-is-the-question": {
+    "mediumId": "c02d3def55ca",
+    "url": "https://medium.com/@clive-shirley/c02d3def55ca",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:14:24.497Z"
+  },
+  "2013-02-25-uri-rules-the-world": {
+    "mediumId": "a9edda6119ae",
+    "url": "https://medium.com/@clive-shirley/a9edda6119ae",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-01T13:14:26.029Z"
+  }
+}

@@ -1,18 +1,19 @@
 ---
 name: medium-crosspost
-description: Cross-post a live blog post to Medium using Medium's Import a story, with the canonical link kept pointing at the original. Finds the post's import URL, previews the Medium copy and walks through import, tags and canonical settings. Use when the user wants to publish, import, syndicate or cross-post a post to Medium.
+description: Cross-post a live blog post to Medium through Medium's API (or Import a story as a fallback), with the canonical link kept pointing at the original. Finds the post's import URL, previews the Medium copy and walks through import, tags and canonical settings. Use when the user wants to publish, import, syndicate or cross-post a post to Medium.
 disable-model-invocation: true
 ---
 
 # Cross-post to Medium
 
-Medium's importer only reads a public URL. CI therefore builds a Medium-friendly copy of every
+The API script (step 3) builds its own copy locally. Medium's importer only reads a public URL, so for the manual
+fallback CI builds a Medium-friendly copy of every
 **live** post on each deploy, at `https://www.shirleyconsulting.co.uk/medium/<post-id>/`.
 There is nothing to generate or commit.
 
 Drafts and scheduled posts have no copy until they go live.
 
-## 1. Find the import URL
+## 1. Find the import URL (manual fallback only; skip for the API route)
 
 ```bash
 curl -s https://www.shirleyconsulting.co.uk/medium/index.json
@@ -46,8 +47,10 @@ npm run medium:publish -- <post> --public           # publish immediately
 npm run medium:publish-pending [-- --public]       # every pending post, oldest first
 ```
 
-The script posts the hosted copy's HTML with `canonicalUrl` set to the original post and the
-copy's first five tags. It defaults to a draft: only use `--public` when the user asks.
+The script builds the Medium HTML locally (same as `npm run medium`, needs Chrome), uploads the
+images to Medium, then creates the story with `canonicalUrl` set to the original post and the
+first five tags. It doesn't need CI or a deploy, but only **live** posts are eligible (the
+canonical URL must exist). It defaults to a draft: only use `--public` when the user asks.
 Each success is recorded in `src/data/medium-posted.json`, which stops a post going out twice.
 Commit that file (`[CHORE] Record Medium cross-post`); don't push without the user's go-ahead.
 
