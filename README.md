@@ -97,6 +97,21 @@ In CI these checks block deploys on push and pull requests. On the daily schedul
 report, so they can't hold back a scheduled post. After every deploy, including scheduled ones, the
 smoke test checks the live site.
 
+## Search engine indexing
+
+Google finds new posts through `sitemap.xml` (submitted in Search Console). To get a post crawled
+sooner, use **URL Inspection → Request indexing** in Search Console.
+
+For Bing and other [IndexNow](https://www.indexnow.org/) engines, each deploy snapshots the live
+sitemap first, then submits any new URLs once the deploy is live (`scripts/indexnow.mjs`). The key
+file is `public/<key>.txt`; if you change the key, change `KEY` in the script too. To resubmit by hand:
+
+```bash
+npm run indexnow -- <url> [<url>...]   # e.g. after a significant edit to a live post
+npm run indexnow -- --all              # every URL in the live sitemap
+npm run indexnow -- --all --dry-run    # list without submitting
+```
+
 ## Cross-posting to Medium
 
 Medium's [Import a story](https://medium.com/p/import) only accepts a public URL, so the site hosts a

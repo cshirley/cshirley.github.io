@@ -71,12 +71,21 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
-      # Fetch every sitemap URL plus the feed from the live site. Runs on scheduled rebuilds too,
-      # to confirm a scheduled post went live. The script uses only Node built-ins (no npm ci).
+      # Scripts below use only Node built-ins (no npm ci).
       - uses: actions/checkout@v4
         with:
           sparse-checkout: scripts
+      # Record the live sitemap before deploying, so IndexNow only gets newly published pages.
+      - name: Snapshot live sitemap
+        run: node scripts/indexnow.mjs --snapshot "$RUNNER_TEMP/sitemap-before.txt"
+        continue-on-error: true
+      - id: deployment
+        uses: actions/deploy-pages@v4
+      # Fetch every sitemap URL plus the feed from the live site. Runs on scheduled rebuilds too,
+      # to confirm a scheduled post went live.
       - name: Smoke test live site
         run: node scripts/smoke-test.mjs "${{ steps.deployment.outputs.page_url }}"
+      # Ping Bing and other IndexNow engines with new URLs. Never fails the deploy.
+      - name: Submit new URLs to IndexNow
+        run: node scripts/indexnow.mjs --since "$RUNNER_TEMP/sitemap-before.txt"
+        continue-on-error: true
