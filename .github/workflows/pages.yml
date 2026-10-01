@@ -33,6 +33,12 @@ jobs:
       - name: Spell check (cspell + British -ise style)
         if: github.event_name != 'schedule'
         run: npm run check:spelling
+      # Medium import copies of every live post, written to public/medium/ so the build deploys
+      # them. Uses the runner's Google Chrome. Never blocks the site: if it fails, the smoke
+      # test reports the missing copies after deploy.
+      - name: Generate Medium import copies
+        run: npm run medium -- --all --live --publish
+        continue-on-error: true
       # Fails on invalid front matter (src/content.config.ts, src/data/taxonomy.ts).
       - run: npm run build
       # Post-build checks block deploys on push and PRs. On the daily scheduled rebuild they only

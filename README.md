@@ -63,7 +63,7 @@ npm run check:links         # every internal link/image in dist/ resolves (no ne
 npm run check:urls          # every URL in urls.snapshot.txt still exists
 npm run check:links:drafts  # links in drafts and scheduled posts (builds into dist-drafts/)
 npm run urls:update         # record current URLs in urls.snapshot.txt
-npm run smoke               # fetch every sitemap URL + feed on the live site (or pass a base URL)
+npm run smoke               # fetch every sitemap URL, feed + Medium copy on the live site (or pass a base URL)
 ```
 
 Spelling is British English (`cspell.config.yaml`). Code, inline code, HTML tags and link URLs are
@@ -82,20 +82,22 @@ smoke test checks the live site.
 
 ## Cross-posting to Medium
 
-Medium's [Import a story](https://medium.com/p/import) only accepts a public URL, so the exporter
-publishes a Medium-friendly copy of the post on this site for the importer to read.
+Medium's [Import a story](https://medium.com/p/import) only accepts a public URL, so the site hosts a
+Medium-friendly copy of each post for the importer to read. CI generates them on every deploy
+(`npm run medium -- --all --live --publish`), so there is nothing to run or commit. Each live post
+has a copy, and a scheduled post gets its copy on the day it goes live. Drafts and scheduled posts
+never get one, so their content isn't published early.
 
-```bash
-npm run medium -- payment-close-to-shipment --publish   # file id, slug, or a unique part of one
-git add public/medium && git commit -m "Medium export: payment-close-to-shipment" && git push
-```
-
-1. Once the deploy finishes, import the printed URL at medium.com/p/import:
-   `https://www.shirleyconsulting.co.uk/medium/<post-id>/`
+1. Once the post is live, import its copy at medium.com/p/import:
+   `https://www.shirleyconsulting.co.uk/medium/<post-id>/`. All import URLs are listed at
+   [`/medium/index.json`](https://www.shirleyconsulting.co.uk/medium/index.json).
 2. In the Medium draft, check the images and add up to 5 tags. Under **Story settings → Advanced
    settings → Customize canonical link**, make sure the canonical link is the original post, not the
    `/medium/` copy.
-3. Publish. You can delete `public/medium/<post-id>/` afterwards.
+3. Publish.
+
+`public/medium/` is git-ignored. After each deploy, the smoke test checks that every live post has a
+copy.
 
 `scripts/medium-export.mjs` starts the dev server, renders the post in headless Chrome and rewrites
 it using only what Medium supports: h3/h4 headings, plain `<pre>` code blocks, figures and absolute
@@ -104,8 +106,10 @@ has a canonical link to the original post and sends human visitors there (Medium
 run JavaScript). Add `?preview` to the URL to view the copy itself. It isn't listed in the sitemap.
 
 Without `--publish`, the export goes to the git-ignored `medium-export/<post-id>/` with relative
-images, for previewing locally or copying and pasting into the Medium editor. Needs Google Chrome,
-or a Playwright Chromium (`npx playwright-core install chromium`).
+images, for previewing locally or copying and pasting into the Medium editor:
+`npm run medium -- payment-close-to-shipment` (a file id, slug, or unique part of one). Drafts and
+scheduled posts can be exported this way. Needs Google Chrome, or a Playwright Chromium
+(`npx playwright-core install chromium`).
 
 ## Deployment
 

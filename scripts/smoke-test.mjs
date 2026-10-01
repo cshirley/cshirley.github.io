@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
  * Smoke test a deployed site: the home page, feed, sitemap and every page the sitemap lists
- * must return 200 with the expected content type.
+ * must return 200 with the expected content type. Every live post must also have a Medium
+ * import copy: /medium/index.json is checked against the sitemap's posts, and each copy is fetched.
  *
  *   npm run smoke                                   # production (site in astro.config.mjs)
  *   npm run smoke -- http://localhost:4321          # e.g. against `npm run preview`
@@ -66,6 +67,22 @@ const targets = [
 ];
 
 const failures = [];
+
+// Medium copies (generated in CI by `npm run medium -- --all --live --publish`).
+const mediumIndex = await check(new URL('medium/index.json', base), /json/);
+if (mediumIndex.error) {
+  failures.push(`${new URL('medium/index.json', base)}: ${mediumIndex.error}`);
+} else {
+  const copies = JSON.parse(mediumIndex.body);
+  const copied = new Set(copies.map((c) => new URL(c.original).pathname));
+  for (const url of pages.filter((u) => u.endsWith('.html'))) {
+    const p = new URL(url).pathname;
+    if (!copied.has(p)) failures.push(`${url}: no Medium copy in medium/index.json`);
+  }
+  // ?preview stops the copy's script from redirecting to the original post.
+  targets.push(...copies.map((c) => ({ url: new URL(`medium/${c.id}/?preview`, base).href, type: HTML })));
+}
+
 let next = 0;
 await Promise.all(
   Array.from({ length: CONCURRENCY }, async () => {

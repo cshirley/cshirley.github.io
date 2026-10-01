@@ -4,7 +4,7 @@
  *
  *   npm run medium -- <post>… [--out dir] [--image-base https://…]
  *   npm run medium -- <post>… --publish
- *   npm run medium -- --all
+ *   npm run medium -- --all [--live]
  *
  * <post> is a file id (2026-05-06-ai-native-workflow-with-pi), a slug (ai-native-workflow-with-pi)
  * or any unique part of one. Drafts and scheduled posts can be exported too.
@@ -19,8 +19,13 @@
  * Output: <out>/<post-id>/index.html and <out>/<post-id>/images/*.
  *
  * Medium's "Import a story" only accepts a public http(s) URL. With --publish the export is
- * written to public/medium/<post-id>/ with absolute image URLs; commit and deploy it, then import
- * https://<site>/medium/<post-id>/ into Medium. The page's canonical link points at the original post.
+ * written to public/medium/<post-id>/ with absolute image URLs, plus public/medium/index.json
+ * listing the import URLs. The page's canonical link points at the original post.
+ *
+ * CI runs `--all --live --publish` before every build, so each live post has a copy at
+ * https://<site>/medium/<post-id>/ ready to import. public/medium/ is git-ignored: don't commit it.
+ * --live skips drafts and scheduled posts, so their content isn't published early; a scheduled
+ * post gets its copy from the daily rebuild on the day it goes live.
  */
 import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -39,6 +44,7 @@ const { values: opts, positionals } = parseArgs({
   allowPositionals: true,
   options: {
     all: { type: 'boolean', default: false },
+    live: { type: 'boolean', default: false },
     out: { type: 'string', default: 'medium-export' },
     'image-base': { type: 'string' },
     publish: { type: 'boolean', default: false },
@@ -53,6 +59,7 @@ if (opts.help || (!opts.all && positionals.length === 0)) {
 
   <post>          post file id, slug, or a unique part of one
   --all           export every post
+  --live          skip drafts and scheduled posts (what CI uses)
   --publish       write to public/medium/<post-id>/ (deployed with the site) using absolute
                   image URLs, so Medium can import https://…/medium/<post-id>/
   --out           output directory (default: medium-export)
@@ -337,6 +344,22 @@ ${description}${body}
 `;
 }
 
+/** index.json: every copy in the output dir, for finding import URLs and for the smoke test. */
+async function writeIndex(allPosts) {
+  const outRoot = path.resolve(root, opts.out);
+  const dirs = new Set(
+    (await readdir(outRoot, { withFileTypes: true }).catch(() => []))
+      .filter((e) => e.isDirectory())
+      .map((e) => e.name),
+  );
+  const entries = allPosts
+    .filter((p) => dirs.has(p.id))
+    .map((p) => ({ id: p.id, title: p.title, import: `${SITE}/medium/${p.id}/`, original: SITE + p.path }))
+    .reverse(); // newest first
+  await mkdir(outRoot, { recursive: true });
+  await writeFile(path.join(outRoot, 'index.json'), `${JSON.stringify(entries, null, 2)}\n`);
+}
+
 // ---------------------------------------------------------------------------------------------
 
 async function exportPost(browser, origin, post) {
@@ -423,7 +446,15 @@ async function exportPost(browser, origin, post) {
   }
 }
 
-const posts = pickPosts(await loadPosts());
+const allPosts = await loadPosts();
+let posts = pickPosts(allPosts);
+if (opts.live) {
+  for (const p of posts.filter((p) => p.unpublished)) console.log(`- ${p.id}: draft or scheduled, skipped (--live)`);
+  posts = posts.filter((p) => !p.unpublished);
+}
+// A full publish replaces every copy, so posts that are no longer live (e.g. moved back to
+// draft) don't keep a public copy.
+if (opts.publish && opts.all) await rm(path.resolve(root, opts.out), { recursive: true, force: true });
 const server = await dev({
   root,
   logLevel: 'error',
@@ -447,12 +478,14 @@ try {
   await server.stop();
 }
 
+if (opts.publish) await writeIndex(allPosts);
+
 if (!failed && opts.publish) {
   console.log(`
-Next: commit public/medium/ and push to deploy. Once the import URL loads, go to
-medium.com/p/import, paste it and import. Check the draft, add up to 5 tags and, under
-Story settings → Advanced settings, make sure the canonical link is the original post
-(not the /medium/ copy). Delete public/medium/<post-id>/ afterwards if you like.`);
+Wrote ${path.join(opts.out, 'index.json')}. CI generates these copies on every deploy, so there is
+nothing to commit (public/medium/ is git-ignored). Once a post is live, import its copy at
+medium.com/p/import. Check the draft, add up to 5 tags and, under Story settings → Advanced settings,
+make sure the canonical link is the original post (not the /medium/ copy).`);
 } else if (!failed) {
   console.log(`
 Next: open index.html in Chrome, select the article (⌘A), copy (⌘C) and paste into a new
