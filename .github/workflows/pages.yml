@@ -33,6 +33,9 @@ jobs:
       - name: Spell check (cspell + British -ise style)
         if: github.event_name != 'schedule'
         run: npm run check:spelling
+      - name: Check agent skills (.agents/skills, AGENTS.md)
+        if: github.event_name != 'schedule'
+        run: npm run check:skills
       # Medium import copies of every live post, written to public/medium/ so the build deploys
       # them. Uses the runner's Google Chrome. Never blocks the site: if it fails, the smoke
       # test reports the missing copies after deploy.

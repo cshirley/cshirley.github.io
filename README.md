@@ -31,12 +31,23 @@ SHOW_DRAFTS=1 npm run build   # production build including drafts, for review
 
 ## Writing a post
 
-Create `src/content/posts/YYYY-MM-DD-my-post.md`:
+```bash
+npm run new-post -- --title "My Post" --category Engineering --tags "AWS,scaling" \
+  --description "One or two sentences for listings, RSS and the post lead."
+npm run schedule                                   # what's queued, real go-live times, next free slot
+npm run schedule -- --move my-post 2026-12-16      # reschedule a post that isn't live yet
+```
+
+`new-post` creates `src/content/posts/YYYY-MM-DD-slug.md` as a draft. It validates the category
+and tags, defaults the date to the next free fortnightly Wednesday at 09:00 UK time, and prints
+the URL and go-live time. Remove `draft: true` to publish. A post with a future date goes live at
+the first build after that date: the daily rebuild, or an earlier push. The front matter looks
+like this:
 
 ```markdown
 ---
 title: My Post
-description: One-sentence summary used in listings, RSS and social cards.
+description: One or two sentences used in listings, RSS and as the post lead.
 date: 2026-10-15 09:00:00 +0100
 draft: true          # remove (or set false) to publish
 categories:
@@ -46,6 +57,10 @@ tags: []
 
 Markdown content. Raw HTML is fine, and ```mermaid code blocks render as diagrams.
 ```
+
+House style (British English, structure, voice) is in `docs/writing-style.md`. AI agents: see
+`AGENTS.md` and the skills in `.agents/skills/` (new-post, proofread, publish-schedule,
+publish-post, medium-crosspost, site-checks).
 
 Posts are published at `/<categories>/<yyyy>/<mm>/<dd>/<slug>.html`, the URL scheme the old Jekyll
 site used, so existing links keep working.
@@ -59,6 +74,7 @@ message if any of these rules is broken.
 ```bash
 npm run verify              # everything CI runs before deploy: spelling, build + the checks below
 npm run check:spelling      # cspell (en-GB) + British -ise house style, posts and site copy
+npm run check:skills        # agent skills (.agents/skills) and AGENTS.md are valid and up to date
 npm run check:links         # every internal link/image in dist/ resolves (no network)
 npm run check:urls          # every URL in urls.snapshot.txt still exists
 npm run check:links:drafts  # links in drafts and scheduled posts (builds into dist-drafts/)

@@ -49,6 +49,13 @@ const posts = defineCollection({
       author: z.object({ display_name: z.string(), email: z.string().optional() }).optional(),
     })
     .superRefine((post, ctx) => {
+      if (!post.draft && post.description?.startsWith('TODO')) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['description'],
+          message: 'replace the TODO description before publishing (or set draft: true)',
+        });
+      }
       if (!post.description && post.date >= DESCRIPTION_REQUIRED_FROM) {
         ctx.addIssue({
           code: 'custom',

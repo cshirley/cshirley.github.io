@@ -7,6 +7,8 @@
  * cspell's en-GB dictionary accepts Oxford "-ize" spellings, and cspell can't ban a suffix, so
  * this fills the gap. Code (fenced and inline), HTML tags and URLs are skipped. To allow a word
  * in one post, use the same comment cspell reads: <!-- cspell:ignore Belize -->
+ *
+ * Also fails on "TODO" left in the prose of a post that isn't a draft (new-post placeholders).
  */
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -40,8 +42,16 @@ for (const file of (await readdir(postsDir)).filter((f) => f.endsWith('.md')).so
       .flatMap((m) => m[1].trim().split(/\s+/))
       .map((w) => w.toLowerCase()),
   );
+  const isDraft = /^draft:\s*true\s*$/m.test(source.split(/^---$/m)[1] ?? '');
   const lines = prose(source).split('\n');
   lines.forEach((line, i) => {
+    if (!isDraft && /\bTODO\b/.test(line) && !/^description:/.test(line)) {
+      issues++;
+      const rel = `src/content/posts/${file}`;
+      const msg = 'TODO left in a post that is not a draft';
+      if (process.env.GITHUB_ACTIONS) annotate(`error file=${rel},line=${i + 1}`, msg);
+      else console.log(`${rel}:${i + 1} - ${msg}`);
+    }
     for (const m of line.matchAll(IZE)) {
       const word = m[0];
       if (ALLOW.test(word) || ignored.has(word.toLowerCase())) continue;
@@ -55,7 +65,7 @@ for (const file of (await readdir(postsDir)).filter((f) => f.endsWith('.md')).so
 }
 
 if (issues) {
-  console.error(`\n${issues} -ize spelling(s) found.`);
+  console.error(`\n${issues} house-style issue(s) found.`);
   process.exit(1);
 }
-console.log('Spelling style OK: no -ize/-yze spellings in posts.');
+console.log('House style OK: no -ize/-yze spellings, no TODOs in non-draft posts.');

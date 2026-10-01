@@ -8,6 +8,10 @@ files:
   - src/data/*.ts
   - src/pages/**/*.astro
   - src/site.ts
+  - AGENTS.md
+  - README.md
+  - docs/**/*.md
+  - .agents/skills/**/*.md
 ignorePaths:
   - src/data/taxonomy.ts
 dictionaryDefinitions:

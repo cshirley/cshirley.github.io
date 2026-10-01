@@ -8,13 +8,16 @@
     "preview": "astro preview",
     "check": "astro check",
     "check:spelling": "cspell --no-progress && node scripts/check-spelling-style.mjs",
+    "check:skills": "node scripts/check-skills.mjs",
     "check:links": "node scripts/check-links.mjs",
     "check:links:drafts": "SHOW_DRAFTS=1 astro build --outDir dist-drafts && DIST_DIR=dist-drafts node scripts/check-links.mjs",
     "check:urls": "node scripts/check-urls.mjs",
     "urls:update": "node scripts/check-urls.mjs --update",
     "smoke": "node scripts/smoke-test.mjs",
-    "verify": "npm run check:spelling && npm run build && npm run check:links && npm run check:urls && npm run check:links:drafts",
-    "medium": "node scripts/medium-export.mjs"
+    "verify": "npm run check:spelling && npm run check:skills && npm run build && npm run check:links && npm run check:urls && npm run check:links:drafts",
+    "medium": "node scripts/medium-export.mjs",
+    "new-post": "node scripts/new-post.mjs",
+    "schedule": "node scripts/schedule.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
