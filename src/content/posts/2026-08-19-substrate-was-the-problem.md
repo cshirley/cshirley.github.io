@@ -227,7 +227,7 @@ P6 in one line: tests can pass while a MUST acceptance criterion goes unimplemen
 
 ## Shift left: adversarial tests before code
 
-The cheapest place to fix a misunderstanding is before implementation. The second-cheapest is before the tests green. ACCORD tries to push decisions left along a chain — **brief → spec → plan → tests → code → verify** — so "that's not what I meant" surfaces early, when fixing it costs minutes instead of a re-read of the whole PR.
+The cheapest place to fix a misunderstanding is before implementation. The second-cheapest is before the tests go green. ACCORD tries to push decisions left along a chain — **brief → spec → plan → tests → code → verify** — so "that's not what I meant" surfaces early, when fixing it costs minutes instead of a re-read of the whole PR.
 
 ```mermaid
 flowchart LR

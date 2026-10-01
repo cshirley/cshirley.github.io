@@ -18,7 +18,7 @@ author:
 
 In 2022 I wrote about [how I got through a day at Babylon](/development/2022/02/14/how-i-get-through-a-day-at-babylon.html):
 time blocking, batching context switches, and a modal, terminal-first setup on
-an iPad Pro. Four years on the principles are the same, but the tools have
+an iPad Pro. Four years on, the principles are the same, but the tools have
 changed a lot. The biggest change is that I now spend my day directing agents
 rather than typing every line myself.
 
@@ -263,7 +263,7 @@ files in my documentation repo, and the flashing steps are written down next
 to them, so rebuilding a board is repeatable. The most useful key is
 `LCTL_T(KC_ESC)`: tap for Escape, hold for Ctrl. In a vi, tmux and Neovim
 setup that one key does a lot of work. Once you're used to the layers, your
-hands barely leave home row, and that fits a keyboard-driven setup well.
+hands barely leave the home row, and that fits a keyboard-driven setup well.
 
 **Keychron Nape Pro (trackball).** My newest addition. I use the mouse much
 less than most people, but I still need it for browsers, design tools and the

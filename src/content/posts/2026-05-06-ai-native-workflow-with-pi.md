@@ -81,7 +81,7 @@ Every `bash` tool call passes through a risk classifier before execution. Comman
 - **High risk** (🔴): `rm -rf`, `sudo`, `mkfs`, system control — always prompts, blocked entirely in non-interactive mode.
 - **Medium risk** (🟡): `chmod`, `git push --force`, `docker rm`, package uninstalls — prompts interactively, allowed with warning otherwise.
 
-When a dangerous command is caught, an interactive prompt lets me allow once, allow the whole category for the session, or block. The gate also injects system-prompt guidance nudging the LLM toward safer alternatives: `trash` over `rm -rf`, dry-run flags before destructive operations, narrow permission scopes over `chmod -R 777`.
+When a dangerous command is caught, an interactive prompt lets me allow once, allow the whole category for the session, or block. The gate also injects system-prompt guidance nudging the LLM towards safer alternatives: `trash` over `rm -rf`, dry-run flags before destructive operations, narrow permission scopes over `chmod -R 777`.
 
 Toggle with `Ctrl+Alt+G` or `/gate on|off`. It's the seatbelt I never knew I needed — especially when the agent is autonomously running shell commands during a code phase.
 
@@ -114,7 +114,7 @@ Each phase has built-in quality gates that prevent defects from propagating down
 | **Plan** | Infeasible decomposition, missing AC coverage, stub-covered MUSTs, security discipline violations | Finalisation checks + `review-plan` self-review |
 | **Test authoring** | Confirmation bias (tests shaped to pass), trivial assertions, missing ACs | Separate `phase-test` agent with clean context (no impl knowledge) + adversarial `review-test` (devises wrong impls that pass) |
 | **Implementation** | Type errors, test failures, regressions, misunderstood tests | Separate `phase-code` agent with clean context (reads tests from disk) + `test_issue` escalation for bad tests + extension type_check (hard gate) + test (advisory) |
-| **Verify** | Spec drift, acceptance gaps, stale artifacts | Staleness check (spec/plan mtime vs verify mtime) + full `verification_commands` preflight |
+| **Verify** | Spec drift, acceptance gaps, stale artefacts | Staleness check (spec/plan mtime vs verify mtime) + full `verification_commands` preflight |
 
 The spec alone covers 16 mandatory topics — from problem statement through acceptance criteria, API contracts, constraints, risks, deployment strategy, rejected alternatives, infra/tooling, security topology, dev ergonomics, and test topology. Every MUST acceptance criterion must have a matching test case before the spec is finalised. The `review-spec` agent then validates structural consistency, and critical findings trigger a fix-and-re-review cycle (up to 2 rounds) before the spec ever reaches the planner.
 
@@ -169,7 +169,7 @@ Each layer catches a different category of defect, and the context isolation bet
 The key design choice is that agents never decide *when* to verify — the extension's event hooks handle that transparently:
 
 - **`tool_result` hook on subagent completion**: If the agent requires verification (registered in the agent registry), and it didn't return `stuck`/`blocked`, the extension runs `type_check` + `test` and appends formatted results to the tool result. Type check failure injects a hard-gate message.
-- **`tool_call` hook on verify-phase dispatch**: Before `phase-verify-*` agents launch, the extension checks artifact staleness (spec/plan modified after the last verify?) and runs the full `verification_commands` array as a preflight. All-fail blocks the launch; partial results are injected into the agent's brief.
+- **`tool_call` hook on verify-phase dispatch**: Before `phase-verify-*` agents launch, the extension checks artefact staleness (spec/plan modified after the last verify?) and runs the full `verification_commands` array as a preflight. All-fail blocks the launch; partial results are injected into the agent's brief.
 - **`tool_result` hook on file writes**: Every write to `.tasks/` or `docs/` is validated against JSON schemas. Invalid shapes are rejected before they hit disk.
 
 #### Other Key Features
@@ -310,7 +310,7 @@ Appends concise notes to items with partial progress. Updates `reconciled_at` in
 
 ### `commit` — Context-Aware Commits
 
-Calls `git_commit_context` to gather status, diff, log, branch, secrets scan, artifacts (spec/plan/verify files), and ticket ID in one shot. Drafts a structured commit message:
+Calls `git_commit_context` to gather status, diff, log, branch, secrets scan, artefacts (spec/plan/verify files), and ticket ID in one shot. Drafts a structured commit message:
 
 ```
 [PROJ-10107] Add anonymous order preview endpoint
@@ -327,7 +327,7 @@ Test areas:
 - Authenticated preview path unchanged (regression)
 ```
 
-Always waits for confirmation before executing. Warns on detected secrets. Enriches from dev-harness artifacts when present.
+Always waits for confirmation before executing. Warns on detected secrets. Enriches from dev-harness artefacts when present.
 
 ### `pr` — Push & PR
 
@@ -444,9 +444,9 @@ Cumulative session cost is always visible (e.g. `$0.3842`). Between this and the
 
 ## The Dracula Theme
 
-A full semantic theme covering every pi surface: syntax highlighting (pink keywords, green functions, yellow strings, purple numbers, cyan types), markdown rendering (orange headings, cyan links, green code), diff colors, tool result backgrounds (green tint for success, red tint for errors, purple tint for custom messages), and — my favourite detail — **thinking-level gradients**:
+A full semantic theme covering every pi surface: syntax highlighting (pink keywords, green functions, yellow strings, purple numbers, cyan types), markdown rendering (orange headings, cyan links, green code), diff colours, tool result backgrounds (green tint for success, red tint for errors, purple tint for custom messages), and — my favourite detail — **thinking-level gradients**:
 
-| Level | Color |
+| Level | Colour |
 |---|---|
 | Off | Dim grey (`#545978`) |
 | Minimal | Comment blue (`#6272a4`) |
@@ -508,7 +508,7 @@ Meanwhile, the dangerous-command gate has already caught two `rm -rf` attempts f
 > commit
 ```
 
-The commit skill gathers diff, status, branch, ticket ID, and any dev-harness artifacts. It drafts a structured message with Context (why), Decisions (trade-offs), and Test Areas (what could break). I confirm, it commits.
+The commit skill gathers diff, status, branch, ticket ID, and any dev-harness artefacts. It drafts a structured message with Context (why), Decisions (trade-offs), and Test Areas (what could break). I confirm, it commits.
 
 ```
 > pr
