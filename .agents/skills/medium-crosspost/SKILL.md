@@ -41,7 +41,7 @@ npm run medium:publish                              # list live posts not yet on
 npm run medium:publish -- <post> --dry-run          # show payload, post nothing
 npm run medium:publish -- <post>                    # create a Medium DRAFT
 npm run medium:publish -- <post> --public           # publish immediately
-npm run medium:publish -- --all-pending [--public]
+npm run medium:publish-pending [-- --public]       # every pending post, oldest first
 ```
 
 The script posts the hosted copy's HTML with `canonicalUrl` set to the original post and the

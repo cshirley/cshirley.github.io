@@ -6,6 +6,7 @@
  *   npm run medium:publish                    list live posts not yet cross-posted
  *   npm run medium:publish -- <post>… [--public] [--dry-run]
  *   npm run medium:publish -- --all-pending [--public] [--dry-run]
+ *   npm run medium:publish-pending [-- --public] [--dry-run]   same as --all-pending
  *
  * <post> is an id, slug or unique part of one. Posts are created as Medium DRAFTS unless
  * --public is given. Posted ids are recorded in src/data/medium-posted.json (commit it) so a
@@ -70,7 +71,7 @@ const index = await (await get(`${SITE}/medium/index.json`)).json();
 const pending = index.filter((p) => !ledger[p.id]);
 
 let targets;
-if (opts['all-pending']) targets = pending;
+if (opts['all-pending']) targets = [...pending].reverse(); // oldest first
 else if (positionals.length) {
   targets = positionals.map((q) => {
     const hits = index.filter((p) => p.id === q || p.id.includes(q));
