@@ -84,3 +84,8 @@ wellbeing
 WiFi
 worktrees
 Yehuda
+keymap
+Colemak
+Configurator
+reflash
+keycaps
