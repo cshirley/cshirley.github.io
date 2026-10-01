@@ -1,0 +1,6 @@
+#!/bin/sh
+# Runs the same checks as CI. Bypass in an emergency with: git commit --no-verify
+set -e
+cd "$(git rev-parse --show-toplevel)"
+echo "pre-commit: npm run verify"
+npm run --silent verify

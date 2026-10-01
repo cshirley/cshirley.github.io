@@ -15,6 +15,7 @@
     "urls:update": "node scripts/check-urls.mjs --update",
     "smoke": "node scripts/smoke-test.mjs",
     "indexnow": "node scripts/indexnow.mjs",
+    "prepare": "git rev-parse --git-dir >/dev/null 2>&1 && git config core.hooksPath .githooks || true",
     "verify": "npm run check:spelling && npm run check:skills && npm run build && npm run check:links && npm run check:urls && npm run check:links:drafts",
     "medium": "node scripts/medium-export.mjs",
     "medium:publish": "node scripts/medium-publish.mjs",

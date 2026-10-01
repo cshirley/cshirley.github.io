@@ -93,6 +93,10 @@ so its URL is protected from then on. If `check:urls` fails, a published page ha
 changed category, date or slug). Revert the change or add the old URL to `redirects` in
 `astro.config.mjs`.
 
+A pre-commit hook (`.githooks/pre-commit`) runs `npm run verify` before every commit. `npm install` enables
+it automatically (the `prepare` script sets `core.hooksPath`). Bypass it in an emergency with
+`git commit --no-verify`.
+
 In CI these checks block deploys on push and pull requests. On the daily scheduled rebuild they only
 report, so they can't hold back a scheduled post. After every deploy, including scheduled ones, the
 smoke test checks the live site.

@@ -32,7 +32,7 @@ Requires Node.js 22.12+ (`.nvmrc`). Run commands from the repository root.
 
 ```bash
 npm run dev              # http://localhost:4321, drafts visible
-npm run verify           # everything CI checks before deploy; run before committing
+npm run verify           # everything CI checks before deploy; also runs in the pre-commit hook (npm install enables it)
 npm run new-post -- --title "..." --category <Category> [--tags "a,b"] [--description "..."]
 npm run schedule         # queued posts, real go-live times, next free slot
 npm run medium -- <post> # local Medium-friendly export (CI publishes live posts automatically)
