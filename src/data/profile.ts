@@ -1,11 +1,11 @@
 // Profile content, sourced from the résumé (documentation/3-resources/resume.md).
 
 export const INTRO =
-  'Principal Software Engineer with 30+ years shipping software, the last eight leading architecture at Babylon Health and eMed UK across a healthcare platform operating in the UK, US and Canada. I am a player-coach: I write the design doc, review the PRs, and still ship the hard fix when it matters.';
+  'Principal Software Engineer with 30+ years shipping software, leading architecture since 2018 at Babylon Health and eMed UK across a healthcare platform operating in the UK, US and Canada. I am a player-coach: I write the design doc, review the PRs and still ship the hard fix when it matters.';
 
 export const SUMMARY = [
   'I lead architecture across all engineering pillars for a healthcare platform operating in the UK, US and Canada, covering regulated patient data, prescribing and real payment flows.',
-  'My specialism is safe change in regulated systems: payments, e-prescribing, FHIR interoperability, multi-jurisdiction data residency, and AI-assisted delivery. I favour durable architecture over heroics and written reasoning over authority.',
+  'My specialism is safe change in regulated systems: payments, e-prescribing, FHIR interoperability, multi-jurisdiction data residency and AI-assisted delivery. I favour durable architecture over heroics and written reasoning over authority.',
   'Before healthcare I built white-label banking platforms for Lloyds Banking Group and RBS, ingested the entire Twitter firehose for trading firms, built mobile trading apps at HSBC, and spent a decade in document and email management for the City’s leading law firms.',
 ];
 
@@ -120,16 +120,16 @@ export const EXPERIENCE: Role[] = [
     title: 'Principal Software Engineer',
     period: '2018 – present',
     summary:
-      'Own technical strategy and architectural direction for a global healthcare platform. Principal Engineer across all product pillars, setting cross-cutting architecture, reference patterns and standards, and bridging commercial intent and technical delivery through B2B2C expansion, GLP-1 product lines, US and Canadian market entry and the Babylon legacy sunset.',
+      'Own technical strategy and architectural direction for a global healthcare platform. Architecture lead across all engineering pillars, setting cross-cutting architecture, reference patterns and standards, and bridging commercial intent and technical delivery through B2B2C expansion, GLP-1 product lines, US and Canadian market entry and the Babylon legacy sunset.',
     highlights: [
       'Architected and shipped a payments domain replacing provider-coupled code with a pluggable adapter model, order orchestrator and configuration-driven pricing engine across US and UK surfaces.',
-      'Brought NHS ePrescription signing in-house: per-prescriber AWS KMS keys, PAdES-signed PDFs and a feature-flagged rollout, removing a per-signature SaaS cost.',
-      'Designed pharmacy claim submission and reconciliation with CVS, modelling NCPDP batches and X12 835 remittance natively in FHIR.',
+      'Brought NHS e-prescription signing in-house: per-prescriber AWS KMS keys, PAdES-signed PDFs and a feature-flagged rollout, removing a per-signature SaaS cost.',
+      'Designed pharmacy claims submission and reconciliation with CVS, modelling NCPDP batches and X12 835 remittance natively in FHIR.',
       'Led the multi-quarter stability and scaling programme: back-pressure, bulkheads, circuit breakers, graceful shutdown and a performance-testing framework.',
       'Set the Canadian deployment architecture and a data-cell pattern that keeps at-rest patient data in-country for residency-constrained markets.',
       'Identified and remediated a critical cross-tenant authorisation vulnerability and led a platform-wide credential rotation programme.',
-      'Architected an internal agentic development harness used daily to shorten the spec-to-PR cycle; author of the open-source ACCORD.',
-      'Modernised the core Ruby monolith into a multi-tenant microservices platform and scaled it to 30K+ active customers with headroom for 5–10x growth.',
+      'Architected an internal agentic development harness used daily to shorten the spec-to-PR cycle; authored the open-source ACCORD harness.',
+      'Modernised the core Ruby monolith into a multi-tenant microservices platform and scaled it to 30K+ active customers with headroom for 5–10× growth.',
     ],
   },
   {
@@ -139,8 +139,8 @@ export const EXPERIENCE: Role[] = [
     summary:
       'Led in-house and offshore teams delivering white-label small-business SaaS for Lloyds Banking Group and RBS, combining architect and lead-engineer responsibilities.',
     highlights: [
-      'Re-engineered a multi-tenanted .NET estate to Ruby on Rails with full white-labelling for tier-one banks.',
-      'Built a company-formations product integrating Companies House and HMRC XML gateways.',
+      'Re-engineered a multi-tenant .NET estate to Ruby on Rails with full white-labelling for tier-one banks.',
+      'Built a company-formation product integrating Companies House and HMRC XML gateways.',
       'Delivered SSO and provisioning integrations with Sage, FreeAgent, LivePlan and Salesforce.',
     ],
   },
