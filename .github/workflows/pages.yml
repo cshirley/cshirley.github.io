@@ -6,9 +6,11 @@ on:
   pull_request:
   workflow_dispatch:
   # Daily rebuild so future-dated (scheduled) posts publish on their date.
+  # Posts are dated 09:00 UK time (08:00 UTC in summer, 09:00 UTC in winter), so the run must
+  # come after 09:00 UTC to publish them on the day all year round.
   # Off-the-hour minute: GitHub delays/drops top-of-hour cron runs under load.
   schedule:
-    - cron: '17 6 * * *'
+    - cron: '17 9 * * *'
 
 permissions:
   contents: read
