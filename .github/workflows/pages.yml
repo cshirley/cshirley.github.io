@@ -6,8 +6,9 @@ on:
   pull_request:
   workflow_dispatch:
   # Daily rebuild so future-dated (scheduled) posts publish on their date.
+  # Off-the-hour minute: GitHub delays/drops top-of-hour cron runs under load.
   schedule:
-    - cron: '0 9 * * *'
+    - cron: '17 6 * * *'
 
 permissions:
   contents: read
