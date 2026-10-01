@@ -16,6 +16,7 @@
     "smoke": "node scripts/smoke-test.mjs",
     "verify": "npm run check:spelling && npm run check:skills && npm run build && npm run check:links && npm run check:urls && npm run check:links:drafts",
     "medium": "node scripts/medium-export.mjs",
+    "medium:publish": "node scripts/medium-publish.mjs",
     "new-post": "node scripts/new-post.mjs",
     "schedule": "node scripts/schedule.mjs"
   },

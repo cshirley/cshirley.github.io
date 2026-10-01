@@ -32,18 +32,31 @@ post; Medium's importer doesn't run JavaScript, so it reads the copy. Check that
 To preview locally, including drafts, run `npm run medium -- <post>`. Output goes to
 `medium-export/<post-id>/index.html`, which can also be pasted straight into Medium's editor.
 
-## 3. Import (the user does this in a browser)
+## 3. Cross-post via the Medium API
 
-Give the user these steps:
+Needs `MEDIUM_TOKEN` (integration token) in the environment. Never write it to a file or commit it.
 
-1. Go to https://medium.com/p/import, paste the **import URL** and click Import.
-2. In the draft, check that the images loaded and the code blocks look right.
-3. Add up to five tags. Suggest them from the post's category and tags. The copy's
-   `<meta name="medium-tags">` already lists the first five.
-4. **Story settings → Advanced settings → Customize canonical link:** set it to the
-   **original** post URL (`original` in `index.json`), not the `/medium/` copy. This keeps
-   search credit with the site.
-5. Publish.
+```bash
+npm run medium:publish                              # list live posts not yet on Medium
+npm run medium:publish -- <post> --dry-run          # show payload, post nothing
+npm run medium:publish -- <post>                    # create a Medium DRAFT
+npm run medium:publish -- <post> --public           # publish immediately
+npm run medium:publish -- --all-pending [--public]
+```
+
+The script posts the hosted copy's HTML with `canonicalUrl` set to the original post and the
+copy's first five tags. It defaults to a draft: only use `--public` when the user asks.
+Each success is recorded in `src/data/medium-posted.json`, which stops a post going out twice.
+Commit that file (`[CHORE] Record Medium cross-post`); don't push without the user's go-ahead.
+
+After a draft is created, tell the user to open the returned URL, check images and code blocks,
+then publish from Medium.
+
+### Fallback: manual import
+
+If the API is unavailable: go to https://medium.com/p/import, paste the **import URL** and
+Import; add up to five tags; then **Story settings → Advanced settings → Customize canonical
+link** and set it to `original` from `index.json`. Add the post to the ledger by hand.
 
 ## Rules
 
