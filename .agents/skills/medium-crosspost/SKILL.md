@@ -1,6 +1,7 @@
 ---
 name: medium-crosspost
 description: Cross-post a live blog post to Medium using Medium's Import a story, with the canonical link kept pointing at the original. Finds the post's import URL, previews the Medium copy and walks through import, tags and canonical settings. Use when the user wants to publish, import, syndicate or cross-post a post to Medium.
+disable-model-invocation: true
 ---
 
 # Cross-post to Medium

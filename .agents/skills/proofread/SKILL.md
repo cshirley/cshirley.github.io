@@ -1,6 +1,7 @@
 ---
 name: proofread
 description: Proofread and edit a blog post against the site's house style. Covers British spelling, grammar, clarity, structure, title, headings and description, links and alt text, keeping the author's voice. Use when the user asks to proofread, review, check, edit, tighten or polish a post or draft before publishing.
+disable-model-invocation: true
 ---
 
 # Proofread a post

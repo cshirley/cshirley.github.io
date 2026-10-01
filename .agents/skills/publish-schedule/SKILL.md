@@ -1,6 +1,7 @@
 ---
 name: publish-schedule
 description: Show and manage the blog's publishing schedule. Lists scheduled posts and drafts with their real go-live times, finds gaps and clashes in the fortnightly cadence, suggests the next free slot, and reschedules posts that aren't live yet. Use when the user asks what's queued or coming up, when a post will appear, or wants to move, reorder or plan posts.
+disable-model-invocation: true
 ---
 
 # Publishing schedule

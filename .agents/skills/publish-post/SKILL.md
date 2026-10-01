@@ -1,6 +1,7 @@
 ---
 name: publish-post
 description: Take a blog post from draft to live, or schedule it. Covers pre-flight checks, removing the draft flag, committing, pushing, watching the deploy, confirming the post is live and protecting its URL afterwards. Use when the user wants to publish, ship, release, schedule or go live with a post.
+disable-model-invocation: true
 ---
 
 # Publish a post
@@ -17,7 +18,7 @@ explicit go-ahead before pushing.
    filename and date together. The time stays 09:00 UK. If that hasn't passed yet, the post
    appears at the first build after 09:00.
 3. Make sure no placeholders are left: `TODO` in the description or the prose.
-4. Offer a proofread (the `proofread` skill) if one hasn't been done.
+4. If the post hasn't been proofread, suggest the user runs the `proofread` skill first.
 
 ## 2. Remove the draft flag
 
@@ -30,8 +31,9 @@ npm run verify
 ```
 
 This runs the spelling and house-style checks, the build (front matter schema), internal links,
-the published-URL guard and links in drafts. Fix failures with the `site-checks` skill. Don't
-skip them.
+the published-URL guard and links in drafts. If a check fails, stop and report it. Fix it if
+the cause is in this post. Otherwise the user can run the `site-checks` skill. Don't skip
+checks.
 
 ## 4. Commit and push
 
@@ -65,7 +67,7 @@ site. The post is live when the run is green.
    git add urls.snapshot.txt && git commit -m "[CHORE] Protect URL: <slug>" && git push
    ```
    `urls:update` refuses if the build contains drafts. Rebuild without `SHOW_DRAFTS`.
-2. **Cross-post.** Offer the `medium-crosspost` skill.
+2. **Cross-post.** Tell the user they can run the `medium-crosspost` skill.
 
 ## Rules
 

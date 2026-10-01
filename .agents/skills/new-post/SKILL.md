@@ -1,6 +1,7 @@
 ---
 name: new-post
 description: Start a new blog post for this site. Creates the Markdown file with valid front matter (category, tags, description, scheduled date) as a draft, then helps outline it in house style. Use when the user wants to write, start, draft or scaffold a new post or article.
+disable-model-invocation: true
 ---
 
 # New post
@@ -54,6 +55,7 @@ draft.
 
 ## Rules
 
-- Keep `draft: true` until the user decides to publish. Publishing is the `publish-post` skill.
+- Keep `draft: true` until the user decides to publish. Publishing is a separate step: the user
+  can run the `publish-post` skill.
 - Don't invent facts, numbers, employers or quotes. Ask.
 - Don't commit unless asked.

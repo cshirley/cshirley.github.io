@@ -60,7 +60,8 @@ Markdown content. Raw HTML is fine, and ```mermaid code blocks render as diagram
 
 House style (British English, structure, voice) is in `docs/writing-style.md`. AI agents: see
 `AGENTS.md` and the skills in `.agents/skills/` (new-post, proofread, publish-schedule,
-publish-post, medium-crosspost, site-checks).
+publish-post, medium-crosspost, site-checks). The skills are manual-only: run them with
+`/skill:<name>` in Pi or `/<name>` in Claude Code.
 
 Posts are published at `/<categories>/<yyyy>/<mm>/<dd>/<slug>.html`, the URL scheme the old Jekyll
 site used, so existing links keep working.

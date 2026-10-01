@@ -9,8 +9,13 @@ Astro static site, deployed to GitHub Pages by `.github/workflows/pages.yml` on 
 ## Skills
 
 Task workflows live in `.agents/skills/` (Agent Skills format; also linked from
-`.claude/skills/`). If your agent doesn't load skills automatically, read the matching `SKILL.md`
-before starting the task.
+`.claude/skills/`).
+
+**Skills are manual-only for now.** Use a skill only when the user invokes it (Pi:
+`/skill:<name>`; Claude Code: `/<name>`) or explicitly asks for it by name. Then read its
+`SKILL.md` and follow it. Don't apply a skill on your own initiative. If one would help,
+suggest it. Each skill sets `disable-model-invocation: true`, and `npm run check:skills`
+enforces it.
 
 | Task | Skill |
 |------|-------|

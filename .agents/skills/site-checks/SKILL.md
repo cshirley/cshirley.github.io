@@ -1,6 +1,7 @@
 ---
 name: site-checks
 description: Run and fix this site's checks. Covers spelling and house style, front matter schema (categories, tags, description), internal links, the published-URL guard and the post-deploy smoke test. Use when verify or CI fails, a build errors on front matter, a link or URL check fails, or the user asks to run the checks before committing.
+disable-model-invocation: true
 ---
 
 # Site checks
@@ -75,8 +76,8 @@ npm run smoke -- http://localhost:4399
 The local run only finds Medium copies if `npm run medium -- --all --live --publish` ran before
 the build.
 
-"No Medium copy" means the Medium export step failed or was skipped. See the
-`medium-crosspost` skill.
+"No Medium copy" means the Medium export step failed or was skipped. The `medium-crosspost`
+skill explains how the copies are generated.
 
 ## Rules
 
