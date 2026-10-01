@@ -35,6 +35,8 @@ To preview locally, including drafts, run `npm run medium -- <post>`. Output goe
 ## 3. Cross-post via the Medium API
 
 Needs `MEDIUM_TOKEN` (integration token) in the environment. Never write it to a file or commit it.
+Set `MEDIUM_PUBLICATION=notes-from-the-build` (or pass `--publication notes-from-the-build`) to post
+into that publication; the user is an editor there, so `--public` publishes directly.
 
 ```bash
 npm run medium:publish                              # list live posts not yet on Medium

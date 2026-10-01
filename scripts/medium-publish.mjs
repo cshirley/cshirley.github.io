@@ -8,6 +8,9 @@
  *   npm run medium:publish -- --all-pending [--public] [--dry-run]
  *   npm run medium:publish-pending [-- --public] [--dry-run]   same as --all-pending
  *
+ * --publication <slug|name|id> (or MEDIUM_PUBLICATION) posts under that publication instead of your
+ * profile. You need to be an editor for --public to publish directly; writers' posts become drafts.
+ *
  * <post> is an id, slug or unique part of one. Posts are created as Medium DRAFTS unless
  * --public is given. Posted ids are recorded in src/data/medium-posted.json (commit it) so a
  * post is never cross-posted twice. Needs MEDIUM_TOKEN (an integration token) in the environment.
@@ -29,6 +32,7 @@ const { values: opts, positionals } = parseArgs({
   options: {
     'all-pending': { type: 'boolean', default: false },
     public: { type: 'boolean', default: false },
+    publication: { type: 'string' },
     'dry-run': { type: 'boolean', default: false },
     help: { type: 'boolean', short: 'h', default: false },
   },
@@ -37,6 +41,7 @@ const { values: opts, positionals } = parseArgs({
 if (opts.help) {
   console.log(`Usage: npm run medium:publish [-- <post>… | --all-pending] [--public] [--dry-run]
   (no args)       list live posts not yet on Medium
+  --publication X post into publication X (slug, name or id; default env MEDIUM_PUBLICATION)
   --public        publish immediately (default: create a Medium draft)
   --dry-run       show what would be sent; call nothing that writes`);
   process.exit(0);
@@ -93,6 +98,17 @@ if (!opts['dry-run'] && !process.env.MEDIUM_TOKEN) {
 }
 
 let userId;
+let publication; // { id, name, url } once resolved
+const pubQuery = opts.publication ?? process.env.MEDIUM_PUBLICATION;
+
+async function resolvePublication() {
+  userId ??= (await medium('GET', '/me')).id;
+  const q = pubQuery.toLowerCase();
+  const pubs = await medium('GET', `/users/${userId}/publications`);
+  const hit = pubs.find((x) => x.id === pubQuery || x.url.toLowerCase().endsWith(`/${q}`) || x.name.toLowerCase() === q);
+  if (!hit) throw new Error(`publication "${pubQuery}" not found among: ${pubs.map((x) => x.name).join(', ')}`);
+  return hit;
+}
 let failed = 0;
 for (const p of targets) {
   if (ledger[p.id]) {
@@ -114,12 +130,20 @@ for (const p of targets) {
       publishStatus: opts.public ? 'public' : 'draft',
     };
     if (opts['dry-run']) {
-      console.log(`[dry-run] ${p.id}: ${payload.publishStatus}, tags [${tags.join(', ')}], canonical ${p.original}, ${content.length} chars`);
+      console.log(`[dry-run] ${p.id}: ${payload.publishStatus}${pubQuery ? ` in ${pubQuery}` : ''}, tags [${tags.join(', ')}], canonical ${p.original}, ${content.length} chars`);
       continue;
     }
     userId ??= (await medium('GET', '/me')).id;
-    const post = await medium('POST', `/users/${userId}/posts`, payload);
-    ledger[p.id] = { mediumId: post.id, url: post.url, status: post.publishStatus, at: new Date().toISOString() };
+    if (pubQuery) publication ??= await resolvePublication();
+    const route = publication ? `/publications/${publication.id}/posts` : `/users/${userId}/posts`;
+    const post = await medium('POST', route, payload);
+    ledger[p.id] = {
+      mediumId: post.id,
+      url: post.url,
+      status: post.publishStatus,
+      ...(publication && { publication: publication.name }),
+      at: new Date().toISOString(),
+    };
     await writeFile(LEDGER, JSON.stringify(ledger, null, 2) + '\n');
     console.log(`✓ ${p.id} -> ${post.url} (${post.publishStatus})`);
   } catch (err) {
