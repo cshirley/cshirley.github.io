@@ -311,7 +311,8 @@ const redirect = (canonical) =>
   `<script>if (!new URLSearchParams(location.search).has('preview')) location.replace(${JSON.stringify(canonical)});</script>\n`;
 
 function page({ post, canonical, body }) {
-  const description = post.description ? `<h4>${escapeHtml(post.description)}</h4>\n` : '';
+  // No subtitle: Medium's importer folds a <p> straight after <h1> into the title, so separate them.
+  const description = post.description ? `<h4>${escapeHtml(post.description)}</h4>\n` : '<hr>\n';
   const tags = post.tags.slice(0, 5).join(', ');
   return `<!doctype html>
 <html lang="en">
