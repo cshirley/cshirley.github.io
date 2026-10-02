@@ -26,9 +26,15 @@ const isActive = (url: string) =>
 
 <script>
   const header = document.getElementById('site-header');
-  const onScroll = () => header?.toggleAttribute('data-scrolled', window.scrollY > 8);
-  onScroll();
-  window.addEventListener('scroll', onScroll, { passive: true });
+  // Flag the header once the page scrolls past 8px. A 1px sentinel at the top and an
+  // IntersectionObserver avoid reading scrollY, which forced a synchronous layout on load.
+  const sentinel = document.createElement('div');
+  sentinel.setAttribute('aria-hidden', 'true');
+  sentinel.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:8px;pointer-events:none';
+  document.body.prepend(sentinel);
+  new IntersectionObserver(([entry]) => {
+    header?.toggleAttribute('data-scrolled', !entry.isIntersecting);
+  }).observe(sentinel);
 
   document.getElementById('theme-toggle')?.addEventListener('click', () => {
     const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
