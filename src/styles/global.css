@@ -100,6 +100,13 @@ a:hover {
   color: var(--accent-strong);
 }
 
+/* Links inside running text must not rely on colour alone (WCAG 1.4.1). */
+:where(p, li, dd, td, figcaption) a:not(.btn, .card, .tag, [class*='btn']) {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
