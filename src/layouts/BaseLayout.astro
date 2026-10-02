@@ -7,6 +7,7 @@ import CookieConsent from '../components/CookieConsent.astro';
 import { SITE } from '../site';
 import portrait from '../assets/clive-shirley-portrait.jpg';
 import { getImage } from 'astro:assets';
+import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 
 interface Props {
   title?: string;
@@ -37,6 +38,7 @@ const personLd = {
 <html lang="en-GB">
   <head>
     <meta charset="utf-8" />
+    <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
