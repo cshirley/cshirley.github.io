@@ -331,17 +331,14 @@ p {
 }
 
 .brand-mark {
-  display: grid;
-  place-items: center;
+  display: block;
   width: 2rem;
   height: 2rem;
-  border-radius: 9px;
-  background: var(--text);
-  color: var(--bg);
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: -0.04em;
+  flex: none;
+}
+
+.brand-mark svg {
+  display: block;
 }
 
 .site-nav {
