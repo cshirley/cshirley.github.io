@@ -6,34 +6,18 @@ disable-model-invocation: true
 
 # Cross-post to Medium
 
-The API script (step 3) builds its own copy locally. Medium's importer only reads a public URL, so for the manual
-fallback CI builds a Medium-friendly copy of every
-**live** post on each deploy, at `https://www.shirleyconsulting.co.uk/medium/<post-id>/`.
-There is nothing to generate or commit.
+CI no longer generates Medium import copies, so there are no `/medium/<post-id>/` URLs on the live site.
+Cross-post locally with the API script (step 2), or use `npm run medium -- <post>` for a local export.
 
-Drafts and scheduled posts have no copy until they go live.
+## 1. Preview locally (optional)
 
-## 1. Find the import URL (manual fallback only; skip for the API route)
-
-```bash
-curl -s https://www.shirleyconsulting.co.uk/medium/index.json
-```
-
-Each entry has `id`, `title`, `import` (the URL to give Medium) and `original` (the canonical
-post). If the post is missing, it isn't live yet. Check with `npm run schedule`.
-
-## 2. Preview the copy
-
-Open `<import URL>?preview`. Without `?preview` the page redirects people to the original
-post; Medium's importer doesn't run JavaScript, so it reads the copy. Check that:
+Run `npm run medium -- <post>` (works for drafts too; needs Chrome). Output goes to
+`medium-export/<post-id>/index.html`, which can also be pasted straight into Medium's editor. Check that:
 
 - Mermaid diagrams and tables came through as images (Medium supports neither natively).
 - Code blocks are plain `<pre>` blocks. Headings are reduced to Medium's two sizes.
 
-To preview locally, including drafts, run `npm run medium -- <post>`. Output goes to
-`medium-export/<post-id>/index.html`, which can also be pasted straight into Medium's editor.
-
-## 3. Cross-post via the Medium API
+## 2. Cross-post via the Medium API
 
 Needs `MEDIUM_TOKEN` (integration token) in the environment. Never write it to a file or commit it.
 Set `MEDIUM_PUBLICATION=notes-from-the-build` (or pass `--publication notes-from-the-build`) to post
@@ -65,6 +49,5 @@ link** and set it to `original` from `index.json`. Add the post to the ledger by
 
 ## Rules
 
-- Never commit `public/medium/`. It's git-ignored and generated in CI.
-- If a live post has no copy, the deploy's "Generate Medium import copies" step probably failed.
+- Never commit `public/medium/`. It's git-ignored; CI no longer generates it.
   It never blocks the site, but the smoke test reports it. Check the latest Actions run.

@@ -16,5 +16,5 @@ npm-debug.log*
 
 # Medium exports (npm run medium)
 medium-export/
-# Medium import copies: generated in CI (npm run medium -- --all --live --publish)
+# Medium import copies (generated locally by the Medium scripts; never committed)
 public/medium/
