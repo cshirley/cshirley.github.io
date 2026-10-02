@@ -92,7 +92,14 @@ const personLd = {
         },
         { rootMargin: '0px 0px -8% 0px' },
       );
-      document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+      // Only hide sections that start below the fold; anything already in view
+      // renders immediately so it never delays first paint or Speed Index.
+      const els = [...document.querySelectorAll('[data-reveal]')];
+      const below = els.filter((el) => el.getBoundingClientRect().top > innerHeight);
+      for (const el of below) {
+        el.setAttribute('data-reveal', 'pending');
+        io.observe(el);
+      }
     </script>
   </body>
 </html>

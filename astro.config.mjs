@@ -6,7 +6,7 @@ export default defineConfig({
   // Mirror Jekyll's output layout so existing URLs keep working:
   //   src/pages/about/index.astro -> /about/index.html
   //   posts                       -> /fswire/2013/01/01/slug.html
-  build: { format: 'preserve' },
+  build: { format: 'preserve', inlineStylesheets: 'always' },
   markdown: {
     syntaxHighlight: { type: 'shiki', excludeLangs: ['mermaid', 'math'] },
     // github-dark-default keeps comment tokens above WCAG AA contrast

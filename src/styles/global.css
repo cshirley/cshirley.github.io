@@ -1423,13 +1423,13 @@ a.card:hover {
 
 /* ---------- Reveal on scroll (progressive enhancement) ---------- */
 @media (prefers-reduced-motion: no-preference) {
-  .js [data-reveal] {
+  .js [data-reveal='pending'] {
     opacity: 0;
     transform: translateY(12px);
     transition: opacity 0.6s ease, transform 0.6s ease;
   }
 
-  .js [data-reveal].is-visible {
+  .js [data-reveal='pending'].is-visible {
     opacity: 1;
     transform: none;
   }
