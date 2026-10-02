@@ -82,26 +82,26 @@ const personLd = {
     <CookieConsent />
 
     <script>
-      // Fade sections in as they scroll into view.
+      // Fade sections in as they scroll into view. Sections already in view on
+      // the first observation are left alone (never hidden), so nothing delays
+      // first paint. IntersectionObserver avoids layout reads (no forced reflow).
+      const seen = new WeakSet();
       const io = new IntersectionObserver(
         (entries) => {
           for (const e of entries) {
+            const el = e.target;
             if (e.isIntersecting) {
-              e.target.classList.add('is-visible');
-              io.unobserve(e.target);
+              if (seen.has(el)) el.classList.add('is-visible');
+              io.unobserve(el);
+            } else if (!seen.has(el)) {
+              seen.add(el);
+              el.setAttribute('data-reveal', 'pending');
             }
           }
         },
         { rootMargin: '0px 0px -8% 0px' },
       );
-      // Only hide sections that start below the fold; anything already in view
-      // renders immediately so it never delays first paint or Speed Index.
-      const els = [...document.querySelectorAll('[data-reveal]')];
-      const below = els.filter((el) => el.getBoundingClientRect().top > innerHeight);
-      for (const el of below) {
-        el.setAttribute('data-reveal', 'pending');
-        io.observe(el);
-      }
+      document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
     </script>
   </body>
 </html>
