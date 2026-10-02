@@ -41,13 +41,12 @@ Commit that file (`[CHORE] Record Medium cross-post`); don't push without the us
 After a draft is created, tell the user to open the returned URL, check images and code blocks,
 then publish from Medium.
 
-### Fallback: manual import
+### Fallback: manual paste
 
-If the API is unavailable: go to https://medium.com/p/import, paste the **import URL** and
-Import; add up to five tags; then **Story settings → Advanced settings → Customize canonical
-link** and set it to `original` from `index.json`. Add the post to the ledger by hand.
+If the API is unavailable: run `npm run medium -- <post>`, paste `medium-export/<post-id>/index.html`
+into Medium's editor, add up to five tags, then **Story settings → Advanced settings → Customize
+canonical link** and set it to the original post URL. Add the post to the ledger by hand.
 
 ## Rules
 
 - Never commit `public/medium/`. It's git-ignored; CI no longer generates it.
-  It never blocks the site, but the smoke test reports it. Check the latest Actions run.
