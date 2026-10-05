@@ -183,7 +183,7 @@ export const EXPERIENCE: Role[] = [
     summary:
       'Set architectural direction and standards for the engineering organisation, founding the Architecture Guild and leading the Ruby Guild, while hands-on in the core platform.',
     highlights: [
-      'Modernised the core Ruby monolith into a multi-tenant microservices platform and scaled it to serve 4M+ patients.',
+      'Helped modernise the core Ruby monolith into a multi-tenant microservices platform that scaled to serve 4M+ patients.',
       'Built a microservice-based integration hub for third-party insurers, speeding partner onboarding.',
       'Designed data-governance primitives for GDPR compliance, including jurisdictional data partitioning and automated key rotation.',
     ],
@@ -253,7 +253,7 @@ export const EDUCATION = { school: 'City University, London', degree: 'BSc (Hons
 export const IMPACT: { value: string; label: string }[] = [
   { value: '300+', label: 'architecture-focused PR reviews' },
   { value: '1K+', label: 'GDPR access and erasure requests, within SLA' },
-  { value: '4M+', label: 'patients on the platform I scaled at Babylon' },
+  { value: '4M+', label: 'patients served by the Babylon platform, scaled as a team' },
   { value: '700+', label: 'partner organisations onboarded' },
 ];
 
