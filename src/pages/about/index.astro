@@ -19,7 +19,7 @@ import { EDUCATION, EXPERIENCE, IMPACT, LEAD_STYLE, LEADERSHIP, PRINCIPLES, STAC
     </div>
   </section>
 
-  <section class="container" style="padding-bottom: 4rem;">
+  <section class="container about-hero">
     <div class="about-intro">
       <div class="prose">
         {SUMMARY.map((p) => <p>{p}</p>)}
@@ -36,7 +36,7 @@ import { EDUCATION, EXPERIENCE, IMPACT, LEAD_STYLE, LEADERSHIP, PRINCIPLES, STAC
           <div><dt>Based in</dt><dd>{SITE.location}</dd></div>
           <div><dt>Education</dt><dd>{EDUCATION.degree}, {EDUCATION.school}</dd></div>
         </dl>
-        <div class="hero-actions" style="margin-top: 0;">
+        <div class="hero-actions about-links">
           <a class="icon-link" href={`mailto:${SITE.email}`} aria-label="Email"><Icon name="mail" /></a>
           <a class="icon-link" href={SITE.links.github} rel="me" aria-label="GitHub"><Icon name="github" /></a>
           <a class="icon-link" href={SITE.links.linkedin} rel="me" aria-label="LinkedIn"><Icon name="linkedin" /></a>
@@ -87,11 +87,11 @@ import { EDUCATION, EXPERIENCE, IMPACT, LEAD_STYLE, LEADERSHIP, PRINCIPLES, STAC
     <div class="container">
       <div class="section-head">
         <div>
-          <p class="eyebrow">How I lead</p>
+          <p class="eyebrow">Leadership</p>
           <h2 id="style">{LEAD_STYLE.title}</h2>
         </div>
       </div>
-      <div class="about-intro">
+      <div class="lead-style">
         <div class="prose">
           {LEAD_STYLE.paragraphs.map((p) => <p>{p}</p>)}
         </div>
@@ -99,18 +99,7 @@ import { EDUCATION, EXPERIENCE, IMPACT, LEAD_STYLE, LEADERSHIP, PRINCIPLES, STAC
           {LEAD_STYLE.points.map((p) => <li>{p}</li>)}
         </ul>
       </div>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="leadership">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">Technical leadership</p>
-          <h2 id="leadership">Raising the team, not just the code</h2>
-        </div>
-      </div>
-      <div class="grid" style="--min: 15rem">
+      <div class="grid lead-cards" style="--min: 15rem">
         {LEADERSHIP.map((p) => (
           <div class="card">
             <h3>{p.title}</h3>
@@ -121,12 +110,12 @@ import { EDUCATION, EXPERIENCE, IMPACT, LEAD_STYLE, LEADERSHIP, PRINCIPLES, STAC
     </div>
   </section>
 
-  <section class="section" aria-labelledby="experience" id="experience">
+  <section class="section" aria-labelledby="experience-title" id="experience">
     <div class="container">
       <div class="section-head">
         <div>
           <p class="eyebrow">Career</p>
-          <h2>Experience</h2>
+          <h2 id="experience-title">Experience</h2>
         </div>
       </div>
       <ol class="timeline">

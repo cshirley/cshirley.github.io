@@ -181,7 +181,7 @@ export const EXPERIENCE: Role[] = [
     title: 'Principal Software Engineer',
     period: '2018 – Aug 2023',
     summary:
-      'Set architectural direction and standards for the engineering organisation, founding the Architecture Guild and leading the Ruby Guild, while hands-on in the core platform.',
+      'Set architectural direction and standards for the engineering organisation while hands-on in the core platform.',
     highlights: [
       'Helped modernise the core Ruby monolith into a multi-tenant microservices platform that scaled to serve 4M+ patients.',
       'Built a microservice-based integration hub for third-party insurers, speeding partner onboarding.',
@@ -253,7 +253,7 @@ export const EDUCATION = { school: 'City University, London', degree: 'BSc (Hons
 export const IMPACT: { value: string; label: string }[] = [
   { value: '2,000+', label: 'PRs reviewed across Babylon and eMed' },
   { value: '1K+', label: 'GDPR access and erasure requests, within SLA' },
-  { value: '4M+', label: 'patients served by the Babylon platform, scaled as a team' },
+  { value: '4M+', label: 'patients on the Babylon platform' },
   { value: '700+', label: 'partner organisations onboarded' },
 ];
 

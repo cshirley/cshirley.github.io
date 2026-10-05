@@ -1460,3 +1460,36 @@ a.card:hover {
     display: none;
   }
 }
+
+/* ---------- About page layout helpers ---------- */
+.about-hero {
+  padding-bottom: 4rem;
+}
+
+.about-links {
+  margin-top: 0;
+}
+
+.lead-style {
+  display: grid;
+  gap: 1.5rem 3rem;
+  align-items: start;
+}
+
+@media (min-width: 52rem) {
+  .lead-style {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.lead-style .prose {
+  margin: 0;
+}
+
+.lead-style .checklist {
+  margin-top: 0;
+}
+
+.lead-cards {
+  margin-top: 2.5rem;
+}
