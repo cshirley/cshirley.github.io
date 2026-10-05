@@ -1,7 +1,7 @@
 // Profile content, sourced from the résumé (documentation/3-resources/resume.md).
 
 export const INTRO =
-  'Principal Software Engineer with 30+ years shipping software, leading architecture since 2018 at Babylon Health and eMed UK across a healthcare platform operating in the UK, US and Canada. I am a player-coach: I write the design doc, review the PRs and still ship the hard fix when it matters.';
+  'Principal Software Engineer with 30+ years shipping software, leading architecture since 2018 at Babylon Health and, since 2023, eMed UK across a healthcare platform operating in the UK, US and Canada. I am a player-coach: I write the design doc, review the PRs and still ship the hard fix when it matters.';
 
 export const SUMMARY = [
   'I lead architecture across all engineering pillars for a healthcare platform operating in the UK, US and Canada, covering regulated patient data, prescribing and real payment flows.',
@@ -129,9 +129,9 @@ export type Highlight = { text: string; href: string; label?: string };
 export const EXPERIENCE: Role[] = [
   {
     company: 'eMed UK',
-    note: 'formerly Babylon Health',
+    note: 'continued Babylon’s UK business',
     title: 'Principal Software Engineer',
-    period: '2018 – present',
+    period: 'Sep 2023 – present',
     summary:
       'Own technical strategy and architectural direction for a global healthcare platform. Architecture lead across all engineering pillars, setting cross-cutting architecture, reference patterns and standards, and bridging commercial intent and technical delivery through B2B2C expansion, GLP-1 product lines, US and Canadian market entry and the Babylon legacy sunset.',
     highlights: [
@@ -174,7 +174,18 @@ export const EXPERIENCE: Role[] = [
         href: '/ai/2026/08/19/substrate-was-the-problem.html',
         label: 'Why the substrate was the problem',
       },
+    ],
+  },
+  {
+    company: 'Babylon Health',
+    title: 'Principal Software Engineer',
+    period: '2018 – Aug 2023',
+    summary:
+      'Set architectural direction and standards for the engineering organisation, founding the Architecture Guild and leading the Ruby Guild, while hands-on in the core platform.',
+    highlights: [
       'Modernised the core Ruby monolith into a multi-tenant microservices platform and scaled it to 30K+ active customers with headroom for 5–10× growth.',
+      'Built a microservice-based integration hub for third-party insurers, speeding partner onboarding.',
+      'Designed data-governance primitives for GDPR compliance, including jurisdictional data partitioning and automated key rotation.',
     ],
   },
   {
