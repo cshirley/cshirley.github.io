@@ -4,12 +4,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
 import portrait from '../../assets/clive-shirley-portrait.jpg';
 import { SITE } from '../../site';
-import { EDUCATION, EXPERIENCE, IMPACT, LEAD_STYLE, LEADERSHIP, PRINCIPLES, STACK, SUMMARY } from '../../data/profile';
+import { ABOUT_DESCRIPTION, AI_FOCUS, EDUCATION, EXPERIENCE, IMPACT, LEAD_STYLE, LEADERSHIP, PRINCIPLES, STACK, SUMMARY } from '../../data/profile';
 ---
 <BaseLayout
   title="About"
   type="profile"
-  description="Clive Shirley is a Principal Software Engineer with 30+ years’ experience across healthcare, fintech, trading and legal technology, specialising in safe change in regulated systems."
+  description={ABOUT_DESCRIPTION}
 >
   <section class="page-header">
     <div class="container">
@@ -23,11 +23,7 @@ import { EDUCATION, EXPERIENCE, IMPACT, LEAD_STYLE, LEADERSHIP, PRINCIPLES, STAC
     <div class="about-intro">
       <div class="prose">
         {SUMMARY.map((p) => <p>{p}</p>)}
-        <p>
-          Lately I have been focused on how teams adopt AI safely. I architected an internal agentic development
-          harness at eMed and wrote <a href={SITE.links.accord}>ACCORD</a>, an open-source, harness-agnostic CLI and
-          Pi extension that holds AI-generated changes to the same checkable standards as human ones.
-        </p>
+        <p>{AI_FOCUS.before} <a href={SITE.links.accord}>{AI_FOCUS.linkLabel}</a>{AI_FOCUS.after}</p>
       </div>
       <aside class="about-aside">
         <Image src={portrait} alt="Portrait of Clive Shirley" width={340} height={340} />
@@ -53,7 +49,7 @@ import { EDUCATION, EXPERIENCE, IMPACT, LEAD_STYLE, LEADERSHIP, PRINCIPLES, STAC
           <h2 id="impact">Track record</h2>
         </div>
       </div>
-      <div class="grid" style="--min: 12rem">
+      <div class="grid grid-sm">
         {IMPACT.map((m) => (
           <div class="card metric">
             <div class="metric-value">{m.value}</div>
@@ -72,7 +68,7 @@ import { EDUCATION, EXPERIENCE, IMPACT, LEAD_STYLE, LEADERSHIP, PRINCIPLES, STAC
           <h2 id="how">Principles</h2>
         </div>
       </div>
-      <div class="grid" style="--min: 15rem">
+      <div class="grid grid-md">
         {PRINCIPLES.map((p) => (
           <div class="card">
             <h3>{p.title}</h3>
@@ -99,7 +95,7 @@ import { EDUCATION, EXPERIENCE, IMPACT, LEAD_STYLE, LEADERSHIP, PRINCIPLES, STAC
           {LEAD_STYLE.points.map((p) => <li>{p}</li>)}
         </ul>
       </div>
-      <div class="grid lead-cards" style="--min: 15rem">
+      <div class="grid grid-md lead-cards">
         {LEADERSHIP.map((p) => (
           <div class="card">
             <h3>{p.title}</h3>

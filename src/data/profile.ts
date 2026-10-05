@@ -1,7 +1,18 @@
 // Profile content, sourced from the résumé (documentation/3-resources/resume.md).
 
-export const INTRO =
-  'Principal Software Engineer with 30+ years shipping software, leading architecture since 2018 at Babylon Health and, since 2023, eMed UK across a healthcare platform operating in the UK, US and Canada. I am a player-coach: I write the design doc, review the PRs and still ship the hard fix when it matters.';
+import { YEARS_EXPERIENCE } from '../site';
+
+export const INTRO = `Principal Software Engineer with ${YEARS_EXPERIENCE}+ years shipping software, leading architecture since 2018 at Babylon Health and, since 2023, eMed UK across a healthcare platform operating in the UK, US and Canada. I am a player-coach: I write the design doc, review the PRs and still ship the hard fix when it matters.`;
+
+export const ABOUT_DESCRIPTION = `Clive Shirley is a Principal Software Engineer with ${YEARS_EXPERIENCE}+ years’ experience across healthcare, fintech, trading and legal technology, specialising in safe change in regulated systems.`;
+
+export const AI_FOCUS = {
+  before:
+    'Lately I have been focused on how teams adopt AI safely. I architected an internal agentic development harness at eMed and wrote',
+  linkLabel: 'ACCORD',
+  after:
+    ', an open-source, harness-agnostic CLI and Pi extension that holds AI-generated changes to the same checkable standards as human ones.',
+};
 
 export const SUMMARY = [
   'I lead architecture across all engineering pillars for a healthcare platform operating in the UK, US and Canada, covering regulated patient data, prescribing and real payment flows.',

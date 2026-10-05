@@ -1,9 +1,13 @@
+/** First professional role started in 1992 (see EXPERIENCE). */
+export const CAREER_START_YEAR = 1992;
+export const YEARS_EXPERIENCE = new Date().getFullYear() - CAREER_START_YEAR;
+
 export const SITE = {
   name: 'Clive Shirley',
   title: 'Clive Shirley · Principal Software Engineer',
   role: 'Principal Software Engineer',
   description:
-    'Principal Software Engineer and architect-practitioner. 30+ years shipping software, specialising in safe change in regulated systems: payments, healthcare interoperability, multi-region platforms and AI-assisted delivery.',
+    `Principal Software Engineer and architect-practitioner. ${YEARS_EXPERIENCE}+ years shipping software, specialising in safe change in regulated systems: payments, healthcare interoperability, multi-region platforms and AI-assisted delivery.`,
   location: 'Hampshire, UK',
   email: 'clive.shirley@mac.com',
   links: {

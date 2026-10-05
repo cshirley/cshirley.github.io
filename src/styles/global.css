@@ -622,6 +622,14 @@ p {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--min, 16rem)), 1fr));
 }
 
+.grid-sm {
+  --min: 12rem;
+}
+
+.grid-md {
+  --min: 15rem;
+}
+
 .card {
   position: relative;
   padding: 1.5rem;

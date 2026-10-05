@@ -4,7 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from '../components/Icon.astro';
 import PostList from '../components/PostList.astro';
 import portrait from '../assets/clive-shirley-portrait.jpg';
-import { SITE } from '../site';
+import { SITE, YEARS_EXPERIENCE } from '../site';
 import { EXPERIENCE, FOCUS_AREAS, INTRO, METRICS } from '../data/profile';
 import { getPosts } from '../utils';
 
@@ -137,7 +137,7 @@ const roles = EXPERIENCE.slice(0, 6);
       <div class="section-head" data-reveal>
         <div>
           <p class="eyebrow">Experience</p>
-          <h2 id="experience">30+ years, from law firms to trading floors to healthcare</h2>
+          <h2 id="experience">{YEARS_EXPERIENCE}+ years, from law firms to trading floors to healthcare</h2>
         </div>
         <a class="link-arrow" href="/about/#experience">Full career history <Icon name="arrow" /></a>
       </div>
