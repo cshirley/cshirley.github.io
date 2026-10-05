@@ -251,7 +251,7 @@ export const EXPERIENCE: Role[] = [
 export const EDUCATION = { school: 'City University, London', degree: 'BSc (Hons) Computer Science', period: '1990 – 1994' };
 
 export const IMPACT: { value: string; label: string }[] = [
-  { value: '300+', label: 'architecture-focused PR reviews' },
+  { value: '2,000+', label: 'PRs reviewed across Babylon and eMed' },
   { value: '1K+', label: 'GDPR access and erasure requests, within SLA' },
   { value: '4M+', label: 'patients served by the Babylon platform, scaled as a team' },
   { value: '700+', label: 'partner organisations onboarded' },
