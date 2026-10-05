@@ -30,6 +30,15 @@ Before proposing anything, we looked at the repositories and the backlog.
 
 **Releases were per-service and frequent.** One service cut around a dozen releases in a day. That's great for flow, and a coordination tax for any feature spanning several services.
 
+```mermaid
+flowchart LR
+    F["One business outcome"] --> T1["Core data service"]
+    F --> T2["GraphQL BFF"]
+    F --> T3["Programme definitions"]
+    F --> T4["Web front end"]
+    T1 & T2 & T3 & T4 --> ENV["Shared fixed environment<br/>one branch at a time per repo,<br/>deploys overwrite each other"]
+```
+
 **Conclusion:** the bottleneck was the lack of an **isolated, end-to-end, multi-repo target**, for engineers, QA, business demos *and* AI agents. None of that depends on which runtime runs production.
 
 ## Optimise for two wins
@@ -64,6 +73,17 @@ One constraint turned out to be a forcing function: a legacy SaaS workflow engin
 4. Stand up **preview environments on the platform you already run**, with off-the-shelf tooling rather than bespoke glue.
 
 The end state, for engineers and agents alike, is `make up` for the inner loop, a preview URL per feature for the outer loop, and contracts as the guard-rail.
+
+```mermaid
+flowchart LR
+    subgraph W2["Win 2: isolated change, verified locally"]
+        M["1. Backend monorepo"] --> L["2. One-command local stack"] --> C["3. Contract tests<br/>and CDC event replay"]
+    end
+    subgraph W1["Win 1: show progress without merging"]
+        P["4. Preview environments<br/>on the existing platform"]
+    end
+    C --> P
+```
 
 ## So what about the runtime?
 

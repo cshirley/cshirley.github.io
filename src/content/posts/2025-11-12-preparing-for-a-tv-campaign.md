@@ -26,6 +26,20 @@ The plan started by describing the request paths end to end:
 - a **marketing site** routing into a **server-rendered web app** on a hosting platform, which calls a **GraphQL backend-for-frontend**;
 - **backend services on Kubernetes** (the BFF, an integration and orchestration service, and a FHIR data service), with *all* inter-service traffic going through the NGINX ingress, which calls an **authorisation service on every request**.
 
+```mermaid
+flowchart LR
+    APP["Mobile app"] --> LB["Load balancer"]
+    APP --> EXT["Identity, payment and analytics providers"]
+    WEB["Marketing site → server-rendered web app"] --> BFF
+    LB --> ING["NGINX ingress<br/>per-instance authorisation cache"]
+    ING -->|"every request"| AUTH["Authorisation service"]
+    AUTH -->|"several expensive queries per check"| FHIR[("FHIR data service")]
+    ING --> BFF["GraphQL BFF"]
+    BFF --> ING
+    ING --> INT["Integration and orchestration service"]
+    ING --> FHIR
+```
+
 Writing this down surfaced the constraints that mattered:
 
 1. **Authorisation was the hidden bottleneck.** Every API request triggered an authorisation check, and each check made several expensive queries to the data service.
@@ -75,6 +89,15 @@ The plan worked backwards from launch:
 - **6 weeks before:** infrastructure scaling complete.
 - **4 weeks before:** authorisation optimisation complete.
 - **2 weeks before:** application-level protection complete. **This is the go/no-go decision point**, leaving two weeks to fix anything it finds.
+
+```mermaid
+flowchart LR
+    W8["8 weeks before<br/>start capacity assessment"] --> W6["6 weeks before<br/>infrastructure scaling complete"]
+    W6 --> W4["4 weeks before<br/>authorisation optimisation complete"]
+    W4 --> W2{"2 weeks before<br/>application-level protection complete<br/>GO / NO-GO"}
+    W2 -->|"go"| L["Launch"]
+    W2 -->|"no-go"| FIX["Two weeks left to fix what it found"]
+```
 
 Phase 4 stays optional, depending on the headroom we actually observe.
 

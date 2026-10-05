@@ -26,6 +26,19 @@ When we first looked at this, we wrote down three options:
 
 Option 3 is the counter-intuitive one, and it's the right one.
 
+```mermaid
+flowchart LR
+    subgraph Before["Before: one Stripe account"]
+        A1["Original account<br/>30,000+ new-brand customers<br/>a few hundred legacy subscriptions"]
+    end
+    subgraph After["After"]
+        A2["Original account<br/>new brand's customers, history<br/>and integrations untouched<br/>handed to the new brand"]
+        N["New account<br/>legacy subscriptions only"]
+    end
+    A1 -->|"migrate the smaller population out"| N
+    A1 -->|"stays as is"| A2
+```
+
 ## Why move the smaller population
 
 - **Blast radius.** The growing brand's customers were actively served by the platform every day: refills, payments, webhooks. Any change to them, even a configuration change, risks disrupting live treatment. The legacy customers weren't being served by any active system.

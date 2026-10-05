@@ -32,6 +32,21 @@ The problem was an **overly strict reading of "shared nothing"**. Isolation had 
 
 ## The recommendations
 
+```mermaid
+flowchart TB
+    subgraph Before["Before: shared nothing"]
+        O1["Operation A"] --> V1["own vendor client"] --> X(["Third-party API"])
+        O2["Operation B"] --> V2["own vendor client"] --> X
+        O3["Operation C"] --> V3["own vendor client"] --> X
+    end
+    subgraph After["After: shared contracts and clients"]
+        P1["Operation A"] --> F["Integration layer<br/>facade, adapter, canonical data<br/>auth, retries, rate limits"]
+        P2["Operation B"] --> F
+        P3["Operation C"] --> F
+        F --> Y(["Third-party API"])
+    end
+```
+
 1. **A dedicated integration layer per external system.** One internal module is the *sole* point of contact for each third party. Inside it, an **adapter** makes the vendor's API conform to our internal interfaces, and a **facade** gives business operations a small, business-shaped API. Authentication, retries, rate limiting and error mapping live there once. Duplication doesn't vanish; it becomes one explicit, managed dependency.
 2. **Data contracts and a single source of truth.** Map external data **once**, at the integration boundary, into a canonical internal shape with explicit validation. Business operations consume the canonical shape and never raw vendor payloads.
 3. **Sharper service boundaries with DDD.** Use aggregates as consistency boundaries, and events for eventual consistency *between* them, instead of letting operations reach into each other's data.

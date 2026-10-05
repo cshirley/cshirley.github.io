@@ -59,6 +59,14 @@ Each data source gets a small adapter:
 
 3. **Load** from a sharded directory tree (`shard-N/<patient-uuid>.json`) into the destination.
 
+```mermaid
+flowchart LR
+    SRC["Legacy stores<br/>SQL · NoSQL · replicas"] -->|"extract to CSV<br/>keyed on patient UUID"| T["Transform<br/>one JSON document per patient"]
+    T -->|"shard-N/patient-uuid.json"| FHIR[("Final resting place<br/>Elasticsearch-backed FHIR repository")]
+    T -.-> IDX["CSV index of patient metadata"]
+    IDX -.->|"subject-access and erasure lookups"| FHIR
+```
+
 A few practical details made it work:
 
 - **Database access.** The legacy databases only accepted connections from inside the cluster. `kubectl port-forward` through a pod gave us a tunnel, and standard database tools handled the CSV export, with no new infrastructure needed.

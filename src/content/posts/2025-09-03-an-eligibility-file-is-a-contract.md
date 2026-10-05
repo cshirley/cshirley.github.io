@@ -20,6 +20,13 @@ When an employer offers a health programme as a benefit, two data flows decide w
 
 In practice both flows start as ad-hoc spreadsheets negotiated client by client. Onboarding each new employer turns into a mini integration project, and reporting becomes a bespoke export that nobody wants to own. Late this summer I drafted a **standard offering** covering both directions. The main lesson was to treat each file as a **contract**, not a courtesy.
 
+```mermaid
+flowchart LR
+    HR["Client HR system"] -->|"eligibility file<br/>JSON Lines over SFTP or API<br/>keyed on unique_id"| P["Platform<br/>validated at intake"]
+    P -->|"outcomes file<br/>member-level CSV over SFTP"| DW["Client data warehouse"]
+    P -->|"aggregate insights"| DB["Client-branded dashboard<br/>and update digests"]
+```
+
 ## The inbound eligibility file
 
 The input confirms who is currently eligible, delivered through **automated intake from the client's HR system** where possible (rather than a monthly email), as UTF-8 JSON Lines over SFTP or as an API payload.

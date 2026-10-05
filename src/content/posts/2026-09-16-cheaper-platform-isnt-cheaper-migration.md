@@ -59,6 +59,12 @@ The licence saving looks like pure upside on a slide. In year one, most of it is
 - test and hardening work that doesn't directly create customer value;
 - migration risk and temporary operational overhead from running two systems.
 
+```mermaid
+flowchart LR
+    Y0["Decision"] --> Y1["Year one<br/>27 to 45 engineering weeks of migration<br/>opportunity cost, dual running<br/>licence saving mostly offset"]
+    Y1 --> Y2["Year two onwards<br/>licence saving is permanent<br/>developer-experience gains compound"]
+```
+
 So the first-year case isn't "save the licence fee". It's "spend a large amount of engineering time to save it from year two onwards, while delaying other work". That can still be the right call, but it's a different decision from the one the arithmetic suggests.
 
 ## The risks, named plainly

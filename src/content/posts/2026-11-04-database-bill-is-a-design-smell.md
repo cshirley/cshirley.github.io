@@ -27,6 +27,15 @@ The platform followed a textbook CQRS split:
 - **Reads** went to an OpenSearch cluster holding the current version of every resource, because FHIR search is open-ended (dozens of parameters per resource, in arbitrary combinations, with sorting and text modifiers).
 - **Change data capture** streamed every write to consumers and to a Redshift analytics warehouse.
 
+```mermaid
+flowchart LR
+    API["API"] -->|"write: current row + version row,<br/>one transaction"| DDB[("DynamoDB<br/>document store")]
+    API -->|"index (dual write)"| OS[("OpenSearch<br/>current version of every resource")]
+    API -->|"search"| OS
+    DDB -->|"change data capture"| C["Consumers"]
+    DDB -->|"change data capture"| RS[("Redshift<br/>analytics")]
+```
+
 The constraints were firm: keep the API and the CQRS pattern, keep resource versioning, stay on AWS, keep regions isolated, and **reduce** eventual consistency rather than add more.
 
 ## Where the money was actually going
@@ -90,6 +99,16 @@ With Postgres, one transaction writes the document, its version row and its sear
 ## Don't forget the event stream
 
 Consumers and analytics depended on change-data-capture events, so any migration had to preserve that contract. The target is a **transactional outbox**: write the event row in the same transaction as the resource and its version row, and have a relay publish from the outbox in order.
+
+```mermaid
+flowchart LR
+    W["Resource write"] --> TX
+    subgraph TX["One Postgres transaction"]
+        direction TB
+        D["Document"] ~~~ V["Version row"] ~~~ S["Search projections"] ~~~ O["Outbox event row"]
+    end
+    TX --> R["Relay"] --> E["Event stream<br/>consumers and analytics"]
+```
 
 The obvious like-for-like alternative is database logical replication into a managed CDC service. We rejected it for three reasons:
 

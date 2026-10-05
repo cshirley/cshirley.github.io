@@ -45,6 +45,11 @@ Infrastructure code should manage a secret's **existence, type, encryption key a
 
 Go **development → staging → production**, completing both regions before promoting to the next environment.
 
+```mermaid
+flowchart LR
+    DEV["development<br/>region 1 · region 2"] --> STG["staging<br/>region 1 · region 2"] --> PRD["production<br/>region 1 · region 2"]
+```
+
 ### Webhook signing secrets need dual-running
 
 Inbound webhooks are the easiest place to cause an outage, because *the vendor* sends the traffic:
@@ -53,6 +58,20 @@ Inbound webhooks are the easiest place to cause an outage, because *the vendor* 
 2. Update your secret store and roll out.
 3. Confirm inbound webhooks validate, in both the vendor's dashboard and your logs.
 4. Remove the old secret at the vendor.
+
+```mermaid
+sequenceDiagram
+    participant V as Vendor
+    participant S as Secret store
+    participant P as Pods (API, workers)
+    V->>V: add new signing secret (old still valid)
+    S->>S: store new secret
+    S->>P: roll out
+    V->>P: webhook signed with old or new secret
+    P-->>V: 200, validated against either
+    Note over V,P: confirm in vendor dashboard and logs
+    V->>V: remove old secret
+```
 
 If a vendor doesn't support overlapping secrets, schedule a short window and **expect** brief webhook failures. Make sure your handlers and the vendor's retry policy can absorb them.
 

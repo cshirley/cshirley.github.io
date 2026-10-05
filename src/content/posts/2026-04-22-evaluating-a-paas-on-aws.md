@@ -62,6 +62,20 @@ None of the vendors had first-class environment promotion or regional rollout. M
 
 That changes what you're buying: **the bottom half of a release pipeline** (compute experience, deploy mechanics, rollback), while you still build the top half (promotion gates and regional sequencing). That's still a significant reduction in toil, but it isn't the whole pipeline.
 
+```mermaid
+flowchart TB
+    subgraph Bought["Bottom half: the platform provides"]
+        A["Compute experience"] --> B["Deploy mechanics"] --> C["Rollback"]
+    end
+    subgraph Built["Top half: you still build"]
+        D["Promotion gates"] --> E["Regional sequencing"]
+    end
+    subgraph IaC["Still yours, slimmed-down infrastructure-as-code"]
+        F["Data stores, streams, search"] ~~~ G["Topics, queues, subscription filters"]
+    end
+    Built --> Bought
+```
+
 ## Questions to ask before a pilot
 
 - **Can you keep your security edge?** If every service relies on forward-auth at ingress (NGINX `auth_request` or similar), a platform built on a load balancer without an equivalent needs a workaround such as an edge function, a Lambda target or a sidecar. That's a blocker to prove out first, not a detail.

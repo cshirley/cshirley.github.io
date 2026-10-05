@@ -86,6 +86,15 @@ All these levels perform accounting and throttling, and control a thread's abili
 How I long for the good old days of assembly code run directly on the CPU from
 EPROM.
 
+```mermaid
+flowchart TD
+    A["Queues fill over 3 days<br/>Redis memory exhausted, 500s, P1"] --> B["Bigger Redis, more workers<br/>queues still grow"]
+    B --> C["CPU steady at 50%<br/>Kubernetes throttling at half a CPU"]
+    C --> D["Raise request and limit to 2 CPUs<br/>usage tops out at ~106%"]
+    D --> E["Double the thread count<br/>jobs get slower, not faster"]
+    E --> F["Root cause: CRuby's GIL<br/>one thread executes at a time"]
+```
+
 OK that's all well and good, but why can't we use more than 1 CPU I hear you ask?
 _Know thy runtime_ is my response (MRI/CRuby is limited to 1 core/process due
 to its Global Interpreter Lock).
@@ -121,6 +130,14 @@ when we explicitly increased the number of threads. While the threads were
 scheduled across multiple cores the VMs interpreter would only allow 1 thread to
 execute at a time. Therefore only 1 core (for the CRuby process) was active each
 time we sampled using top.
+
+```mermaid
+flowchart LR
+    subgraph Pod["One Sidekiq process (5 threads)"]
+        T1["Thread 1"] & T2["Thread 2"] & T3["Thread 3"] & T4["Thread 4"] & T5["Thread 5"] --> GIL{{"Global Interpreter Lock<br/>one thread executes at a time"}}
+    end
+    GIL --> CPU["One core busy<br/>other cores idle"]
+```
 
 With hindsight something like the following command would have helped:
 

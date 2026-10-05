@@ -66,6 +66,15 @@ tier: reasoning
 
 Change one line in `subagent-config.json` and every reasoning agent switches to a different model or thinking level. Individual agents can override the tier's thinking level with an explicit `thinking:` field in their frontmatter — useful for agents that need more or less thinking than their tier default.
 
+```mermaid
+flowchart LR
+    U["Request"] --> N["No model<br/>native REST tools: Jira, Slack, Gmail, Calendar"]
+    U --> O["Opus 4.6<br/>interactive session"]
+    O --> R["Reasoning tier<br/>spec, plan, adversarial test review,<br/>security review, hypotheses"]
+    O --> W["Workhorse tier<br/>code, test, gather, explore, verify,<br/>code and design review"]
+    O --> L["Lightweight tier<br/>phase-gaps ticket creation"]
+```
+
 Then compress aggressively on both sides: input tokens truncated at source, output compressed to terse fragments, old turns stubbed to one-liners. Maximum intelligence where it counts, zero waste everywhere else.
 
 ---
@@ -102,6 +111,16 @@ The standard pipeline:
   → phase-code × N (per task: implement [GREEN] against tests it didn't write → extension type_check + test)
   → phase-verify-acceptance (against spec ACs, with extension-triggered preflight)
   → done (or phase-gaps → follow-up tickets)
+```
+
+```mermaid
+flowchart LR
+    G["phase-gather"] --> SP["phase-spec"] --> PL["phase-plan"]
+    PL --> T["phase-test × N<br/>RED, clean context"]
+    T --> C["phase-code × N<br/>GREEN, against tests it didn't write"]
+    C --> V["phase-verify-acceptance"]
+    V -->|"all ACs met"| D["done"]
+    V -->|"gaps"| GP["phase-gaps<br/>follow-up tickets"]
 ```
 
 #### Shift-Left: Defect Prevention by Phase
@@ -462,6 +481,17 @@ When the model is thinking hard, the indicator glows pink. When it's barely thin
 ## A Day in the Life
 
 Here's what a typical workday looks like with this setup.
+
+```mermaid
+timeline
+    title A typical day
+    08.30 : morning briefing
+    09.00 : /dev feature work
+    11.00 : review before committing
+    14.00 : /plan safe exploration
+    16.30 : commit and pr
+    17.30 : evening reconciliation
+```
 
 ### 08:30 — Morning Briefing
 

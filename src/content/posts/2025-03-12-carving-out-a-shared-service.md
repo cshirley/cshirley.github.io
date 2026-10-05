@@ -20,6 +20,19 @@ That's efficient until a region has to stand alone, for example when a regional 
 
 Here's the approach we took to carve it out. It's mundane, and that's the point.
 
+```mermaid
+flowchart LR
+    subgraph Before
+        G1[("Global tenancy service<br/>+ database")]
+        R1["Regional services"] -->|cross-environment calls| G1
+    end
+    subgraph After
+        G2[("Global tenancy service<br/>untouched")]
+        G2 -. "export" .-> C[("Regional copy<br/>imported, then pruned")]
+        R2["Regional services"] -->|in-cluster address| C
+    end
+```
+
 ## Principles
 
 - **Copy, don't move.** The global service and its database stay untouched. The regional copy is created from an export, then pruned. Nothing is deleted from the global side.
