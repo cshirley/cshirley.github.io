@@ -2,7 +2,7 @@
 
 import { YEARS_EXPERIENCE } from '../site';
 
-export const INTRO = `Principal Software Engineer with ${YEARS_EXPERIENCE}+ years shipping software, leading architecture since 2018 at Babylon Health and, since 2023, eMed UK across a healthcare platform operating in the UK, US and Canada. I am a player-coach: I write the design doc, review the PRs and still ship the hard fix when it matters.`;
+export const INTRO = `Principal Software Engineer with ${YEARS_EXPERIENCE}+ years shipping software, leading architecture at Babylon Health from 2018 and at eMed UK since 2023, across a healthcare platform operating in the UK, US and Canada. I am a player-coach: I write the design doc, review the PRs and still ship the hard fix when it matters.`;
 
 export const ABOUT_DESCRIPTION = `Clive Shirley is a Principal Software Engineer with ${YEARS_EXPERIENCE}+ years’ experience across healthcare, fintech, trading and legal technology, specialising in safe change in regulated systems.`;
 
@@ -17,7 +17,7 @@ export const AI_FOCUS = {
 export const SUMMARY = [
   'I lead architecture across all engineering pillars for a healthcare platform operating in the UK, US and Canada, covering regulated patient data, prescribing and real payment flows.',
   'My specialism is safe change in regulated systems: payments, e-prescribing, FHIR interoperability, multi-jurisdiction data residency and AI-assisted delivery. I favour durable architecture over heroics and written reasoning over authority.',
-  'Before healthcare I built white-label banking platforms for Lloyds Banking Group and RBS, ingested the entire Twitter firehose for trading firms, built mobile trading apps at HSBC, and spent a decade in document and email management for the City’s leading law firms.',
+  'Before healthcare I built white-label banking platforms for Lloyds Banking Group and RBS, ingested the entire Twitter firehose for trading firms, developed mobile trading apps at HSBC, and spent a decade in document and email management for the City’s leading law firms.',
 ];
 
 export type Metric = { value: string; label: string; detail: string };
@@ -92,7 +92,7 @@ export const PRINCIPLES = [
   },
   {
     title: 'Credit outward, ownership inward',
-    body: 'I grow engineers through pairing and domain walk-throughs, making reasoning visible rather than handing down answers.',
+    body: 'I share credit for good outcomes with the team and take ownership of the problems myself. I grow engineers through pairing and domain walk-throughs, making reasoning visible rather than handing down answers.',
   },
   {
     title: 'Commercial-to-technical translation',
@@ -144,7 +144,7 @@ export const EXPERIENCE: Role[] = [
     title: 'Principal Software Engineer',
     period: 'Sep 2023 – present',
     summary:
-      'Own technical strategy and architectural direction for a global healthcare platform. Architecture lead across all engineering pillars, setting cross-cutting architecture, reference patterns and standards, and bridging commercial intent and technical delivery through B2B2C expansion, GLP-1 product lines, US and Canadian market entry and the Babylon legacy sunset.',
+      'Own technical strategy and architectural direction for a global healthcare platform. As architecture lead across all engineering pillars, set cross-cutting architecture, reference patterns and standards, and bridge commercial intent and technical delivery through B2B2C expansion, GLP-1 product lines, US and Canadian market entry and the Babylon legacy sunset.',
     highlights: [
       {
         text: 'Architected and shipped a payments domain replacing provider-coupled code with a pluggable adapter model, order orchestrator and configuration-driven pricing engine across US and UK surfaces.',

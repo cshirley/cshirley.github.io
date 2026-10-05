@@ -8,8 +8,10 @@ import { SITE, YEARS_EXPERIENCE } from '../site';
 import { EXPERIENCE, FOCUS_AREAS, INTRO, METRICS } from '../data/profile';
 import { getPosts } from '../utils';
 
-const posts = (await getPosts()).slice(0, 4);
-const roles = EXPERIENCE.slice(0, 6);
+const HOME_POST_COUNT = 4;
+const HOME_ROLE_COUNT = 6;
+const posts = (await getPosts()).slice(0, HOME_POST_COUNT);
+const roles = EXPERIENCE.slice(0, HOME_ROLE_COUNT);
 ---
 <BaseLayout type="profile">
   <!-- Hero -->
@@ -18,14 +20,14 @@ const roles = EXPERIENCE.slice(0, 6);
       <div>
         <p class="status"><span class="status-dot"></span>Principal Software Engineer at eMed UK</p>
         <h1>
-          Clive Shirley
+          Clive Shirley{' '}
           <span class="role">Principal Software Engineer · Architect-practitioner</span>
         </h1>
         <p class="lead">
           I design and ship <strong>safe changes in regulated systems</strong>: payments, healthcare
           interoperability, multi-region platforms and AI-assisted delivery.
         </p>
-        <p class="lead" style="font-size: 1.02rem; margin-top: 1rem;">{INTRO}</p>
+        <p class="lead lead-intro">{INTRO}</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="/contact/">Get in touch <Icon name="arrow" /></a>
           <a class="btn btn-ghost" href="/about/">About me</a>
@@ -51,7 +53,7 @@ const roles = EXPERIENCE.slice(0, 6);
           <h2 id="impact">Outcomes, not just output</h2>
         </div>
       </div>
-      <div class="grid" style="--min: 15rem" data-reveal>
+      <div class="grid grid-md" data-reveal>
         {METRICS.map((m) => (
           <div class="card metric">
             <div class="metric-value">{m.value}</div>
@@ -70,10 +72,10 @@ const roles = EXPERIENCE.slice(0, 6);
         <div>
           <p class="eyebrow">What I do</p>
           <h2 id="focus">Where I add the most value</h2>
-          <p>Cross-cutting architecture for platforms that move money, handle patient data and span jurisdictions — and the engineering culture to keep them healthy.</p>
+          <p>Cross-cutting architecture for platforms that move money, handle patient data and span jurisdictions, and the engineering culture to keep them healthy.</p>
         </div>
       </div>
-      <div class="grid" style="--min: 18rem" data-reveal>
+      <div class="grid grid-lg" data-reveal>
         {FOCUS_AREAS.map((f) => (
           <article class="card">
             <div class="focus-icon"><Icon name={f.icon} /></div>
@@ -96,7 +98,7 @@ const roles = EXPERIENCE.slice(0, 6);
           <p class="lead">
             A harness-agnostic delivery workflow that turns a request into a validated contract (brief, spec, plan
             and verification evidence) before anyone writes code. Run it from the <code>accord</code> CLI with Claude
-            Code, Cursor or <a href="https://pi.dev/">Pi</a>, or install the Pi extension for a <code>/accord</code> command inside Pi. Built around
+            Code, Cursor or <a href="https://pi.dev/">Pi</a>, or install the Pi extension for a <code>/accord</code> command inside Pi. It is built around
             one metric: how little of an engineer’s attention it consumes.
           </p>
           <ul class="checklist">
@@ -110,7 +112,7 @@ const roles = EXPERIENCE.slice(0, 6);
             <a class="btn btn-primary" href={SITE.links.accord}><Icon name="github" /> View on GitHub</a>
           </div>
         </div>
-        <div class="terminal" aria-label="Example ACCORD session">
+        <div class="terminal" role="img" aria-label="Example ACCORD session: accord drive then accord finish, ending with verification gaps (3 of 4 acceptance criteria pass)">
           <div class="terminal-bar" aria-hidden="true"><span></span><span></span><span></span></div>
           <pre><span class="t-prompt">❯</span> accord drive PROJ-1234 --harness claude
 <span class="t-dim">  pattern  implement/standard</span>

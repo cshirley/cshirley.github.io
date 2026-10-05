@@ -549,6 +549,11 @@ p {
   max-width: 38rem;
 }
 
+.hero .lead.lead-intro {
+  margin-top: 1rem;
+  font-size: 1.02rem;
+}
+
 .hero .lead strong {
   color: var(--text);
   font-weight: 600;
@@ -628,6 +633,10 @@ p {
 
 .grid-md {
   --min: 15rem;
+}
+
+.grid-lg {
+  --min: 18rem;
 }
 
 .card {
