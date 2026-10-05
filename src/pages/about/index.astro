@@ -4,7 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
 import portrait from '../../assets/clive-shirley-portrait.jpg';
 import { SITE } from '../../site';
-import { EDUCATION, EXPERIENCE, IMPACT, LEADERSHIP, PRINCIPLES, STACK, SUMMARY } from '../../data/profile';
+import { EDUCATION, EXPERIENCE, IMPACT, LEAD_STYLE, LEADERSHIP, PRINCIPLES, STACK, SUMMARY } from '../../data/profile';
 ---
 <BaseLayout
   title="About"
@@ -79,6 +79,25 @@ import { EDUCATION, EXPERIENCE, IMPACT, LEADERSHIP, PRINCIPLES, STACK, SUMMARY }
             <p>{p.body}</p>
           </div>
         ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="style">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">How I lead</p>
+          <h2 id="style">{LEAD_STYLE.title}</h2>
+        </div>
+      </div>
+      <div class="about-intro">
+        <div class="prose">
+          {LEAD_STYLE.paragraphs.map((p) => <p>{p}</p>)}
+        </div>
+        <ul class="checklist">
+          {LEAD_STYLE.points.map((p) => <li>{p}</li>)}
+        </ul>
       </div>
     </div>
   </section>

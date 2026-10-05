@@ -275,3 +275,17 @@ export const LEADERSHIP = [
     body: 'One-to-ones, pairing and domain-design walk-throughs for engineers from junior to staff level, focused on architectural thinking as much as technique.',
   },
 ];
+
+export const LEAD_STYLE = {
+  title: 'A quiet kind of leadership',
+  paragraphs: [
+    'I am not an overt leader. I lead by example, and I listen before I speak. Most of the time the most useful thing I can do is understand the problem properly, and the people closest to it, before offering a view.',
+    'When I do offer one, I show my working. I write down the options, the evidence and the trade-offs, in design documents, RFCs and ADRs, so a decision can be questioned, challenged and revisited long after the meeting has ended. A written case can be improved by anyone. A confident opinion mostly can’t.',
+  ],
+  points: [
+    'Lead by example: hands on production code, incidents and migrations rather than directing from a distance.',
+    'Make reasoning visible: record the why as well as the what, so the team can build on it.',
+    'Label exploratory work honestly, so people can push back early.',
+    'Pass on understanding through pairing and walk-throughs, and leave people room to find the answer themselves.',
+  ],
+};
