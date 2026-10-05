@@ -13,6 +13,8 @@ export default defineConfig({
     shikiConfig: { theme: 'github-dark-default', wrap: false },
   },
   vite: {
+    // pre-bundle so dev doesn't 504 ("Outdated Optimize Dep") on the lazy import
+    optimizeDeps: { include: ['mermaid'] },
     // mermaid is lazy-loaded only on posts with diagrams
     build: { chunkSizeWarningLimit: 3000 },
   },
