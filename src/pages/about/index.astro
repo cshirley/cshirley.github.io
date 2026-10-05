@@ -4,7 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
 import portrait from '../../assets/clive-shirley-portrait.jpg';
 import { SITE } from '../../site';
-import { EDUCATION, EXPERIENCE, PRINCIPLES, STACK, SUMMARY } from '../../data/profile';
+import { EDUCATION, EXPERIENCE, IMPACT, LEADERSHIP, PRINCIPLES, STACK, SUMMARY } from '../../data/profile';
 ---
 <BaseLayout
   title="About"
@@ -25,14 +25,14 @@ import { EDUCATION, EXPERIENCE, PRINCIPLES, STACK, SUMMARY } from '../../data/pr
         {SUMMARY.map((p) => <p>{p}</p>)}
         <p>
           Lately I have been focused on how teams adopt AI safely. I architected an internal agentic development
-          harness at eMed and wrote <a href={SITE.links.accord}>ACCORD</a>, an open-source harness that holds
-          AI-generated changes to the same checkable standards as human ones.
+          harness at eMed and wrote <a href={SITE.links.accord}>ACCORD</a>, an open-source, harness-agnostic CLI and
+          Pi extension that holds AI-generated changes to the same checkable standards as human ones.
         </p>
       </div>
       <aside class="about-aside">
         <Image src={portrait} alt="Portrait of Clive Shirley" width={340} height={340} />
         <dl class="facts">
-          <div><dt>Role</dt><dd>Principal Software Engineer, eMed UK</dd></div>
+          <div><dt>Role</dt><dd>Principal Software Engineer, eMed UK (since 2018)</dd></div>
           <div><dt>Based in</dt><dd>{SITE.location}</dd></div>
           <div><dt>Education</dt><dd>{EDUCATION.degree}, {EDUCATION.school}</dd></div>
         </dl>
@@ -42,6 +42,25 @@ import { EDUCATION, EXPERIENCE, PRINCIPLES, STACK, SUMMARY } from '../../data/pr
           <a class="icon-link" href={SITE.links.linkedin} rel="me" aria-label="LinkedIn"><Icon name="linkedin" /></a>
         </div>
       </aside>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="impact">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">In numbers</p>
+          <h2 id="impact">Track record</h2>
+        </div>
+      </div>
+      <div class="grid" style="--min: 12rem">
+        {IMPACT.map((m) => (
+          <div class="card metric">
+            <div class="metric-value">{m.value}</div>
+            <div class="metric-label">{m.label}</div>
+          </div>
+        ))}
+      </div>
     </div>
   </section>
 
@@ -55,6 +74,25 @@ import { EDUCATION, EXPERIENCE, PRINCIPLES, STACK, SUMMARY } from '../../data/pr
       </div>
       <div class="grid" style="--min: 15rem">
         {PRINCIPLES.map((p) => (
+          <div class="card">
+            <h3>{p.title}</h3>
+            <p>{p.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="leadership">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Technical leadership</p>
+          <h2 id="leadership">Raising the team, not just the code</h2>
+        </div>
+      </div>
+      <div class="grid" style="--min: 15rem">
+        {LEADERSHIP.map((p) => (
           <div class="card">
             <h3>{p.title}</h3>
             <p>{p.body}</p>
@@ -79,7 +117,19 @@ import { EDUCATION, EXPERIENCE, PRINCIPLES, STACK, SUMMARY } from '../../data/pr
             <div>
               <h3>{r.title} <span class="company">· {r.company}</span>{r.note && <span class="note"> ({r.note})</span>}</h3>
               <p class="summary">{r.summary}</p>
-              {r.highlights && <ul class="highlights">{r.highlights.map((h) => <li>{h}</li>)}</ul>}
+              {r.highlights && (
+                <ul class="highlights">
+                  {r.highlights.map((h) =>
+                    typeof h === 'string' ? (
+                      <li>{h}</li>
+                    ) : (
+                      <li>
+                        {h.text} <a href={h.href}>{h.label ?? 'Read the write-up'}<span aria-hidden="true"> →</span></a>
+                      </li>
+                    ),
+                  )}
+                </ul>
+              )}
             </div>
           </li>
         ))}

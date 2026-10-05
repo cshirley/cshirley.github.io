@@ -121,8 +121,10 @@ export type Role = {
   title: string;
   period: string;
   summary: string;
-  highlights?: string[];
+  highlights?: (string | Highlight)[];
 };
+
+export type Highlight = { text: string; href: string; label?: string };
 
 export const EXPERIENCE: Role[] = [
   {
@@ -133,13 +135,45 @@ export const EXPERIENCE: Role[] = [
     summary:
       'Own technical strategy and architectural direction for a global healthcare platform. Architecture lead across all engineering pillars, setting cross-cutting architecture, reference patterns and standards, and bridging commercial intent and technical delivery through B2B2C expansion, GLP-1 product lines, US and Canadian market entry and the Babylon legacy sunset.',
     highlights: [
-      'Architected and shipped a payments domain replacing provider-coupled code with a pluggable adapter model, order orchestrator and configuration-driven pricing engine across US and UK surfaces.',
-      'Brought NHS e-prescription signing in-house: per-prescriber AWS KMS keys, PAdES-signed PDFs and a feature-flagged rollout, removing a per-signature SaaS cost.',
+      {
+        text: 'Architected and shipped a payments domain replacing provider-coupled code with a pluggable adapter model, order orchestrator and configuration-driven pricing engine across US and UK surfaces.',
+        href: '/payments/2026/07/22/one-list-price-many-coupons.html',
+        label: 'Pricing standard: one list price, many coupons',
+      },
+      'Authored the pricing-plan standard (Stripe prices as list prices, every adjustment a coupon) and consolidated US checkout onto a single plan-configuration contract, ending pricing drift.',
+      {
+        text: 'Brought NHS e-prescription signing in-house: per-prescriber AWS KMS keys, PAdES-signed PDFs and a feature-flagged rollout, removing a per-signature SaaS cost.',
+        href: '/architecture/2026/05/27/bringing-e-signing-in-house.html',
+        label: 'Bringing e-signing in-house',
+      },
       'Designed pharmacy claims submission and reconciliation with CVS, modelling NCPDP batches and X12 835 remittance natively in FHIR.',
-      'Led the multi-quarter stability and scaling programme: back-pressure, bulkheads, circuit breakers, graceful shutdown and a performance-testing framework.',
-      'Set the Canadian deployment architecture and a data-cell pattern that keeps at-rest patient data in-country for residency-constrained markets.',
-      'Identified and remediated a critical cross-tenant authorisation vulnerability and led a platform-wide credential rotation programme.',
-      'Architected an internal agentic development harness used daily to shorten the spec-to-PR cycle; authored the open-source ACCORD harness.',
+      'Designed a reusable programme-hold model for US B2B pause and UK refill delay: time-bounded holds with declarative policies, layered over care plans.',
+      {
+        text: 'Led the multi-quarter stability and scaling programme: back-pressure, bulkheads, circuit breakers, graceful shutdown and a performance-testing framework.',
+        href: '/architecture/2026/02/11/load-testing-autoscaling-unsafe.html',
+        label: 'Why load testing autoscaling is unsafe',
+      },
+      {
+        text: 'Set the Canadian deployment architecture and a data-cell pattern that keeps at-rest patient data in-country for residency-constrained markets.',
+        href: '/architecture/2026/09/02/data-residency-without-a-full-stack.html',
+        label: 'Data residency without a full stack',
+      },
+      {
+        text: 'Identified and remediated a critical cross-tenant authorisation vulnerability and led a platform-wide credential rotation programme.',
+        href: '/engineering/2026/06/24/rotating-credentials-without-downtime.html',
+        label: 'Rotating credentials without downtime',
+      },
+      'Led B2B partner-onboarding automation across 700+ client organisations, and designed partner single sign-on (OIDC over SAML) and a config-driven partner app launcher.',
+      {
+        text: 'Decommissioned a UK telehealth platform serving 4M+ patient records and migrated active Stripe subscriptions between accounts with runbooks, validation and rollback.',
+        href: '/architecture/2025/04/16/decommissioning-a-telehealth-platform.html',
+        label: 'Decommissioning a telehealth platform',
+      },
+      {
+        text: 'Architected an internal agentic development harness used daily to shorten the spec-to-PR cycle, and authored the open-source ACCORD harness.',
+        href: '/ai/2026/08/19/substrate-was-the-problem.html',
+        label: 'Why the substrate was the problem',
+      },
       'Modernised the core Ruby monolith into a multi-tenant microservices platform and scaled it to 30K+ active customers with headroom for 5–10× growth.',
     ],
   },
@@ -204,3 +238,29 @@ export const EXPERIENCE: Role[] = [
 ];
 
 export const EDUCATION = { school: 'City University, London', degree: 'BSc (Hons) Computer Science', period: '1990 – 1994' };
+
+export const IMPACT: { value: string; label: string }[] = [
+  { value: '300+', label: 'architecture-focused PR reviews' },
+  { value: '1K+', label: 'GDPR access and erasure requests, within SLA' },
+  { value: '30K+', label: 'active customers, with 5–10× headroom' },
+  { value: '700+', label: 'partner organisations onboarded' },
+];
+
+export const LEADERSHIP = [
+  {
+    title: 'Architecture Guild and reference patterns',
+    body: 'Set up a cross-functional guild and authored reusable patterns with template code (Strangler Fig, CQRS, Event-Driven, Adapter, Facade), built into onboarding and design-review checklists.',
+  },
+  {
+    title: 'Ruby Guild',
+    body: 'Revived the company-wide guild as a community of practice: performance tuning, TDD workshops, shared-library reviews and a backlog any engineer could add to.',
+  },
+  {
+    title: 'Deep dives across teams',
+    body: 'Cross-team sessions where one team walks another through its architecture. They break down silos and surface mismatched assumptions early.',
+  },
+  {
+    title: 'Mentoring',
+    body: 'One-to-ones, pairing and domain-design walk-throughs for engineers from junior to staff level, focused on architectural thinking as much as technique.',
+  },
+];
