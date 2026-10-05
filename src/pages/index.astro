@@ -94,11 +94,13 @@ const roles = EXPERIENCE.slice(0, 5);
           <p class="eyebrow">Open source · MIT</p>
           <h2 id="accord">ACCORD: reach agreement before you build</h2>
           <p class="lead">
-            An agentic delivery harness for <a href="https://pi.dev/">Pi</a> that turns a free-text request into a
-            validated contract (brief, spec, plan and verification evidence) before anyone writes code. Built around
+            A harness-agnostic delivery workflow that turns a request into a validated contract (brief, spec, plan
+            and verification evidence) before anyone writes code. Run it from the <code>accord</code> CLI with Claude
+            Code, Cursor or <a href="https://pi.dev/">Pi</a>, or as a <code>/dev</code> command inside Pi. Built around
             one metric: how little of an engineer’s attention it consumes.
           </p>
           <ul class="checklist">
+            <li>Orchestration lives in a CLI, not a prompt, so any agent harness can do the work</li>
             <li>Phase agents run in isolated processes with schema-validated JSON state</li>
             <li>Adversarial test review (Crucible) runs before any production code exists</li>
             <li>Two deliberate human gates: contract approval and PR review</li>
@@ -110,14 +112,14 @@ const roles = EXPERIENCE.slice(0, 5);
         </div>
         <div class="terminal" aria-label="Example ACCORD session">
           <div class="terminal-bar" aria-hidden="true"><span></span><span></span><span></span></div>
-          <pre><span class="t-prompt">❯</span> /dev PROJ-1234 add OAuth2 refresh token support
+          <pre><span class="t-prompt">❯</span> accord drive PROJ-1234 --harness claude
 <span class="t-dim">  pattern  implement/standard</span>
 <span class="t-dim">  align    → brief.md</span>
 <span class="t-dim">  spec     → spec.json  (AC-1 … AC-4)</span>
 <span class="t-dim">  plan     → plan.json  (TDD-ordered)</span>
 <span class="t-dim">  tasks    test → review-test → code → review-code</span>
 
-<span class="t-prompt">❯</span> /dev finish
+<span class="t-prompt">❯</span> accord finish PROJ-1234
   VERIFICATION COMPLETE
   Verdict: <span class="t-warn">gaps (3/4 pass)</span>
   AC-1: <span class="t-ok">pass</span>  auth.test.ts:42
