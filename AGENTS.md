@@ -72,5 +72,6 @@ npm run medium -- <post> # local Medium-friendly export
 | `public/assets/` | Post images (referenced as `/assets/…`) |
 | `scripts/` | Authoring scripts, checks, smoke test, Medium exporter |
 | `docs/writing-style.md` | House style for posts |
+| `docs/linkedin.md` | LinkedIn sharing setup, token renewal |
 | `cspell.config.yaml`, `cspell-words.txt` | Spell check config and accepted words |
 | `urls.snapshot.txt` | Published URLs that must keep working |

@@ -1,0 +1,36 @@
+name: Share post on LinkedIn
+
+# Manual trigger: share one or more live posts on LinkedIn (for example a post that was missed,
+# or after the token was renewed). Normal sharing happens automatically in pages.yml.
+on:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: Live post URL(s), space or newline separated
+        required: true
+        type: string
+      dry_run:
+        description: Print what would be posted without posting
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  share:
+    runs-on: ubuntu-latest
+    steps:
+      # The script uses only Node built-ins (no npm ci).
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: scripts
+      - name: Share on LinkedIn
+        # Inputs go through env, not inline in the script, so they can't inject shell commands.
+        run: node scripts/linkedin-post.mjs ${DRY_RUN:+--dry-run} $URLS
+        env:
+          URLS: ${{ inputs.urls }}
+          DRY_RUN: ${{ inputs.dry_run && 'true' || '' }}
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          LINKEDIN_AUTHOR: ${{ vars.LINKEDIN_AUTHOR }}

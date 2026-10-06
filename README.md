@@ -116,6 +116,11 @@ npm run indexnow -- --all              # every URL in the live sitemap
 npm run indexnow -- --all --dry-run    # list without submitting
 ```
 
+## Sharing on LinkedIn
+
+Each deploy shares newly published posts on LinkedIn (`scripts/linkedin-post.mjs`). The setup,
+including how to get the access token and member id, is in [`docs/linkedin.md`](docs/linkedin.md).
+
 ## Cross-posting to Medium
 
 Medium's [Import a story](https://medium.com/p/import) only accepts a public URL, so the site hosts a
