@@ -1,5 +1,5 @@
 ---
-title: "Move the Smaller Population: Migrating Live Stripe Subscriptions Between Accounts"
+title: "Move the Smaller Population When Splitting a Stripe Account"
 description: "When two businesses sharing one Stripe account need to separate, the question isn't how to move customers. It's which customers to move. Move the smaller, quieter population and leave the growing one alone."
 date: 2025-05-14 09:00:00 +0100
 categories:
@@ -67,4 +67,4 @@ We also wrote down a red flag at the time: *one platform taking payments into se
 
 ## The general lesson
 
-When two populations share an account, move the one that's **smaller, quieter and not growing**, and leave the busy one completely untouched. The best migration for your most valuable customers is the one that doesn't happen to them.
+When two populations share an account, I move the one that's **smaller, quieter and not growing**, and leave the busy one completely untouched. The best migration for your most valuable customers is the one that doesn't happen to them.

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: URI Rules the World
+description: "Why the links inside social posts turned out to be rich signals: expanding shortened URIs, who shared them and when, and how that fed junk filtering, relevance and authority models for financial content."
 date: 2013-02-25 09:46:44.000000000 +00:00
 type: post
 published: true
@@ -14,6 +15,9 @@ author:
   email: clive@shirleyconsulting.co.uk
   display_name: Clive Shirley
 ---
+
+*Part of my FSWire series, written in 2013 while I was building a social-data analytics platform for financial markets. Kept here as originally published.*
+
 <p style="text-align:justify;">Over the past few months we have been investigating the multiple dimensions of URIs (links) embedded within social content, to determine whether (or not) they play a (significant) role in analysing social content.</p>
 <p style="text-align:justify;">On the face of it a URL looks pretty innocuous, yet it has many hidden dimensions such as the person who posted/re-tweeted it, which could lend insight into how that individual interacts with various social and business domains. For example the time stamp of the content which included said URL provides an indication of when a user discovered a particular piece of information. If we can relate this back to the original content's release date/time we have a measure which we can leverage (we coin this as the: <em>'reaction/response to information'</em>). Based on frequency of posts containing the URL over particular periods of time we can determine how quickly certain information is being disseminated through social networks and how relevant it is.</p>
 <p><a href="/assets/db-message-auth-user.png"><img title="Message Stream" src="/assets/db-message-auth-user.png" alt="Authoritative User" width="187" height="216" /></a> Social Messages with Authoritative User post</p>

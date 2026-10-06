@@ -101,4 +101,4 @@ Measure the **invariant**, not the adoption:
 
 ## The general lesson
 
-Whenever there's a delay between *promise* and *fulfilment*, and anything in your pricing depends on the clock, the promise has to be a **record**, not a recomputation. Checkout isn't a view over your pricing engine. It's the moment you make a commitment to a customer, and commitments should be written down.
+Whenever there's a delay between *promise* and *fulfilment*, and anything in your pricing depends on the clock, I want the promise to be a **record**, not a recomputation. Checkout isn't a view over your pricing engine. It's the moment you make a commitment to a customer, and commitments should be written down.

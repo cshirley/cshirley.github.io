@@ -84,4 +84,4 @@ The standard is enforced where it matters: in pull-request review of plan change
 
 ## The general lesson
 
-A price list is a **catalogue**; a promotion is a **policy**. Mixing them turns every marketing idea into a data-migration problem. Keep list prices few and stable, express everything else as named, conditioned adjustments, keep both in version control, and write the stacking rules down before you need them.
+A price list is a **catalogue**; a promotion is a **policy**. Mixing them turns every marketing idea into a data-migration problem. I keep list prices few and stable, express everything else as named, conditioned adjustments, keep both in version control, and write the stacking rules down before I need them.

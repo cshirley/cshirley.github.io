@@ -63,4 +63,4 @@ flowchart LR
 
 ## The general lesson
 
-Shared services are a loan against future independence. When a region has to stand alone, don't try to make the shared service multi-region on the fly. **Copy it into the region, prune what doesn't belong, and re-point the consumers**, using a runbook you rehearse before production. Boring migrations are the ones that work.
+I think of shared services as a loan against future independence. When a region has to stand alone, don't try to make the shared service multi-region on the fly. **Copy it into the region, prune what doesn't belong, and re-point the consumers**, using a runbook you rehearse before production. Boring migrations are the ones that work.

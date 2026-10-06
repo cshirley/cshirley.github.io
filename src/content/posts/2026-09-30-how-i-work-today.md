@@ -44,7 +44,7 @@ rather than typing every line myself.
 6. Desk, iPad or iPhone: I get the same tmux session via Blink, mosh and Tailscale.
 7. Input: a Planck ortholinear keyboard and, most recently, a Keychron Nape Pro trackball.
 
-## The Terminal Is Still the IDE
+## The terminal is still the IDE
 
 The core idea from 2022 still holds: **one task, one screen, no distractions**.
 The difference is that tmux now does more of the work.
@@ -96,7 +96,7 @@ plus a `local/` plugin directory for my own tools:
   `author` and bumps `version`.
 - **Mail**, covered next.
 
-### Gmail in the Editor
+### Gmail in the editor
 
 Email is the most distracting app I use, so I stopped using it as an app. Gmail
 syncs to a local Maildir and I read it in Neovim:
@@ -117,7 +117,7 @@ Agents get Gmail another way. They use the Google Workspace API (and an MCP
 server as a fallback), so they can search mail and draft replies without
 touching my Maildir.
 
-## Agents, Skills and the Morning Run
+## Agents, skills and the morning run
 
 I covered the details in
 [Building an AI-Native Development Workflow with Pi](/ai/2026/05/06/ai-native-workflow-with-pi.html),
@@ -155,7 +155,7 @@ Some guardrails sit around all of this. A command gate stops destructive
 commands until I approve them. `plan` mode keeps an agent read-only while it
 explores. Secrets never live in the repo.
 
-## Dotfiles: One Command to My Machine
+## Dotfiles: one command to my machine
 
 Everything above lives in one repo,
 [dotfiles](https://github.com/cshirley/dotfiles), which is cloned to
@@ -187,7 +187,7 @@ A few design decisions have held up well:
 
 A new laptop takes me about as long as the Homebrew download.
 
-## A Second Brain in Markdown
+## A second brain in Markdown
 
 My `documentation` repo is a plain-markdown vault organised with the
 [PARA method](https://fortelabs.com/blog/para/):
@@ -217,7 +217,7 @@ It's the second brain for me and for my agents:
 Frontmatter stays consistent because Neovim adds it on save, and I never have
 to think about it.
 
-## Same Desk, Anywhere
+## Same desk, anywhere
 
 In 2022 I SSHed from an iPad Pro into my MacBook. The idea hasn't changed, but
 the connection is now much more reliable:
@@ -271,7 +271,7 @@ odd GUI. A trackball stays in one place, so I don't reach across the desk and
 the hand movement stays small, which suits the rest of the setup. It's early
 days, but it has already replaced the mouse.
 
-## What Hasn't Changed
+## What hasn't changed
 
 Looking back at the 2022 post, the core ideas are the same:
 
@@ -285,3 +285,7 @@ them sharp. The setup exists to make that loop fast and keep it free of
 distractions, from any desk.
 
 Still plenty of coffee, though. That hasn't changed either.
+
+## The general lesson
+
+I keep the environment portable and the loop short. **If the whole setup rebuilds from one command and runs in any terminal, a new machine or a different device costs minutes, not a day.** That leaves my attention for deciding what to build and reviewing what the agents produce.

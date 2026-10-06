@@ -1,5 +1,5 @@
 ---
-title: "Preparing a Platform for a TV Campaign: Infrastructure First, Authorisation First"
+title: "Preparing for a TV Campaign: Fix Authorisation First"
 description: "A TV advert means a traffic spike you can't schedule precisely, because catch-up viewing exists. Our plan: config-only scaling first, fix the one call every request makes, then add application-level protection with a go/no-go gate two weeks out."
 date: 2025-11-12 09:00:00 +0000
 categories:
@@ -110,4 +110,4 @@ Phase 4 stays optional, depending on the headroom we actually observe.
 
 ## The general lesson
 
-When you have a traffic event on the calendar, **order the work by risk**. Configuration before code; the call every request makes before anything else; and a go/no-go gate early enough to act on. Most importantly, measure before you scale: Phase 0 exists because assumptions about capacity are usually wrong, and the whole plan should bend to what it finds.
+When there's a traffic event on the calendar, I **order the work by risk**. Configuration before code; the call every request makes before anything else; and a go/no-go gate early enough to act on. Most importantly, measure before you scale: Phase 0 exists because assumptions about capacity are usually wrong, and the whole plan should bend to what it finds.

@@ -63,4 +63,4 @@ Some interactions genuinely need an immediate answer, and forcing them into task
 
 ## The general lesson
 
-When humans and physical goods are in the loop, latency isn't a defect to hide; it's a feature to design for. Make the interaction a first-class task, control the rate it's offered at, and set the expectation up front. Your partners, your support team and your patients will all notice the difference on the day a cohort hits its milestone.
+When humans and physical goods are in the loop, I treat latency as a feature to design for, not a defect to hide. Make the interaction a first-class task, control the rate it's offered at, and set the expectation up front. Your partners, your support team and your patients will all notice the difference on the day a cohort hits its milestone.

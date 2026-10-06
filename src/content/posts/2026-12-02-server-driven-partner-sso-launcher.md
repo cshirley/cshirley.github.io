@@ -96,4 +96,4 @@ Where a partner offered both, we preferred OIDC over SAML. It keeps native app-t
 
 ## The general lesson
 
-When integrations multiply, **move the variability into data** and keep one small, well-tested client path. Be just as deliberate about the boundary: an SSO *handoff* and a *token-custody service* have very different risk profiles, and scope creep between them is how credential stores appear by accident.
+When integrations multiply, I **move the variability into data** and keep one small, well-tested client path. Be just as deliberate about the boundary: an SSO *handoff* and a *token-custody service* have very different risk profiles, and scope creep between them is how credential stores appear by accident.

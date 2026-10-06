@@ -72,4 +72,4 @@ Alongside the files, each client gets a **client-branded interactive dashboard**
 
 ## The general lesson
 
-Every B2B data exchange is an API whether you call it one or not. Give it a schema, a stable key the client owns, dated semantics and an explicit privacy boundary, and version it like any other contract.
+I treat every B2B data exchange as an API, whether or not anyone calls it one. Give it a schema, a stable key the client owns, dated semantics and an explicit privacy boundary, and version it like any other contract.

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Coding In the Cloud [practical fact or developer fiction] part 2
+description: "Six weeks of trying to code from an iPhone 6 Plus with a monitor and Bluetooth keyboard: what worked, where the device fell short, and why I moved on to a cellular iPad Air 2."
 date: 2014-12-29 20:29:40.000000000 +00:00
 type: post
 published: true
@@ -20,6 +21,9 @@ author:
   email: clive@shirleyconsulting.co.uk
   display_name: Clive Shirley
 ---
+
+*Written in 2014 while I was experimenting with doing my day-to-day development away from a laptop. Kept here as originally published.*
+
 <p><a title="iPhone 6 Plus" href="http://www.apple.com/iphone-6/" target="_blank">iPhone 6 Plus</a> in my back pocket means one can be productive any place there is a cell connection (in theory). Coding in the cloud via a MacBook Air for a good few months prior to the start of this experiment provided the confidence that given access to a ssh client I could code from any platform.</p>
 <p>The iPhone 6 Plus is an excellent device when paired with an HD monitor and Bluetooth keyboard (in this case a<a title="Filco MINILA Air" href="http://www.keyboardco.com/keyboard/uk-majestouch-minila-air-68-key-tactile-action-bluetooth-keyboard.asp" target="_blank"> Filco MINILA Air</a> from my desk and recently a <a title="Logitech Keys-to-go" href="http://www.logitech.com/en-gb/product/keys-to-go-ipad" target="_blank">Logitech Keys-To-Go</a> when out of the office). This setup provided a truly task oriented approach to my day job while carrying around relatively little kit.</p>
 <p>When on site, the same setup works providing a monitor is available; otherwise working from the iPhone's screen proves tiresome for anything but the simplest tasks (i.e. emergency bug fixes/deployments). At one point I did consider trying out <a title="Google VR Headset" href="https://www.google.com/get/cardboard/" target="_blank">Google's cardboard VR</a> headset adapter for smart phones but decided against it (purely for cosmetic reasons).</p>

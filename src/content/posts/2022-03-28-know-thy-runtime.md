@@ -22,7 +22,7 @@ which filled up the Redis instance hosting our asynchronous job queues.
 
 Should it be that easy to write code without _Knowing thy runtime_ ?
 
-## The Backstory
+## The backstory
 
 We had changed the way Audit Event data was being sent from using the deprecated
 Nabu (Kafka proxy) to posting event data directly to a Kafka topic.
@@ -70,7 +70,7 @@ throughput and exercise the additional CPU resources.
 
 We doubled the thread count but to no avail (to be honest I should have known
 better than this would not work), and what's worse job duration increased so we
-were actually processing fewer jobs over the same time period.
+were processing fewer jobs over the same time period.
 
 The reason for this is pure thread overhead, too much thread contention leading
 to thread scheduling overheads exacerbated by the levels of workload
@@ -108,7 +108,7 @@ CRuby since version 1.9.x has 3 concurrency patterns (only 1 parallelism
 pattern):
 
 1. Fibers/Green threads - lightweight units of work which are scheduled within
-   the Virtual Machine via the interpreter (generally leveraged by Actor patterns
+   the Virtual Machine via the interpreter (generally used by Actor patterns
    in particular Ruby 3.x Ruby Actor/Ractor).
 2. True threads - OS backed (1 to 1) threads which are scheduled by the OS
    (although the level of concurrency is limited by the code interpreter and its
@@ -185,7 +185,7 @@ Regardless, we know CRuby is limited in its approach to concurrency particularly
 when CPU intensive tasks are required such as
 
 - encryption/decryption
-- calling external libraries which leverage native C calls
+- calling external libraries which use native C calls
 - tight processing and nested loops
 - marshaling data (generally due to the previous reason)
 - regular expression processing
@@ -224,7 +224,7 @@ should be our primary focus.
 I would like to say yes and retort with _Know thy runtime_ but, we have so many
 levels of abstraction (VM, OS, Hypervisor) the engineer is isolated/de-sensitised from knowing how the code they write will be executed.
 
-But at the very least our engineers should know how their code will be executed
+But at the least our engineers should know how their code will be executed
 by the immediate language runtime. Furthermore, they need to be aware of the
 trade-offs and limitations of their chosen tool along with understanding the
 basics of modern processor multitasking.
@@ -232,13 +232,13 @@ basics of modern processor multitasking.
 For Ruby Engineers some key implementation cases to be mindful of:
 
 - encryption/decryption
-- calling external libraries which leverage native C calls
+- calling external libraries which use native C calls
 - tight processing and nested loops
 - marshaling data (generally due to the previous reason)
 - regular expression processing
 - third-party gems (please review gem code)
 
-## Useful Reading
+## Useful reading
 
 - [Ruby under the Microscope](https://www.amazon.co.uk/Ruby-Under-Microscope-Illustrated-Internals/dp/1593275277)
 - [Scheduling in GoLang (3 part series)](https://www.ardanlabs.com/blog/2018/08/scheduling-in-go-part1.html)

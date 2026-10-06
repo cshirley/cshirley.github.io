@@ -60,4 +60,4 @@ The recommendation isn't to abandon the principle. **Business behaviour** stays 
 
 ## The general lesson
 
-"Shared nothing" is a heuristic, not a law. Share the things whose *divergence* causes bugs: how you talk to an external system, and what your data means. Isolate the things whose *coupling* causes bugs: business behaviour. And when you find the line in the wrong place, move it gradually. The strangler fig works just as well inside a service as it does across a monolith.
+I treat "shared nothing" as a heuristic, not a law. Share the things whose *divergence* causes bugs: how you talk to an external system, and what your data means. Isolate the things whose *coupling* causes bugs: business behaviour. And when you find the line in the wrong place, move it gradually. The strangler fig works just as well inside a service as it does across a monolith.

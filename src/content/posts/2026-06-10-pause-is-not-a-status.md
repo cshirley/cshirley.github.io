@@ -76,4 +76,4 @@ Adding a new hold type is now a checklist: add a policy to the programme definit
 ## The general lessons
 
 1. **Don't encode temporary conditions in lifecycle state.** Overlay them as time-bounded episodes, and let each consumer read *declared effects* rather than infer meaning from a flag.
-2. **When requirements say "pause", ask how many behaviours that really is.** It's rarely one.
+2. **When requirements say "pause", I ask how many behaviours that really is.** It's rarely one.

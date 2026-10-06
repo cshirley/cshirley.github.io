@@ -84,4 +84,4 @@ The most valuable artefact from this exercise isn't a number; it's the **repeata
 
 ## The general lesson
 
-Autoscaling adds capacity; it doesn't add *stability*. If your system has no admission control, unbounded fan-out and retry loops, more replicas just means more participants in the pile-up. Bound the load first, measure real pressure, and then let the cluster scale on signals that mean something.
+My takeaway: autoscaling adds capacity; it doesn't add *stability*. If your system has no admission control, unbounded fan-out and retry loops, more replicas just means more participants in the pile-up. Bound the load first, measure real pressure, and then let the cluster scale on signals that mean something.

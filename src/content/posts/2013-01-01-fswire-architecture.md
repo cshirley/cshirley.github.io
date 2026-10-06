@@ -1,6 +1,7 @@
 ---
 layout: post
 title: FSWire Architecture
+description: "How the FSWire stack was put together in 2013: Rails on Heroku for the dashboard, and an analytics backend built on RabbitMQ, Redis, Postgres, MongoDB and MapReduce, consuming around 1 TB of Twitter data a day."
 date: 2013-01-01 09:45:59.000000000 +00:00
 type: post
 published: true
@@ -14,6 +15,9 @@ author:
   email: clive@shirleyconsulting.co.uk
   display_name: Clive Shirley
 ---
+
+*Part of my FSWire series, written in 2013 while I was building a social-data analytics platform for financial markets. Kept here as originally published.*
+
 <p>A number of our customers and readers have expressed an interest in understanding our technical stack and how they can leverage our API and raw data for business/financial decisions.</p>
 <p>We have a classical web architecture with a number of autonomous services and delivery mechanisms allowing us to scale horizontally when load dictates while plugging in new features without impacting performance or the stability of the overall system. Utopia - well not quite in practice but it sounds good.</p>
 <p>We use Ruby on Rails hosted on a Heroku stack for front end delivery of our social dashboard solution to both Mobile and classic desktop platforms. This enables us to dynamically scale based on load using some nifty in-house gems we have developed that leverage the Heroku API. As these are generally commodity components this is a no-brainer as we get a predictable scale-out cost proportional to load - web apps 101.</p>

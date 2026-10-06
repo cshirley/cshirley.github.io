@@ -122,4 +122,4 @@ The thin-API approach works when the at-rest data is *records*. It doesn't work 
 
 ## The general lesson
 
-Residency is a **storage** requirement. Architect for it by placing *state* deliberately and keeping compute shared. Then assume data leaks through every queue, workflow, warehouse, log line and vendor until you've proved otherwise. The cheapest in-country stack is the one that only contains what the law actually requires.
+Residency is a **storage** requirement, so I architect for it by placing *state* deliberately and keeping compute shared. Then I assume data leaks through every queue, workflow, warehouse, log line and vendor until you've proved otherwise. The cheapest in-country stack is the one that only contains what the law actually requires.

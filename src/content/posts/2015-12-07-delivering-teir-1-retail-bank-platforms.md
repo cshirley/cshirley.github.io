@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Tier-1 Retail Bank SaaS Delivery
+description: "What it took to lead delivery of white-label SaaS products for Tier 1 retail banks: integrating with account-opening systems, bridging two very different organisations, and picking up a troubled project."
 date: 2015-12-07 14:57:38 +0000
 type: post
 categories:
@@ -12,6 +13,8 @@ author:
   email: clive@shirleyconsulting.co.uk
   display_name: Clive Shirley
 ---
+
+*Written in 2015 after leading delivery of retail bank platforms. Kept here as originally published.*
 
 Over the past 16 months I have led the engineering teams that delivered
 new Small Business customer-focused SaaS products for a couple of Tier 1 retail

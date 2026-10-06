@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Big Data - what was the question ?
+description: "Reflections on analysing hundreds of millions of tweets a day for financial insight, and why a hypothesis-first approach to big data can't scale when there aren't enough data scientists to ask the questions."
 date: 2013-05-27 09:49:35.000000000 +01:00
 type: post
 published: true
@@ -16,6 +17,9 @@ author:
   email: clive@shirleyconsulting.co.uk
   display_name: Clive Shirley
 ---
+
+*Part of my FSWire series, written in 2013 while I was building a social-data analytics platform for financial markets. Kept here as originally published.*
+
 <p>So it's been a while, I have been locked in the basement here at FSWIRE central for the last few weeks analysing data and coding away at new product features (more on that in forthcoming posts). Which got me to thinking about what our focus is and the problem(s) we are trying to solve.</p>
 <p>As a summary we analyse 550M tweets per day for financial information and insight. We collate this into highly curated data feeds, which customers can consume and potentially act upon. The data collation and cleaning stages require huge amounts of computing resource in themselves, and are monitored by data scientists who continually improve our cleaning/categorisation/context algorithms and feed the machine learning datasets with relevant new data (manually curated feedback loop for training data).</p>
 <p>This process is well defined and deterministic (in our eyes anyway). But this is just the first stage required by anyone who wants to tap into the <em><strong>1 quintillion bytes of data generated each day</strong></em> (according to a recent study from IDC).</p>

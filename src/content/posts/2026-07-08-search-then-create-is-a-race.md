@@ -1,6 +1,6 @@
 ---
 title: "Search-Then-Create Is a Race Condition"
-description: "Conditional create on top of an eventually consistent search index will create duplicates under load. A small, strongly consistent write barrier fixes it — and the hard part is choosing the uniqueness key, not the lock."
+description: "Conditional create on top of an eventually consistent search index will create duplicates under load. A small, strongly consistent write barrier fixes it, and the hard part is choosing the uniqueness key, not the lock."
 date: 2026-07-08 09:00:00 +0100
 categories:
 - Architecture
@@ -91,4 +91,4 @@ We're making this the default idempotency pattern for new domains, not because i
 
 ## The general lesson
 
-If your "exists?" check reads from anything eventually consistent (a search index, a read replica, a cache, a CDC-fed projection), you don't have a uniqueness constraint. You have a hope. Put a strongly consistent, conditional write on the path, and spend your design time on what "the same" means for your domain.
+If your "exists?" check reads from anything eventually consistent (a search index, a read replica, a cache, a CDC-fed projection), you don't have a uniqueness constraint. You have a hope. I put a strongly consistent, conditional write on the path, and spend my design time on what "the same" means for your domain.

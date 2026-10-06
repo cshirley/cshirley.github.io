@@ -119,6 +119,6 @@ We started small: a trunk-based-development page, a first policy bundle, a servi
 
 ## The general lesson
 
-AI agents don't lower the bar for engineering standards; they raise the cost of *vague* ones. Separate the **why** (for people), the **what** (checkable policy) and the **how it works** (code knowledge), and generate each consumer's view from a single source. Then the same rules apply to every PR, whoever wrote it.
+In my view, AI agents don't lower the bar for engineering standards; they raise the cost of *vague* ones. Separate the **why** (for people), the **what** (checkable policy) and the **how it works** (code knowledge), and generate each consumer's view from a single source. Then the same rules apply to every PR, whoever wrote it.
 
 *The same thinking runs through [ACCORD](https://github.com/cshirley/accord), my open-source delivery harness: contracts over conversations, and structural checks before human attention.*

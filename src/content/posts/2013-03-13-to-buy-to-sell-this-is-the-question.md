@@ -1,6 +1,7 @@
 ---
 layout: post
 title: To Buy to Sell - this is the Question
+description: "Why predicting stock prices from social sentiment alone was naive, and how FSWire moved from raw sentiment to curating context-sensitive content, event detection and a Social Strength Indicator."
 date: 2013-03-13 09:47:27.000000000 +00:00
 type: post
 published: true
@@ -14,6 +15,9 @@ author:
   email: clive@shirleyconsulting.co.uk
   display_name: Clive Shirley
 ---
+
+*Part of my FSWire series, written in 2013 while I was building a social-data analytics platform for financial markets. Kept here as originally published.*
+
 <p style="text-align:justify;">When we at FSWIRE first set out on this journey into social data for finance, we worked on the premise that social data could answer any financial question and predict the future. A financial crystal ball so to speak. Our approach was to use social sentiment to predict stock price movement; in hindsight, this was hugely naive. Yet inspired by research triggered by <em>Johan Bollen and Huina Mao, professors of informatics and computing at Indiana University-Bloomington</em>, among others (see <a title="Social Mood Conference" href="http://www.socialmoodconference.com/wordpress/wp-content/uploads/2012/01/10_BollenMao_SOCSummit.pdf">Social Mood </a><span style="color:#0000ee;"><span style="text-decoration:underline;">Conference</span></span>, <a title="Battle of the quants" href="http://www.battleofthequants.com/Research/sdarticle.pdf">Battle of the Quants</a>). Adding fuel to the fire was Paul Hawtin launching Derwent Capital Markets and their alleged $40M investment fund licensing the work from Bollen. So there must be something to it - right? So we ventured on.</p>
 <p style="text-align:justify;">There has been much copy covering the aforementioned entities so I will let you draw your own conclusion about whether this was hype, tripe or ... well you get the idea.</p>
 <p style="text-align:justify;">Anyway it is not as straightforward as it would initially seem. Sentiment of short, medium and long form text is a commodity service which is easy to engineer (if you feel the need I would suggest you start with Bayes and/or Support Vector Machines); we have rolled our own but this is more historic than anything. Anyhow sentiment alone does not produce the insight required for individuals to make decisions with, moreover one needs to look at all dimensions of the data, and fundamentally ensure that data you are analysing is suitably curated. This is a key aspect in all research done to date, for example Bollen manually manipulated the source dataset, removing content that can affect the results which is common practice.</p>

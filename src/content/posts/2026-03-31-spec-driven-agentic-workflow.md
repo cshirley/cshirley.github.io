@@ -82,3 +82,7 @@ The workflow also tracks token usage and estimated cost per phase, which turned 
 - **Evidence beats assertions.** "AC-3: pass (test X, file Y line Z)" is reviewable in seconds; "all good" isn't.
 
 The rough edges are real, too. Each skill carries its own resume and retry logic, state lives in document front matter, and a long implementation session still accumulates context. Those are the next problems to solve.
+
+## The general lesson
+
+I treat an agent workflow like any other delivery pipeline: **agree the contract first, keep the writer and the reviewer apart, and make every claim point at evidence.** The model matters less than whether each phase starts clean from artefacts on disk.

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: USP for FSWire Ltd ?
+description: "What FSWire offered financial firms in 2013: a multi-stage funnel filter that turns hundreds of millions of daily tweets into a structured, relevant stream, and the case for buying that capability rather than building it."
 date: 2013-09-16 09:49:57.000000000 +01:00
 type: post
 published: true
@@ -17,6 +18,9 @@ author:
   email: clive@shirleyconsulting.co.uk
   display_name: Clive Shirley
 ---
+
+*Part of my FSWire series, written in 2013 while I was building a social-data analytics platform for financial markets. Kept here as originally published.*
+
 <h1><b>The Problem</b></h1>
 <p>Personal and business interactions have now moved to the Internet, leading to an explosion of data that can be mined to generate operational insight for SMB and Enterprises alike. A 2013 IDC report, estimated that the world generates 1 quintillion bytes of data per day, yet we are only able to analyse less than 1% of this information regardless of vertical.</p>
 <p>To utilise even a fraction of this data, businesses must go through a series of steps which identify and sanitise the information they are interested in.</p>

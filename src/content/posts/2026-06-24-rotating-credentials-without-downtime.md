@@ -121,4 +121,4 @@ We wrote the investigation queries down ("what did credential X change?", "which
 
 ## The general lesson
 
-Make rotation **routine**: inventory every credential, keep values out of infrastructure code, prefer overlapping validity, dual-run webhook secrets, and follow the same checklist every time. Then test your audit trail by asking the incident question on a quiet day: *what did this credential touch?* If you can't answer it quickly, that's your next piece of work.
+I'd make rotation **routine**: inventory every credential, keep values out of infrastructure code, prefer overlapping validity, dual-run webhook secrets, and follow the same checklist every time. Then test your audit trail by asking the incident question on a quiet day: *what did this credential touch?* If you can't answer it quickly, that's your next piece of work.

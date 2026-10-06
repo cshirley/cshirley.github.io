@@ -90,4 +90,4 @@ flowchart LR
 
 ## The general lesson
 
-The closer code sits to money, the less it should know about marketing. Keep the component that talks to your payment provider **boring and closed for modification**, and let business rules compete, change and retire in the layer above it.
+I want the code closest to the money to know the least about marketing. Keep the component that talks to your payment provider **boring and closed for modification**, and let business rules compete, change and retire in the layer above it.

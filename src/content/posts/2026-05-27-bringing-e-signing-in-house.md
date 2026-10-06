@@ -1,5 +1,5 @@
 ---
-title: "Bringing E-Signing In-House: KMS Keys, PAdES and a Migration Nobody Should Notice"
+title: "Bringing E-Signing In-House Without Prescribers Noticing"
 description: "A per-signature SaaS bill that grows with every prescription. Designing an in-house Advanced Electronic Signature pipeline to replace it: the cryptography is the easy part; the migration design is what makes it safe."
 date: 2026-05-27 09:00:00 +0100
 categories:
@@ -91,4 +91,4 @@ We also wrote up the alternatives: software keys per prescriber with envelope en
 
 ## The general lesson
 
-Build-vs-buy decisions made at low volume deserve a revisit once the unit economics flip. When they do, the technical build is often the smaller half of the work. The bigger half is a **migration that the users never see**: keep their credentials, keep the API contract, gate everything behind a flag, and prove parity before you switch.
+I'd revisit build-vs-buy decisions made at low volume once the unit economics flip. When they do, the technical build is often the smaller half of the work. The bigger half is a **migration that the users never see**: keep their credentials, keep the API contract, gate everything behind a flag, and prove parity before you switch.

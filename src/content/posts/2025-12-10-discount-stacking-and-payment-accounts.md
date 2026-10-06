@@ -1,5 +1,5 @@
 ---
-title: "Discount Stacking and Multiple Payment Accounts: Writing the Rules Down First"
+title: "Write the Rules Down First: Discount Stacking and Payment Accounts"
 description: "Two payments RFCs from the same week: a stacking policy for employer coverage, coupons and referral credits, and a design for several payment accounts in one deployment. Both are cheaper to decide before marketing and partnerships need them."
 date: 2025-12-10 09:00:00 +0000
 categories:
@@ -82,4 +82,4 @@ The rule for the first version is **adapter affinity**: a customer stays on the 
 
 ## The general lesson
 
-Payments policy is product policy, and it's much cheaper to agree it in an RFC than to reverse-engineer it from incidents. Write the stacking rules before the campaign, and write the account-routing rules before the partnership. In both cases, **make the safe behaviour the default and the exception explicit.**
+I treat payments policy as product policy: it's much cheaper to agree it in an RFC than to reverse-engineer it from incidents. Write the stacking rules before the campaign, and write the account-routing rules before the partnership. In both cases, **make the safe behaviour the default and the exception explicit.**

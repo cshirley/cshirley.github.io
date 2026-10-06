@@ -5,6 +5,11 @@
 /ai/2026/03/31/spec-driven-agentic-workflow.html
 /ai/2026/05/06/ai-native-workflow-with-pi.html
 /ai/2026/08/19/substrate-was-the-problem.html
+/ai/2026/10/05/adversarial-tests-before-code.html
+/ai/2026/10/05/right-size-every-token.html
+/ai/2026/10/05/skills-are-commands-agents-are-specialists.html
+/ai/2026/10/05/the-author-is-compromised.html
+/ai/2026/10/05/transparent-hooks-beat-explicit-orchestration.html
 /architecture/2025/01/22/payment-close-to-shipment.html
 /architecture/2025/03/12/carving-out-a-shared-service.html
 /architecture/2025/04/16/decommissioning-a-telehealth-platform.html
@@ -39,6 +44,7 @@
 /fswire/2013/05/27/big-data-what-was-the-question.html
 /fswire/2013/09/16/fswire-usp.html
 /generic/
+/googleeefe65d20cfb8e33.html
 /payments/2025/05/14/migrating-stripe-subscriptions-between-accounts.html
 /payments/2025/10/15/make-the-invoice-service-dumber.html
 /payments/2025/12/10/discount-stacking-and-payment-accounts.html
