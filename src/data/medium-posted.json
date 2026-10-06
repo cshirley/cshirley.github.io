@@ -250,5 +250,40 @@
     "status": "draft",
     "publication": "Notes from the build",
     "at": "2026-10-01T13:14:26.029Z"
+  },
+  "2026-10-05-transparent-hooks-beat-explicit-orchestration": {
+    "mediumId": "df582ea0dfbe",
+    "url": "https://medium.com/@clive-shirley/df582ea0dfbe",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-06T14:16:59.421Z"
+  },
+  "2026-10-05-the-author-is-compromised": {
+    "mediumId": "62a14ff60daf",
+    "url": "https://medium.com/@clive-shirley/62a14ff60daf",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-06T14:17:03.299Z"
+  },
+  "2026-10-05-skills-are-commands-agents-are-specialists": {
+    "mediumId": "31e5ddde168e",
+    "url": "https://medium.com/@clive-shirley/31e5ddde168e",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-06T14:17:05.173Z"
+  },
+  "2026-10-05-right-size-every-token": {
+    "mediumId": "5245e7eccf36",
+    "url": "https://medium.com/@clive-shirley/5245e7eccf36",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-06T14:17:06.906Z"
+  },
+  "2026-10-05-adversarial-tests-before-code": {
+    "mediumId": "b4822239af38",
+    "url": "https://medium.com/@clive-shirley/b4822239af38",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-06T14:17:09.009Z"
   }
 }
