@@ -21,6 +21,7 @@
     "medium:publish": "node scripts/medium-publish.mjs",
     "medium:publish-pending": "node scripts/medium-publish.mjs --all-pending",
     "new-post": "node scripts/new-post.mjs",
+    "linkedin": "node scripts/linkedin-post.mjs",
     "schedule": "node scripts/schedule.mjs"
   },
   "dependencies": {

@@ -25,7 +25,7 @@ const decode = (s) =>
 
 /** Strip <pre>, <script> and <style> bodies so code samples aren't read as links. */
 const stripCode = (html) =>
-  html.replace(/<(pre|script|style)\b[^>]*>[\s\S]*?<\/\1>/gi, (m, tag) => `<${tag}></${tag}>`);
+  html.replace(/<(pre|script|style)\b[^>]*>[\s\S]*?<\/\1>/gi, (_m, tag) => `<${tag}></${tag}>`);
 
 function refsIn(html) {
   const refs = [];

@@ -87,3 +87,11 @@ jobs:
       - name: Submit new URLs to IndexNow
         run: node scripts/indexnow.mjs --since "$RUNNER_TEMP/sitemap-before.txt"
         continue-on-error: true
+      # Share new posts on LinkedIn (needs LINKEDIN_ACCESS_TOKEN secret and LINKEDIN_AUTHOR variable;
+      # skips if unset). Never fails the deploy.
+      - name: Share new posts on LinkedIn
+        run: node scripts/linkedin-post.mjs --since "$RUNNER_TEMP/sitemap-before.txt"
+        continue-on-error: true
+        env:
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          LINKEDIN_AUTHOR: ${{ vars.LINKEDIN_AUTHOR }}
