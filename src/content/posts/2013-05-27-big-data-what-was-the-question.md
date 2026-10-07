@@ -8,6 +8,7 @@ published: true
 status: publish
 categories:
 - FSWire
+
 tags: []
 meta:
   _edit_last: '22041244'
@@ -20,12 +21,21 @@ author:
 
 *Part of my FSWire series, written in 2013 while I was building a social-data analytics platform for financial markets. Kept here as originally published.*
 
-<p>So it's been a while, I have been locked in the basement here at FSWIRE central for the last few weeks analysing data and coding away at new product features (more on that in forthcoming posts). Which got me to thinking about what our focus is and the problem(s) we are trying to solve.</p>
-<p>As a summary we analyse 550M tweets per day for financial information and insight. We collate this into highly curated data feeds, which customers can consume and potentially act upon. The data collation and cleaning stages require huge amounts of computing resource in themselves, and are monitored by data scientists who continually improve our cleaning/categorisation/context algorithms and feed the machine learning datasets with relevant new data (manually curated feedback loop for training data).</p>
-<p>This process is well defined and deterministic (in our eyes anyway). But this is just the first stage required by anyone who wants to tap into the <em><strong>1 quintillion bytes of data generated each day</strong></em> (according to a recent study from IDC).</p>
-<p>The next stage is an iterative <em><strong>discovery process</strong></em>, an attempt to work out what to look for (and when to look for it). Generally we start with an assumption/hypothesis and then attempt to prove/disprove it through data and modelling. We query the data corpus, apply some funky statistical functions across various dimensions of the data (correlating to some other data-point) and then build models which correlate the data to actionable business processes. In this process we leverage huge computing clusters and many data-scientists who may (or may not) fully understand the domain/problem we are trying to solve.</p>
-<p>Herein lies a major issue, the world cannot generate data-scientists at a fast enough rate to analyse even 1% of the daily data generated for a specific subset of problems. Which means, <em>is the hypothesis/query first approach the way we should go?</em></p>
-<p>Yet one has to start somewhere (and generally from a known working-practice), building a domain agnostic (or even specific) <em>autonomous discovery engine</em> is fraught with issues, particularly when validating results in a way that will be acceptable to institutions/enterprises that will leverage it. Using traditional back/regression testing mechanisms just won't cut it, hence we need to find a new way to validate the hypothesis we generate from the data (interesting switch from hypothesis-centric to data-centric learning).</p>
-<p>As an interim step we need to build tools that <em><strong>EMPOWER</strong></em> domain/knowledge/business experts thus speeding up/aiding in the discovery process to get critical information and insights faster. A less automated approach, but one which educates business in the usefulness of social data and its application which we hope will in part address issues with traditional validation processes. Moreover the process of building these tools helps us refine the algorithms and models used to discover what it is we are/should be looking for.</p>
-<p>FSWIRE has stage 1 complete including an API for developers and a Dashboard that EMPOWERS the business user. We have been working on the fully automated discovery platform leveraging bleeding edge machine learning techniques; it chips away at the huge influx of daily data drawing domain-specific hypotheses, detecting breaking market moving events and hopefully making the world a better place. Which means I get to go back to our basement now I have finished this post !</p>
-<p>&nbsp;</p>
+So it's been a while, I have been locked in the basement here at FSWIRE central for the last few weeks analysing data and coding away at new product features (more on that in forthcoming posts). Which got me to thinking about what our focus is and the problem(s) we are trying to solve.
+
+As a summary we analyse 550M tweets per day for financial information and insight. We collate this into highly curated data feeds, which customers can consume and potentially act upon. The data collation and cleaning stages require huge amounts of computing resource in themselves, and are monitored by data scientists who continually improve our cleaning/categorisation/context algorithms and feed the machine learning datasets with relevant new data (manually curated feedback loop for training data).
+
+This process is well defined and deterministic (in our eyes anyway). But this is just the first stage required by anyone who wants to tap into the ***1 quintillion bytes of data generated each day*** (according to a recent study from IDC).
+
+The next stage is an iterative ***discovery process***, an attempt to work out what to look for (and when to look for it). Generally we start with an assumption/hypothesis and then attempt to prove/disprove it through data and modelling. We query the data corpus, apply some funky statistical functions across various dimensions of the data (correlating to some other data-point) and then build models which correlate the data to actionable business processes. In this process we leverage huge computing clusters and many data-scientists who may (or may not) fully understand the domain/problem we are trying to solve.
+
+Herein lies a major issue, the world cannot generate data-scientists at a fast enough rate to analyse even 1% of the daily data generated for a specific subset of problems. Which means, *is the hypothesis/query first approach the way we should go?*
+
+Yet one has to start somewhere (and generally from a known working-practice), building a domain agnostic (or even specific) *autonomous discovery engine* is fraught with issues, particularly when validating results in a way that will be acceptable to institutions/enterprises that will leverage it. Using traditional back/regression testing mechanisms just won't cut it, hence we need to find a new way to validate the hypothesis we generate from the data (interesting switch from hypothesis-centric to data-centric learning).
+
+As an interim step we need to build tools that ***EMPOWER*** domain/knowledge/business experts thus speeding up/aiding in the discovery process to get critical information and insights faster. A less automated approach, but one which educates business in the usefulness of social data and its application which we hope will in part address issues with traditional validation processes. Moreover the process of building these tools helps us refine the algorithms and models used to discover what it is we are/should be looking for.
+
+FSWIRE has stage 1 complete including an API for developers and a Dashboard that EMPOWERS the business user. We have been working on the fully automated discovery platform leveraging bleeding edge machine learning techniques; it chips away at the huge influx of daily data drawing domain-specific hypotheses, detecting breaking market moving events and hopefully making the world a better place. Which means I get to go back to our basement now I have finished this post !
+
+ 
+

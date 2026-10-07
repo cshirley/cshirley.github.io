@@ -8,6 +8,7 @@ published: true
 status: publish
 categories:
 - FSWire
+
 tags: []
 meta:
   _edit_last: '22041244'
@@ -18,16 +19,24 @@ author:
 
 *Part of my FSWire series, written in 2013 while I was building a social-data analytics platform for financial markets. Kept here as originally published.*
 
-<p>I have been locked in a dark room for the last 3 weeks building out a new API which opens up access to the social analytics generated by our platform providing real time social analytics including sentiment, volume and trending for major US/UK securities and FX pairs in JSON format.  This has come about after many requests from our existing (and potential) customers to open up our technology stack for integration purposes.</p>
-<p>The API is free for personal use and provides a very cost-effective way to experiment with the data, increasing the cost, only as your usage increases.  Documentation link is <a title="here" href="http://www.ftsee.com/api/documentation" target="_blank">here</a>.</p>
-<p>This is a version <strong>1.0 beta release,</strong> while we fine tune performance, scalability and functional scope. We hope to iterate fast which requires considerable input from our existing eco-system of users.</p>
-<p>Thus if you don't ask for features you won't get them - so ask away !</p>
-<p><a href="/assets/screen-shot-2013-04-08-at-13-19-11.png"><img  title="Social Stream Widget" src="/assets/screen-shot-2013-04-08-at-13-19-11.png" alt="Social Stream Widget" width="132" height="300" /></a> Social Stream Widget built with our new API</p>
-<p>So what does our API provide ?</p>
-<ul>
-<li>Key Technicals focus on the social data we pull from Twitter and other media</li>
-<li>Analytics on URIS</li>
-<li>Social Relevance</li>
-<li>Rest/Streaming access</li>
-</ul>
-<p>These are the same APIs on which our social dashboard is developed, so you can start embedding live streams and social charting within your LOB applications today !</p>
+I have been locked in a dark room for the last 3 weeks building out a new API which opens up access to the social analytics generated by our platform providing real time social analytics including sentiment, volume and trending for major US/UK securities and FX pairs in JSON format.  This has come about after many requests from our existing (and potential) customers to open up our technology stack for integration purposes.
+
+The API is free for personal use and provides a very cost-effective way to experiment with the data, increasing the cost, only as your usage increases.  Documentation link is [here](http://www.ftsee.com/api/documentation).
+
+This is a version **1.0 beta release,** while we fine tune performance, scalability and functional scope. We hope to iterate fast which requires considerable input from our existing eco-system of users.
+
+Thus if you don't ask for features you won't get them - so ask away !
+
+[![Social Stream Widget](/assets/screen-shot-2013-04-08-at-13-19-11.png)](/assets/screen-shot-2013-04-08-at-13-19-11.png)
+
+Social Stream Widget built with our new API
+
+So what does our API provide ?
+
+- Key Technicals focus on the social data we pull from Twitter and other media
+- Analytics on URIS
+- Social Relevance
+- Rest/Streaming access
+
+These are the same APIs on which our social dashboard is developed, so you can start embedding live streams and social charting within your LOB applications today !
+

@@ -18,7 +18,7 @@ author:
 
 Over the past 16 months I have led the engineering teams that delivered
 new Small Business customer-focused SaaS products for a couple of Tier 1 retail
-banks.  A huge amount of time &amp; technical effort has been spent directly
+banks.  A huge amount of time & technical effort has been spent directly
 integrating with the bank's account opening/on-boarding systems along with
 engineering areas of the product to support a true white-labelled, scalable
 SaaS platform that meets the necessary security and regulatory banking
