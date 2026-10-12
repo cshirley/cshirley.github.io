@@ -2,7 +2,6 @@
 title: "Platform Limits Shape Products More Than Ideas: Lessons from a Pre-AirTag Child Tracker"
 description: "Before AirTag, we built a prototype child-tracking system around Bluetooth tokens, an iPhone app, shopping centre receivers, and a Rails backend. Looking back, the strongest lesson was that platform rules, hardware economics, and privacy constraints mattered more than the code."
 date: 2026-10-21 09:00:00 +0100
-draft: true
 categories:
 - Architecture
 tags:

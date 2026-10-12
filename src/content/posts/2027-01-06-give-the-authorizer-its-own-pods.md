@@ -2,7 +2,6 @@
 title: "Give the Authoriser Its Own Pods"
 description: An auth endpoint running in-process beside a CRUD API shares its CPU, deploys and failure modes with every consumer. A same-image split, rolled out one consumer at a time, fixes the coupling.
 date: 2027-01-06 09:00:00 +0000
-draft: true
 categories:
 - Engineering
 tags:

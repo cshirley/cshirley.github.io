@@ -2,7 +2,6 @@
 title: "Record the List Price Next to the Price Paid"
 description: Finance could not tell what a dispensed medication should have cost, what was paid, or which invoice funded it. Three modelling gaps behind a fragile reconciliation chain, and what to record instead.
 date: 2027-01-27 09:00:00 +0000
-draft: true
 categories:
 - Payments
 tags:

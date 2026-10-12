@@ -2,7 +2,6 @@
 title: "Clinical Rules Belong in Data You Can Version"
 description: "Designing a pre-prescription review engine: an event-driven, advisory service with hard blocks, soft holds, rule versions stamped on every record, and a deliberate refusal to prescribe."
 date: 2026-12-30 09:00:00 +0000
-draft: true
 categories:
 - Architecture
 tags:

@@ -2,7 +2,6 @@
 title: "Camunda to Temporal Is a Capacity Decision, Not a Cost Saving"
 description: A workflow engine that is far cheaper to license can still lose its first-year business case once migration effort is counted. How to frame a platform move as an engineering capacity trade-off.
 date: 2026-12-23 09:00:00 +0000
-draft: true
 categories:
 - Architecture
 tags:
