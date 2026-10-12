@@ -1,7 +1,7 @@
 ---
 title: "Mobile Was Never the Hard Part: Enterprise Mobility Was Integration"
 description: I once sold a WorkSite mobility product to Interwoven. Looking back, the interesting part was not the handset UI but the server-side integration, queuing and extension points that made mobile workflows dependable.
-date: 2026-10-12 09:00:00 +0000
+date: 2026-10-28 09:00:00 +0100
 draft: true
 categories:
 - Engineering

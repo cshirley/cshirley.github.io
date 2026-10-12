@@ -1,7 +1,7 @@
 ---
 title: "Registration Is Work, Not a Fact: Modelling Delivery Tracking in FHIR"
 description: Why subscribing to a courier is a task with a lifecycle, while carrier updates are immutable events, and how to keep that model consistent when transactions are not atomic.
-date: 2027-03-10 09:00:00 +0000
+date: 2027-01-20 09:00:00 +0000
 draft: true
 categories:
 - Architecture

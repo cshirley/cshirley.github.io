@@ -1,7 +1,7 @@
 ---
 title: "Your Audit Trail Probably Doesn't Say Who Read It"
 description: Mapping how a platform authenticates callers and audits their actions shows what is recorded, what is not, and the questions you cannot answer when an investigation starts.
-date: 2027-02-24 09:00:00 +0000
+date: 2027-01-13 09:00:00 +0000
 draft: true
 categories:
 - Engineering

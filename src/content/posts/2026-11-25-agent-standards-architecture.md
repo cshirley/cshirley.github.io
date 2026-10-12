@@ -1,7 +1,7 @@
 ---
 title: "One Document Can't Both Instruct Agents and Police PRs"
 description: "AI coding agents need concise, routable context; PR enforcement needs checkable rules; humans need the why. Here's the four-layer standards architecture we use so all three stay in sync from one source."
-date: 2026-11-18 09:00:00 +0000
+date: 2026-11-25 09:00:00 +0000
 categories:
 - AI
 tags:

@@ -1,7 +1,7 @@
 ---
 title: "One Layout, Two Keyboards: Keeping a Keymap Reproducible"
 description: "How I keep one keyboard layout working on a wired Planck and a travelling Geonix, with different firmware, and why the recovery notes matter as much as the keymap."
-date: 2026-12-16 09:00:00 +0000
+date: 2026-12-09 09:00:00 +0000
 categories:
 - Development
 tags:

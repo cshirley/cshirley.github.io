@@ -1,7 +1,7 @@
 ---
 title: "The Custom Bit Should Be a Hook, Not a Fork: Extensibility in Enterprise Products"
 description: Enterprise customers always need one more rule, one more integration or one more approval step. What I learned from building a mobility product is that extensibility is a product feature, not a last-minute escape hatch.
-date: 2026-10-19 09:00:00 +0000
+date: 2026-11-04 09:00:00 +0000
 draft: true
 categories:
 - Architecture

@@ -1,7 +1,7 @@
 ---
 title: "Buy the Feed, Own the Adapter: Build vs Buy for Carrier Tracking"
 description: Tracking parcels across several couriers looks like an integration task but is really a maintenance commitment. How we framed build versus buy around expansion, courier leverage and an adapter seam.
-date: 2026-12-30 09:00:00 +0000
+date: 2026-12-16 09:00:00 +0000
 draft: true
 categories:
 - Architecture
