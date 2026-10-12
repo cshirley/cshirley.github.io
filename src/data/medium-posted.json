@@ -285,5 +285,19 @@
     "status": "draft",
     "publication": "Notes from the build",
     "at": "2026-10-06T14:17:09.009Z"
+  },
+  "2026-10-12-good-engineering-habits-age-better-than-technology": {
+    "mediumId": "07d4e9592a47",
+    "url": "https://medium.com/@clive-shirley/07d4e9592a47",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-12T11:57:00.534Z"
+  },
+  "2026-10-07-modelling-pharmacy-claims-in-fhir": {
+    "mediumId": "b6a4960efdb0",
+    "url": "https://medium.com/@clive-shirley/b6a4960efdb0",
+    "status": "draft",
+    "publication": "Notes from the build",
+    "at": "2026-10-12T11:57:02.101Z"
   }
 }
