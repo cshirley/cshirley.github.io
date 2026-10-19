@@ -116,6 +116,21 @@ curl -s -i -X POST https://api.linkedin.com/rest/posts \
 
 ## Sharing by hand
 
+### Local workflow, like Medium
+
+```bash
+npm run linkedin:publish                                  # list live posts not yet shared
+npm run linkedin:publish -- --refresh-ledger              # sync successful GitHub Actions shares into src/data/linkedin-posted.json
+npm run linkedin:publish -- <post-id-or-slug> --dry-run   # print what would be posted
+npm run linkedin:publish -- --all-pending                 # share every pending live post
+```
+
+`linkedin:publish` uses `src/data/linkedin-posted.json` as its local ledger, and `--refresh-ledger`
+merges in successful shares scraped from recent GitHub Actions logs via `gh run`. Real posts need
+`LINKEDIN_ACCESS_TOKEN` and `LINKEDIN_AUTHOR` in the environment.
+
+### Raw URL script
+
 ```bash
 npm run linkedin -- --dry-run <post-url>      # print what would be posted
 LINKEDIN_ACCESS_TOKEN=… LINKEDIN_AUTHOR=urn:li:person:… npm run linkedin -- <post-url>   # posts for real

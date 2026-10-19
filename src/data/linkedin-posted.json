@@ -1,0 +1,26 @@
+{
+  "2026-10-07-modelling-pharmacy-claims-in-fhir": {
+    "url": "https://www.shirleyconsulting.co.uk/architecture/2026/10/07/modelling-pharmacy-claims-in-fhir.html",
+    "title": "Modelling Batch Pharmacy Claims in FHIR",
+    "description": "FHIR has no ClaimBatch resource, and NCPDP batch files don't care about REST. How we composed Task, List, Claim, ClaimResponse, ExplanationOfBenefit and PaymentReconciliation into a claims lifecycle with at-least-once delivery that's safe to retry.",
+    "shareUrn": "urn:li:share:7513516498250940417",
+    "at": "2026-10-07T08:32:08Z",
+    "source": {
+      "kind": "github-actions",
+      "workflow": "Deploy to GitHub Pages",
+      "runId": 37594293520
+    }
+  },
+  "2026-10-12-good-engineering-habits-age-better-than-technology": {
+    "url": "https://www.shirleyconsulting.co.uk/development/2026/10/12/good-engineering-habits-age-better-than-technology.html",
+    "title": "Good Engineering Habits Age Better Than Technology: Rereading My Final-Year Project",
+    "description": "Rereading my final-year project from the mid-1990s, I was struck by how little the core lessons have changed. The stack is obsolete, but the habits still look right: understand users, iterate, separate concerns, write things down, and design for change.",
+    "shareUrn": "urn:li:share:7515377811830824960",
+    "at": "2026-10-12T11:48:19Z",
+    "source": {
+      "kind": "github-actions",
+      "workflow": "Deploy to GitHub Pages",
+      "runId": 38244900153
+    }
+  }
+}

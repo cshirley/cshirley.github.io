@@ -118,8 +118,11 @@ npm run indexnow -- --all --dry-run    # list without submitting
 
 ## Sharing on LinkedIn
 
-Each deploy shares newly published posts on LinkedIn (`scripts/linkedin-post.mjs`). The setup,
-including how to get the access token and member id, is in [`docs/linkedin.md`](docs/linkedin.md).
+Each deploy shares newly published posts on LinkedIn (`scripts/linkedin-post.mjs`). For local use,
+`npm run linkedin:publish` mirrors the Medium workflow: it lists live posts not yet shared,
+accepts post ids/slugs, can post all pending ones, and records shares in
+`src/data/linkedin-posted.json`. The setup, including how to get the access token and member id,
+is in [`docs/linkedin.md`](docs/linkedin.md).
 
 ## Cross-posting to Medium
 
