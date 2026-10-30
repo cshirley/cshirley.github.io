@@ -13,7 +13,6 @@ import { checkLive } from '../lib/crosspost/live.mjs';
 import { cleanGitEnv, confirmed, persist, PersistError, realGit } from '../lib/crosspost/persist.mjs';
 import { executeAll, planSelection, PublishError, reserveAll, RunnerError } from '../lib/crosspost/runner.mjs';
 import * as S from '../lib/crosspost/state.mjs';
-import { migrate } from '../crosspost-migrate.mjs';
 import { post, tempRoot } from './helpers.mjs';
 
 const scripts = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -296,33 +295,16 @@ test('medium adapter: records the returned status; failures are classified', asy
   await assert.rejects(medium.prepare(art('b'), { workDir: dir, sourceRoot: dir, env: {}, exportArticle: () => {} }), /no index.html/);
 });
 
-// ---------- migration ----------
-test('migration: preserves ids/status, baselines history, needs an explicit Medium decision', () => {
-  const articles = [art('old'), art('shared'), art('unmedium')];
-  const r = migrate({
-    linkedin: { shared: { shareUrn: 'urn:li:share:9', url: 'u', at: '2026-10-07T08:32:08Z', source: { kind: 'github-actions', runId: 1 } } },
-    medium: { old: { mediumId: 'm1', url: 'https://medium.com/p/m1', status: 'draft', publication: 'Pub', at: '2026-10-01T13:11:27.843Z' }, shared: { mediumId: 'm2', url: 'u2', status: 'public' } },
-    articles, mediumMissing: 'skip', sourceSha: 'abc', capturedAt: NOW.toISOString(),
-  });
-  assert.equal(r.state.shared.linkedin.externalId, 'urn:li:share:9');
-  assert.equal(r.state.shared.linkedin.at, '2026-10-07T08:32:08Z');
-  assert.equal(r.state.shared.medium.status, 'published');
-  assert.equal(r.state.old.medium.status, 'draft');
-  assert.equal(r.state.old.medium.publication, 'Pub');
-  assert.equal(r.state.old.linkedin.status, 'skipped');
-  assert.equal(r.state.unmedium.medium.status, 'skipped');
-  assert.deepEqual(r.baseline.articles, ['old', 'shared', 'unmedium']);
-  const bf = migrate({ linkedin: {}, medium: {}, articles: [art('x')], mediumMissing: ['x'], sourceSha: 's', capturedAt: NOW.toISOString() });
-  assert.equal(bf.state.x.medium, undefined, 'approved backfill stays eligible');
-  assert.throws(() => migrate({ linkedin: {}, medium: {}, articles: [], mediumMissing: ['nope'], sourceSha: 's', capturedAt: NOW.toISOString() }), /not a live article/);
-  assert.throws(() => migrate({ linkedin: {}, medium: { a: { mediumId: '1', status: 'weird' } }, articles: [], mediumMissing: 'skip', sourceSha: 's', capturedAt: NOW.toISOString() }), /unsupported status/);
-  const [sel] = planSelection({ articles: [...articles, art('future')], state: r.state, adapters: { medium: fakeAdapter('medium'), linkedin: fakeAdapter('linkedin') }, now: NOW }).filter((p) => p.adapter === 'linkedin');
+// ---------- selection against recorded history ----------
+test('only articles with no recorded state become eligible', () => {
+  const skipped = { status: 'skipped', reason: 'historical' };
+  const state = Object.fromEntries(['old', 'shared', 'unmedium'].map((id) => [id, { linkedin: skipped, medium: skipped }]));
+  const [sel] = planSelection({ articles: [art('old'), art('shared'), art('unmedium'), art('future')], state, adapters: { medium: fakeAdapter('medium'), linkedin: fakeAdapter('linkedin') }, now: NOW }).filter((p) => p.adapter === 'linkedin');
   assert.deepEqual(sel.selected.map((a) => a.id), ['future'], 'only the new article becomes eligible');
 });
 
-test('new adapter keys need their own baseline: unknown adapter state is preserved', async () => {
-  const s = migrate({ linkedin: {}, medium: {}, articles: [art('x')], mediumMissing: ['x'], sourceSha: 's', capturedAt: NOW.toISOString() }).state;
-  const [p] = planSelection({ articles: [art('x')], state: s, adapters: { newdest: fakeAdapter('newdest') }, now: NOW });
+test('new adapter keys need their own baseline: unknown adapter state is preserved', () => {
+  const [p] = planSelection({ articles: [art('x')], state: { x: {} }, adapters: { newdest: fakeAdapter('newdest') }, now: NOW });
   assert.equal(p.selected.length, 1, 'missing state alone is eligible, so enabling needs a reviewed baseline first');
 });
 
