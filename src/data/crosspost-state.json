@@ -703,12 +703,34 @@
   },
   "2026-10-21-platform-limits-shape-products-more-than-ideas": {
     "linkedin": {
-      "status": "skipped",
-      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+      "status": "needs-review",
+      "attemptId": "57901890-6249-44c8-8d06-8ca563f36146",
+      "reservedAt": "2026-10-30T12:44:43.942Z",
+      "sourceSha": "49c98e17ece70957083f5a7fbcd508155756cb90",
+      "sourceUrl": "https://www.shirleyconsulting.co.uk/architecture/2026/10/21/platform-limits-shape-products-more-than-ideas.html",
+      "mode": "link-post",
+      "provenance": {
+        "runUrl": "https://github.com/cshirley/cshirley.github.io/actions/runs/41057477670"
+      },
+      "prior": {
+        "status": "skipped",
+        "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+      }
     },
     "medium": {
-      "status": "skipped",
-      "reason": "Historical article at rollout; Medium backfill not approved"
+      "status": "needs-review",
+      "attemptId": "95450b50-b5c1-4711-8a90-fdd104272973",
+      "reservedAt": "2026-10-30T12:44:43.942Z",
+      "sourceSha": "49c98e17ece70957083f5a7fbcd508155756cb90",
+      "sourceUrl": "https://www.shirleyconsulting.co.uk/architecture/2026/10/21/platform-limits-shape-products-more-than-ideas.html",
+      "mode": "public",
+      "provenance": {
+        "runUrl": "https://github.com/cshirley/cshirley.github.io/actions/runs/41057477670"
+      },
+      "prior": {
+        "status": "skipped",
+        "reason": "Historical article at rollout; Medium backfill not approved"
+      }
     }
   },
   "2026-10-28-mobile-was-never-the-hard-part": {
@@ -717,8 +739,19 @@
       "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
     },
     "medium": {
-      "status": "skipped",
-      "reason": "Historical article at rollout; Medium backfill not approved"
+      "status": "needs-review",
+      "attemptId": "288719b2-edde-4ddd-a265-5c3809f1b0c4",
+      "reservedAt": "2026-10-30T12:44:43.942Z",
+      "sourceSha": "49c98e17ece70957083f5a7fbcd508155756cb90",
+      "sourceUrl": "https://www.shirleyconsulting.co.uk/engineering/2026/10/28/mobile-was-never-the-hard-part.html",
+      "mode": "public",
+      "provenance": {
+        "runUrl": "https://github.com/cshirley/cshirley.github.io/actions/runs/41057477670"
+      },
+      "prior": {
+        "status": "skipped",
+        "reason": "Historical article at rollout; Medium backfill not approved"
+      }
     }
   }
 }
