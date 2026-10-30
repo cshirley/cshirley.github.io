@@ -53,7 +53,8 @@ export const medium = {
     if (canonicalUrl !== article.url) throw new Error(`export canonical ${canonicalUrl} does not match ${article.url}`);
     const tags = decode(html.match(/<meta name="medium-tags" content="([^"]*)"/)?.[1] ?? '').split(',').map((t) => t.trim()).filter(Boolean).slice(0, 5);
     const images = [...new Set([...content.matchAll(/<img [^>]*src="(images\/[^"]+)"/g)].map((m) => m[1]))];
-    return { title: decode(html.match(/<title>([\s\S]*?)<\/title>/)?.[1] ?? article.title), content, canonicalUrl, tags, images, dir, publishStatus: ctx.options?.mediumDraft ? 'draft' : 'public', publication: ctx.env.MEDIUM_PUBLICATION || null };
+    const publishStatus = ctx.options?.mediumDraft ? 'draft' : 'public';
+    return { title: decode(html.match(/<title>([\s\S]*?)<\/title>/)?.[1] ?? article.title), content, canonicalUrl, tags, images, dir, publishStatus, notifyFollowers: publishStatus === 'public' && !/^(0|false|no|off)$/i.test(ctx.env.MEDIUM_NOTIFY_FOLLOWERS ?? ''), publication: ctx.env.MEDIUM_PUBLICATION || null };
   },
 
   async publish(prepared, ctx) {
@@ -82,7 +83,7 @@ export const medium = {
     }
     let post;
     try {
-      post = (await call(ctx, 'POST', route, { json: { title: prepared.title, contentFormat: 'html', content, canonicalUrl: prepared.canonicalUrl, tags: prepared.tags, publishStatus: prepared.publishStatus } })).data;
+      post = (await call(ctx, 'POST', route, { json: { title: prepared.title, contentFormat: 'html', content, canonicalUrl: prepared.canonicalUrl, tags: prepared.tags, publishStatus: prepared.publishStatus, notifyFollowers: prepared.notifyFollowers } })).data;
     } catch (err) {
       if (err instanceof Http && err.status >= 400 && err.status < 500 && err.status !== 408) throw new PublishError('not-created', err.message);
       throw new PublishError('uncertain', `Medium story request failed: ${err.message}`);

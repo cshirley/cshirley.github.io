@@ -269,12 +269,22 @@ test('medium adapter: records the returned status; failures are classified', asy
   };
   const prepared = await medium.prepare(a, { workDir: dir, sourceRoot: dir, sourceSha: 's', env: {}, exportArticle });
   assert.equal(prepared.publishStatus, 'public');
+  assert.equal(prepared.notifyFollowers, true, 'followers are notified by default');
+  const prep = (env, options) => medium.prepare(a, { workDir: dir, sourceRoot: dir, sourceSha: 's', env, exportArticle, options });
+  assert.equal((await prep({ MEDIUM_NOTIFY_FOLLOWERS: 'false' })).notifyFollowers, false, 'opt-out');
+  assert.equal((await prep({ MEDIUM_NOTIFY_FOLLOWERS: '' })).notifyFollowers, true, 'empty variable keeps the default');
+  assert.equal((await prep({}, { mediumDraft: true })).notifyFollowers, false, 'drafts never notify');
   assert.deepEqual(prepared.tags, ['x', 'y']);
   const api = (story) => async (_url, init) => {
     if (init.method === 'GET') return Response.json({ data: { id: 'u1' } });
     return story();
   };
   const ctx = (story) => ({ env: { MEDIUM_TOKEN: 't' }, fetch: api(story) });
+  let sent;
+  const spy = (story) => ({ env: { MEDIUM_TOKEN: 't' }, fetch: async (_u, init) => { if (init.method === 'POST') sent = JSON.parse(init.body); return api(story)(_u, init); } });
+  await medium.publish(prepared, spy(() => Response.json({ data: { id: 'p1', url: 'https://m/p1', publishStatus: 'public' } }, { status: 201 })));
+  assert.equal(sent.notifyFollowers, true, 'sent to Medium');
+  assert.equal(sent.publishStatus, 'public');
   const pub = await medium.publish(prepared, ctx(() => Response.json({ data: { id: 'p1', url: 'https://m/p1', publishStatus: 'public' } }, { status: 201 })));
   assert.equal(pub.outcome, 'published');
   const dr = await medium.publish(prepared, ctx(() => Response.json({ data: { id: 'p1', url: 'https://m/p1', publishStatus: 'draft' } }, { status: 201 })));
