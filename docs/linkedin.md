@@ -1,21 +1,26 @@
 # Sharing posts on LinkedIn
 
-Every deploy, including the daily cron rebuild that publishes scheduled posts, shares each newly
-live post on Clive's **personal LinkedIn profile** as an article link post. The work is done by
-`scripts/linkedin-post.mjs`, called from the "Share new posts on LinkedIn" step in
-`.github/workflows/pages.yml`.
+Every deployment that makes a post live shares it on Clive's **personal LinkedIn profile** as an
+article link post, through the shared cross-posting workflow (see [`publishing.md`](publishing.md)).
+The `crosspost` job in `.github/workflows/pages.yml` runs after the deploy and live smoke test.
 
 ## How it works
 
-1. Before deploying, CI saves the live sitemap (`scripts/indexnow.mjs --snapshot`).
-2. After deploying, `linkedin-post.mjs --since <snapshot>` lists sitemap URLs that weren't there
-   before and keeps only post URLs (`/<category>/yyyy/mm/dd/slug.html`).
-3. For each one it reads `og:title` and `og:description` from the live page and calls the
+1. The `crosspost` job selects articles from the deployed commit that are live and have no LinkedIn
+   record in `src/data/crosspost-state.json`. Historical articles are recorded as `skipped`.
+2. Policy: oldest first, **one automatic share per UTC day**, and any unresolved (`needs-review`)
+   LinkedIn attempt blocks further automatic shares until reconciled.
+3. A `needs-review` reservation is committed and pushed before anything is sent. Then
+   `scripts/lib/crosspost/adapters/linkedin.mjs` reads `og:title` and `og:description` from the live
+   page and calls the
    [Posts API](https://learn.microsoft.com/en-us/linkedin/marketing/community-management/shares/posts-api)
-   (`POST https://api.linkedin.com/rest/posts`) with the link as an `article`. LinkedIn scrapes
-   the og tags for the thumbnail.
-4. The step has `continue-on-error`, so a LinkedIn failure never blocks a deploy. It shows as an
-   annotation on the run. If the secret or variable is missing, it skips with a warning.
+   (`POST https://api.linkedin.com/rest/posts`) with the link as an `article`. LinkedIn scrapes the og
+   tags for the thumbnail.
+4. The result (share URN) is recorded and pushed. A definite rejection (HTTP 4xx) releases the
+   reservation so a later run retries. Timeouts, 5xx and malformed responses are uncertain: the
+   block stays until an operator reconciles it.
+5. A failure fails the `crosspost` job but never undoes the deployment. If the secret or variable is
+   missing, the job reports a preparation error.
 
 LinkedIn has no public API for native long-form Articles, and the self-serve Posts API has no
 scheduling field. Sharing right after the deploy avoids both problems, and the link never 404s.
@@ -26,7 +31,7 @@ scheduling field. Sharing right after the deploy avoids both problems, and the l
 |------|------|-------|
 | `LINKEDIN_ACCESS_TOKEN` | Repository **secret** | OAuth access token (expires after about 60 days) |
 | `LINKEDIN_AUTHOR` | Repository **variable** | `urn:li:person:<sub>`, where `<sub>` is your member id (below) |
-| `LINKEDIN_VERSION` | Optional env var in the script | API version `YYYYMM`. Default is in the script. |
+| `LINKEDIN_VERSION` | Optional repository **variable** | API version `YYYYMM`. Default `202511` in the adapter; confirm it is still supported. |
 
 Set them under Settings → Secrets and variables → Actions (secrets tab and variables tab).
 
@@ -116,48 +121,27 @@ curl -s -i -X POST https://api.linkedin.com/rest/posts \
 
 ## Sharing by hand
 
-### Local workflow, like Medium
+There is no separate raw sharing script or workflow any more: it had no duplicate protection. Use the
+**Deploy to GitHub Pages** workflow from the Actions tab (manual run, from `master`). Inputs:
+`destination` (`linkedin`), `article_ids`, `dry_run` (default on), and for deliberate exceptions
+`override_skipped` (share a historical article) and `bypass_linkedin_daily_allowance`. The run still
+builds, deploys and smoke-tests first. Overrides need explicit article IDs and never recreate a
+published/draft record or bypass an unresolved attempt.
 
 ```bash
-npm run linkedin:publish                                  # list live posts not yet shared
-npm run linkedin:publish -- --refresh-ledger              # sync successful GitHub Actions shares into src/data/linkedin-posted.json
-npm run linkedin:publish -- <post-id-or-slug> --dry-run   # print what would be posted
-npm run linkedin:publish -- --all-pending                 # share every pending live post
+gh workflow run pages.yml --ref master -f destination=linkedin -f article_ids="<article-id>" -f dry_run=false
 ```
 
-`linkedin:publish` uses `src/data/linkedin-posted.json` as its local ledger, and `--refresh-ledger`
-merges in successful shares scraped from recent GitHub Actions logs via `gh run`. Real posts need
-`LINKEDIN_ACCESS_TOKEN` and `LINKEDIN_AUTHOR` in the environment.
-
-### Raw URL script
-
-```bash
-npm run linkedin -- --dry-run <post-url>      # print what would be posted
-LINKEDIN_ACCESS_TOKEN=… LINKEDIN_AUTHOR=urn:li:person:… npm run linkedin -- <post-url>   # posts for real
-```
-
-The post must be live, because the title and description are read from the live page.
-
-### From GitHub
-
-Run the **Share post on LinkedIn** workflow (`.github/workflows/linkedin.yml`) from the Actions
-tab, or with the GitHub CLI:
-
-```bash
-gh workflow run linkedin.yml -f urls="<post-url>"               # post for real
-gh workflow run linkedin.yml -f urls="<post-url>" -f dry_run=true   # print only
-```
-
-It uses the same secret and variable. Unlike the deploy step, a failure here fails the run, so
-you see it straight away. It doesn't check whether the post was already shared, so running it
-twice posts twice.
+Shares made manually on LinkedIn that are not in the ledger should be recorded so they count against the
+daily allowance: see "Reconciling" in [`publishing.md`](publishing.md).
 
 ## Renewing the token
 
 The token lasts about 60 days, and self-serve apps don't get refresh tokens. About every two
 months, repeat step 2a and 2b and replace the `LINKEDIN_ACCESS_TOKEN` secret. The member id and
 `LINKEDIN_AUTHOR` don't change. When the token has expired, the step fails with an `HTTP 401`
-annotation and the deploy is unaffected.
+error in the `crosspost` job and the deploy is unaffected. An HTTP 401 is a definite rejection, so
+the attempt is released and the next run retries once the secret is replaced.
 
 ## Troubleshooting
 
@@ -167,4 +151,5 @@ annotation and the deploy is unaffected.
 | 403 on `/v2/userinfo` | Token came from the portal tool, or the OpenID Connect product isn't added. Use the code flow |
 | 401 | Token expired or revoked. Renew it |
 | 426 or `version not active` | `LINKEDIN_VERSION` is retired. Set a current `YYYYMM` |
-| Step logs "skipping" | Secret or variable not set, or no new posts in this deploy |
+| `missing configuration` in the job summary | Secret or variable not set |
+| LinkedIn "blocked by unresolved attempt" | A previous attempt is `needs-review`; reconcile it (see `publishing.md`) |

@@ -1,0 +1,724 @@
+{
+  "2013-01-01-fswire-architecture": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "4cd277b66445",
+      "url": "https://medium.com/@clive-shirley/4cd277b66445",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:11:27.843Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2013-02-25-uri-rules-the-world": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "a9edda6119ae",
+      "url": "https://medium.com/@clive-shirley/a9edda6119ae",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:14:26.029Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2013-03-13-to-buy-to-sell-this-is-the-question": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "c02d3def55ca",
+      "url": "https://medium.com/@clive-shirley/c02d3def55ca",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:14:24.497Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2013-04-08-real-time-sentiment-analytics-social-finance-api": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "2bccd272d2ea",
+      "url": "https://medium.com/@clive-shirley/2bccd272d2ea",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:14:23.555Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2013-05-27-big-data-what-was-the-question": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "2e1b7e042494",
+      "url": "https://medium.com/@clive-shirley/2e1b7e042494",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:14:22.583Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2013-09-16-fswire-usp": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "7e1e40a6927f",
+      "url": "https://medium.com/@clive-shirley/7e1e40a6927f",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:14:22.164Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2014-10-04-coding-in-the-cloud-practical-fact-or-developer-fiction": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "95a25abb36d8",
+      "url": "https://medium.com/@clive-shirley/95a25abb36d8",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:14:21.401Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2014-12-29-coding-in-the-cloud-practical-fact-or-developer-fiction-part-2": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "9a97c4867bf7",
+      "url": "https://medium.com/@clive-shirley/9a97c4867bf7",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:14:20.576Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2015-12-07-delivering-teir-1-retail-bank-platforms": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "04f3d6788b63",
+      "url": "https://medium.com/@clive-shirley/04f3d6788b63",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:14:20.059Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2022-02-14-how-i-get-through-a-day-at-babylon": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "b6ff17cc48b8",
+      "url": "https://medium.com/@clive-shirley/b6ff17cc48b8",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:14:19.396Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2022-03-28-know-thy-runtime": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "fa570bbd5071",
+      "url": "https://medium.com/@clive-shirley/fa570bbd5071",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:14:18.338Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2025-01-22-payment-close-to-shipment": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "7970ffebb179",
+      "url": "https://medium.com/@clive-shirley/7970ffebb179",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:14:17.855Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2025-03-12-carving-out-a-shared-service": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "8c57884019ca",
+      "url": "https://medium.com/@clive-shirley/8c57884019ca",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:14:16.694Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2025-04-16-decommissioning-a-telehealth-platform": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "ba7b9bf31163",
+      "url": "https://medium.com/@clive-shirley/ba7b9bf31163",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:14:16.172Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2025-05-14-migrating-stripe-subscriptions-between-accounts": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "2215d2a73812",
+      "url": "https://medium.com/@clive-shirley/2215d2a73812",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:14:15.413Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2025-07-02-designing-for-human-latency": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "900661225ba5",
+      "url": "https://medium.com/@clive-shirley/900661225ba5",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:14:14.948Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2025-08-06-when-shared-nothing-duplicates-everything": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "b468c515a29e",
+      "url": "https://medium.com/@clive-shirley/b468c515a29e",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:14:13.765Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2025-09-03-an-eligibility-file-is-a-contract": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "15956ba16033",
+      "url": "https://medium.com/@clive-shirley/15956ba16033",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:14:13.145Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2025-10-15-make-the-invoice-service-dumber": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "a817f5de2e59",
+      "url": "https://medium.com/@clive-shirley/a817f5de2e59",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:14:11.917Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2025-11-12-preparing-for-a-tv-campaign": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "0bd4b1b8c0cf",
+      "url": "https://medium.com/@clive-shirley/0bd4b1b8c0cf",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:14:10.674Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2025-12-10-discount-stacking-and-payment-accounts": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "997f0105759f",
+      "url": "https://medium.com/@clive-shirley/997f0105759f",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:14:09.719Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2026-02-11-load-testing-autoscaling-unsafe": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "7c885a83245e",
+      "url": "https://medium.com/@clive-shirley/7c885a83245e",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:14:08.780Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2026-03-31-spec-driven-agentic-workflow": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "604438f7fbf1",
+      "url": "https://medium.com/@clive-shirley/604438f7fbf1",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:14:07.762Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2026-04-22-evaluating-a-paas-on-aws": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "066bb288678b",
+      "url": "https://medium.com/@clive-shirley/066bb288678b",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:14:06.245Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2026-05-06-ai-native-workflow-with-pi": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "0f92e05dc364",
+      "url": "https://medium.com/@clive-shirley/0f92e05dc364",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:14:05.057Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2026-05-27-bringing-e-signing-in-house": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "0ae454d6c6ce",
+      "url": "https://medium.com/@clive-shirley/0ae454d6c6ce",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:14:00.622Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2026-06-10-pause-is-not-a-status": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "816abee9c196",
+      "url": "https://medium.com/@clive-shirley/816abee9c196",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:13:59.510Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2026-06-24-rotating-credentials-without-downtime": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "1d62041b139d",
+      "url": "https://medium.com/@clive-shirley/1d62041b139d",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:13:57.900Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2026-07-08-search-then-create-is-a-race": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "7950aecf88bd",
+      "url": "https://medium.com/@clive-shirley/7950aecf88bd",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:13:56.872Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2026-07-22-one-list-price-many-coupons": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "9877b57078fb",
+      "url": "https://medium.com/@clive-shirley/9877b57078fb",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:13:55.307Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2026-08-05-fix-dx-before-replatforming": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "06e8cb4e1a88",
+      "url": "https://medium.com/@clive-shirley/06e8cb4e1a88",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:13:53.681Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2026-08-19-substrate-was-the-problem": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "79257cc03ecd",
+      "url": "https://medium.com/@clive-shirley/79257cc03ecd",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:13:52.682Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2026-09-02-data-residency-without-a-full-stack": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "dce446720df7",
+      "url": "https://medium.com/@clive-shirley/dce446720df7",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:13:44.807Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2026-09-16-cheaper-platform-isnt-cheaper-migration": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "ac22d77b2e15",
+      "url": "https://medium.com/@clive-shirley/ac22d77b2e15",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:13:43.348Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2026-09-30-how-i-work-today": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "d998a3db25b9",
+      "url": "https://medium.com/@clive-shirley/d998a3db25b9",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:13:42.435Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2026-10-01-medley-one-command-local-stack": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "bf8dea658e78",
+      "url": "https://medium.com/@clive-shirley/bf8dea658e78",
+      "publication": "Notes from the build",
+      "at": "2026-10-01T13:13:39.715Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2026-10-05-adversarial-tests-before-code": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "b4822239af38",
+      "url": "https://medium.com/@clive-shirley/b4822239af38",
+      "publication": "Notes from the build",
+      "at": "2026-10-06T14:17:09.009Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2026-10-05-right-size-every-token": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "5245e7eccf36",
+      "url": "https://medium.com/@clive-shirley/5245e7eccf36",
+      "publication": "Notes from the build",
+      "at": "2026-10-06T14:17:06.906Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2026-10-05-skills-are-commands-agents-are-specialists": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "31e5ddde168e",
+      "url": "https://medium.com/@clive-shirley/31e5ddde168e",
+      "publication": "Notes from the build",
+      "at": "2026-10-06T14:17:05.173Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2026-10-05-the-author-is-compromised": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "62a14ff60daf",
+      "url": "https://medium.com/@clive-shirley/62a14ff60daf",
+      "publication": "Notes from the build",
+      "at": "2026-10-06T14:17:03.299Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2026-10-05-transparent-hooks-beat-explicit-orchestration": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "df582ea0dfbe",
+      "url": "https://medium.com/@clive-shirley/df582ea0dfbe",
+      "publication": "Notes from the build",
+      "at": "2026-10-06T14:16:59.421Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2026-10-07-modelling-pharmacy-claims-in-fhir": {
+    "linkedin": {
+      "status": "published",
+      "externalId": "urn:li:share:7513516498250940417",
+      "sourceUrl": "https://www.shirleyconsulting.co.uk/architecture/2026/10/07/modelling-pharmacy-claims-in-fhir.html",
+      "at": "2026-10-07T08:32:08Z",
+      "provenance": {
+        "kind": "github-actions",
+        "workflow": "Deploy to GitHub Pages",
+        "runId": 37594293520
+      }
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "b6a4960efdb0",
+      "url": "https://medium.com/@clive-shirley/b6a4960efdb0",
+      "publication": "Notes from the build",
+      "at": "2026-10-12T11:57:02.101Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2026-10-12-good-engineering-habits-age-better-than-technology": {
+    "linkedin": {
+      "status": "published",
+      "externalId": "urn:li:share:7515377811830824960",
+      "sourceUrl": "https://www.shirleyconsulting.co.uk/development/2026/10/12/good-engineering-habits-age-better-than-technology.html",
+      "at": "2026-10-12T11:48:19Z",
+      "provenance": {
+        "kind": "github-actions",
+        "workflow": "Deploy to GitHub Pages",
+        "runId": 38244900153
+      }
+    },
+    "medium": {
+      "status": "draft",
+      "externalId": "07d4e9592a47",
+      "url": "https://medium.com/@clive-shirley/07d4e9592a47",
+      "publication": "Notes from the build",
+      "at": "2026-10-12T11:57:00.534Z",
+      "provenance": {
+        "kind": "migrated-ledger"
+      }
+    }
+  },
+  "2026-10-21-platform-limits-shape-products-more-than-ideas": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; Medium backfill not approved"
+    }
+  },
+  "2026-10-28-mobile-was-never-the-hard-part": {
+    "linkedin": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
+    },
+    "medium": {
+      "status": "skipped",
+      "reason": "Historical article at rollout; Medium backfill not approved"
+    }
+  }
+}

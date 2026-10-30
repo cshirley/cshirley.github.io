@@ -4,6 +4,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { parse as parseYaml } from 'yaml';
+import { approvalOk, approvalStatus, fingerprint, readBaseline } from './approval.mjs';
 import { root } from './dist.mjs';
 
 export const postsDir = path.join(root, 'src/content/posts');
@@ -21,12 +22,21 @@ export const splitFrontMatter = (src) => {
   return m ? { yaml: m[1], body: src.slice(m[0].length) } : { yaml: '', body: src };
 };
 
-export async function loadPosts(now = Date.now()) {
-  const files = (await readdir(postsDir)).filter((f) => f.endsWith('.md')).sort();
+/**
+ * sourceRoot lets callers read another checkout (for example the deployed snapshot). Approval
+ * status is part of every post, so the same eligibility rule applies to authoring and publishing.
+ */
+export async function loadPosts(now = Date.now(), { sourceRoot = root } = {}) {
+  const dir = path.join(sourceRoot, 'src/content/posts');
+  const baseline = readBaseline(sourceRoot);
+  const files = (await readdir(dir)).filter((f) => f.endsWith('.md')).sort();
   return Promise.all(
     files.map(async (file) => {
-      const src = await readFile(path.join(postsDir, file), 'utf8');
-      const fm = parseYaml(splitFrontMatter(src).yaml) ?? {};
+      const src = await readFile(path.join(dir, file), 'utf8');
+      const { yaml, body } = splitFrontMatter(src);
+      const fm = parseYaml(yaml) ?? {};
+      const current = await fingerprint(sourceRoot, fm, body);
+      const approval = fm.approval ? { at: String(fm.approval.at ?? ''), fingerprint: String(fm.approval.fingerprint ?? '') } : null;
       const id = file.replace(/\.md$/, '');
       const date = new Date(fm.date);
       const slug = id.replace(/^\d{4}-\d{2}-\d{2}-/, '');
@@ -40,9 +50,17 @@ export async function loadPosts(now = Date.now()) {
       ].join('/')}.html`;
       const draft = fm.draft === true;
       const published = fm.published !== false;
+      const approvalState = approvalStatus({ id, approval, fingerprint: current }, baseline);
       return {
         id,
-        file: path.join(postsDir, file),
+        file: path.join(dir, file),
+        sourceRoot,
+        fm,
+        body,
+        approval,
+        fingerprint: current,
+        approvalStatus: approvalState,
+        approvalOk: approvalOk(approvalState),
         slug,
         title: String(fm.title ?? slug),
         description: fm.description ? String(fm.description) : '',

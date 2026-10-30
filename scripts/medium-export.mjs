@@ -2,10 +2,10 @@
 /**
  * Export blog posts as Medium-friendly HTML + images, ready to paste into Medium's editor.
  *
- *   npm run medium -- <post>… [--out dir] [--image-base https://…]
- *   npm run medium -- <post>… --publish
- *   npm run medium -- --all [--live]
- *   npm run medium -- --list          print the ids of live posts as JSON and exit
+ *   npm run medium:export -- <post>… [--out dir] [--image-base https://…]
+ *   npm run medium:export -- <post>… --publish
+ *   npm run medium:export -- --all [--live]
+ *   npm run medium:export -- --list          print the ids of live posts as JSON and exit
  *
  * <post> is a file id (2026-05-06-ai-native-workflow-with-pi), a slug (ai-native-workflow-with-pi)
  * or any unique part of one. Drafts and scheduled posts can be exported too.
@@ -37,8 +37,7 @@ import { chromium } from 'playwright-core';
 import { parse as parseYaml } from 'yaml';
 import astroConfig from '../astro.config.mjs';
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const postsDir = path.join(root, 'src/content/posts');
+const toolRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SITE = String(astroConfig.site).replace(/\/$/, '');
 
 const { values: opts, positionals } = parseArgs({
@@ -48,16 +47,22 @@ const { values: opts, positionals } = parseArgs({
     live: { type: 'boolean', default: false },
     list: { type: 'boolean', default: false },
     out: { type: 'string', default: 'medium-export' },
+    'source-root': { type: 'string' },
     'image-base': { type: 'string' },
     publish: { type: 'boolean', default: false },
     help: { type: 'boolean', short: 'h', default: false },
   },
 });
 
+// Content comes from --source-root (for example the deployed snapshot); default is this checkout.
+// A snapshot needs node_modules (symlink it) because Astro runs from there.
+const root = opts['source-root'] ? path.resolve(opts['source-root']) : toolRoot;
+const postsDir = path.join(root, 'src/content/posts');
+
 if (opts.help || (!opts.all && !opts.list && positionals.length === 0)) {
-  console.log(`Usage: npm run medium -- <post>… [--out dir] [--image-base https://host/path]
-       npm run medium -- <post>… --publish
-       npm run medium -- --all
+  console.log(`Usage: npm run medium:export -- <post>… [--out dir] [--image-base https://host/path]
+       npm run medium:export -- <post>… --publish
+       npm run medium:export -- --all
 
   <post>          post file id, slug, or a unique part of one
   --all           export every post
@@ -65,6 +70,7 @@ if (opts.help || (!opts.all && !opts.list && positionals.length === 0)) {
   --publish       write to public/medium/<post-id>/ (deployed with the site) using absolute
                   image URLs, so Medium can import https://…/medium/<post-id>/
   --out           output directory (default: medium-export)
+  --source-root   read posts from another checkout, e.g. the deployed snapshot (default: this one)
   --image-base    public URL where you will host each post's images/ folder; image src
                   becomes <image-base>/<post-id>/images/<file> so Medium can fetch them`);
   process.exit(opts.help ? 0 : 1);
@@ -353,7 +359,7 @@ ${description}${body}
 
 /** index.json: every copy in the output dir, for finding import URLs and for the smoke test. */
 async function writeIndex(allPosts) {
-  const outRoot = path.resolve(root, opts.out);
+  const outRoot = path.resolve(toolRoot, opts.out);
   const dirs = new Set(
     (await readdir(outRoot, { withFileTypes: true }).catch(() => []))
       .filter((e) => e.isDirectory())
@@ -371,7 +377,7 @@ async function writeIndex(allPosts) {
 
 async function exportPost(browser, origin, post) {
   const canonical = SITE + post.path;
-  const outDir = path.resolve(root, opts.out, post.id);
+  const outDir = path.resolve(toolRoot, opts.out, post.id);
   const imgDir = path.join(outDir, 'images');
   const imageRef = (file) =>
     opts['image-base'] ? `${opts['image-base'].replace(/\/$/, '')}/${post.id}/images/${file}` : `images/${file}`;
@@ -440,7 +446,7 @@ async function exportPost(browser, origin, post) {
     const body = await tab.evaluate(toMediumHtml, { site: SITE, canonical, shots, images });
     await writeFile(path.join(outDir, 'index.html'), page({ post, canonical, body }));
 
-    const rel = path.relative(root, outDir);
+    const rel = path.relative(toolRoot, outDir);
     console.log(`✓ ${post.id}\n    ${rel}/index.html  (${seq} image${seq === 1 ? '' : 's'})`);
     if (opts.publish) {
       console.log(`    import URL (after deploy): ${SITE}/medium/${post.id}/`);
@@ -465,7 +471,7 @@ if (opts.live) {
 }
 // A full publish replaces every copy, so posts that are no longer live (e.g. moved back to
 // draft) don't keep a public copy.
-if (opts.publish && opts.all) await rm(path.resolve(root, opts.out), { recursive: true, force: true });
+if (opts.publish && opts.all) await rm(path.resolve(toolRoot, opts.out), { recursive: true, force: true });
 const server = await dev({
   root,
   logLevel: 'error',
