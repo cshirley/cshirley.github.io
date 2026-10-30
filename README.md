@@ -26,6 +26,7 @@ SHOW_DRAFTS=1 npm run build   # production build including drafts, for review
 | `src/data/lessons.ts` | Curated lesson summaries grouped by problem, linked to original article ids |
 | `src/site.ts` | Name, contact links, navigation, analytics ID |
 | `src/content/posts/` | Blog posts (Markdown, `YYYY-MM-DD-slug.md`) |
+| `docs/features/` | Feature briefs, technical designs and implementation plans; start with [publishing workflow](docs/features/publishing-workflow/brief.md) |
 | `src/pages/` | Home, about, writing, contact, 404; `[...path].astro` renders posts |
 | `src/components/`, `src/layouts/` | Header, footer, icons, post list, base layout |
 | `src/styles/global.css` | Design system (light/dark themes, typography, components) |
