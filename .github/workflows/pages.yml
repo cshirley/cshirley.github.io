@@ -144,9 +144,8 @@ jobs:
     permissions:
       contents: write # ledger commits only (src/data/crosspost-state.json), via GITHUB_TOKEN
     env:
-      # ROLLOUT SWITCH. While set, every trigger and input is a dry run: no API writes,
-      # reservations, ledger commits or pushes. The separate activation commit removes this line.
-      CROSSPOST_FORCE_DRY_RUN: '1'
+      # To pause all publishing, add `CROSSPOST_FORCE_DRY_RUN: '1'` here: every trigger and input
+      # then becomes a dry run (no API writes, reservations, ledger commits or pushes).
       SOURCE_SHA: ${{ needs.build.outputs.sha }}
       BUILT_AT: ${{ needs.build.outputs.built_at }}
       RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

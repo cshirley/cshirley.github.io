@@ -477,7 +477,8 @@ test('wiring: package scripts expose the intended surface; old publishing paths 
   assert.match(pkg.scripts.verify, /check:approval/);
   const wf = readFileSync(path.join(repo, '.github/workflows/pages.yml'), 'utf8');
   assert.doesNotMatch(wf, /linkedin-post\.mjs|linkedin-publish|medium-publish/);
-  assert.match(wf, /CROSSPOST_FORCE_DRY_RUN: '1'/, 'rollout starts forced dry-run');
+  assert.doesNotMatch(wf, /^\s+CROSSPOST_FORCE_DRY_RUN:/m, 'activated: the rollout switch is off (re-add the line to pause publishing)');
+  assert.match(wf, /\[ "\$CROSSPOST_FORCE_DRY_RUN" = "1" \] && dry=true/, 'the pause switch is still honoured');
   assert.match(wf, /group: \$\{\{ \(github\.event_name != 'pull_request' && github\.ref == 'refs\/heads\/master'\)/);
   assert.equal((wf.match(/cancel-in-progress/g) ?? []).length, 1, 'no job-level concurrency');
   assert.match(wf, /crosspost:\n    if: github\.event_name != 'pull_request' && github\.ref == 'refs\/heads\/master'/);
