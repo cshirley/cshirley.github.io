@@ -1,6 +1,6 @@
 # Publishing workflow: testing plan
 
-Status: steps 1-3 can be run now. Steps 4-7 need a push or real publishing and wait for explicit go-ahead.
+Status: stages 1-4 done (including the merged `master` dry run and a manual override dry run on a real article). Stage 5 (activation) is in the activation PR; stages 6-7 follow.
 
 Feature documents: [Brief](brief.md) · [Design](design.md) · [Plan](plan.md) · **Testing**.
 
@@ -67,7 +67,7 @@ change to `persist.mjs` or the runner.
 
 ## 4. Actions dry run (needs a push)
 
-`pages.yml` ships with `CROSSPOST_FORCE_DRY_RUN: '1'`, so every trigger is a dry run.
+`pages.yml` shipped with `CROSSPOST_FORCE_DRY_RUN: '1'`, so every trigger was a dry run. Done on `master` (run for `ae2e0cd`: empty queue, no bot commits) and via a manual dispatch with an override on a real article (Chrome export, credentials and live check passed on the runner).
 
 1. Push the branch and open a PR. Build and checks run; `crosspost` does not (master only).
 2. After merging, or via a manual run, inspect the job summary:
@@ -89,7 +89,7 @@ Optionally repeat with `-f article_ids=<id> -f override_skipped=true` to preview
 ## 5. Activation review (before real publishing)
 
 - Review the dry-run summaries and the committed state: baseline, the two Medium articles currently `skipped`, and any article that went live since the baseline was captured.
-- Refresh the baseline for those articles, then remove the old `linkedin-posted.json` and `medium-posted.json`.
+- Refresh the baseline for those articles (none went live since it was captured), then remove the old `linkedin-posted.json` and `medium-posted.json`.
 - Confirm credentials (stage 3) and branch push permission.
 - In a separate commit, delete the `CROSSPOST_FORCE_DRY_RUN` line.
 

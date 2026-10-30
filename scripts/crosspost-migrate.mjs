@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 /**
+ * HISTORICAL: this migration has been run and the old ledgers were deleted, so it cannot be repeated
+ * as is. Kept as a record of how src/data/crosspost-state.json was built.
+ *
  * One-off migration of the separate Medium and LinkedIn ledgers into src/data/crosspost-state.json,
  * plus the reviewed historical baseline. Prints everything for review; writes only with --write.
  *
