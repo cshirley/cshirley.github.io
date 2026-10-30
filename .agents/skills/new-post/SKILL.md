@@ -19,17 +19,17 @@ Ask only for what's missing:
 - **Tags:** up to about five, chosen from `TAGS` in `src/data/taxonomy.ts`. Prefer existing tags.
   Only propose a new tag if nothing fits, and add it to the taxonomy file first.
 - **Date:** leave it out to use the next free slot in the schedule (fortnightly Wednesdays,
-  09:00 UK time). Check `npm run schedule` if the user cares about timing.
+  09:00 UK time). Check `npm run post:status` if the user cares about timing.
 
 ## 2. Create the file
 
 ```bash
-npm run new-post -- --title "Make the Invoice Service Dumber" --category Payments \
+npm run post:add -- --title "Make the Invoice Service Dumber" --category Payments \
   --tags "SOLID,refactoring,Stripe" \
   --description "One or two sentences, 80-320 characters, saying what the post argues."
 ```
 
-Optional: `--date YYYY-MM-DD`, `--time HH:MM` (UK local time), `--slug short-slug`. The script
+Optional: `--date YYYY-MM-DD` (a proposed date only), `--time HH:MM` (UK local time), `--slug short-slug`. The script
 rejects unknown categories or tags and suggests close matches. It refuses duplicate slugs. It
 prints the future URL and when the post will go live.
 
@@ -51,11 +51,11 @@ draft.
 ## 4. Preview
 
 `npm run dev` serves drafts at http://localhost:4321 with live reload. The URL path is the one
-`new-post` printed.
+`post:add` printed.
 
 ## Rules
 
-- Keep `draft: true` until the user decides to publish. Publishing is a separate step: the user
-  can run the `publish-post` skill.
+- Keep `draft: true` until the user decides to publish. The next steps are `npm run post:approve`
+  then `post:schedule`: the user can run the `publish-post` skill.
 - Don't invent facts, numbers, employers or quotes. Ask.
 - Don't commit unless asked.

@@ -4,13 +4,37 @@ on:
   push:
     branches: [master]
   pull_request:
+  # Manual runs still build, deploy and smoke-test before any cross-posting, and only from master.
+  # Inputs affect manual runs only; push and scheduled runs use the automatic defaults.
   workflow_dispatch:
+    inputs:
+      destination:
+        description: Cross-posting destinations for this run
+        type: choice
+        options: [both, medium, linkedin]
+        default: both
+      article_ids:
+        description: Exact article IDs (space or newline separated). Empty = the normal eligible queue
+        type: string
+        default: ''
+      dry_run:
+        description: Preview only (no external writes, reservations, ledger commits or pushes)
+        type: boolean
+        default: true
+      override_skipped:
+        description: Allow selected historical/skipped articles (needs article IDs)
+        type: boolean
+        default: false
+      bypass_linkedin_daily_allowance:
+        description: Bypass LinkedIn's daily allowance (needs article IDs)
+        type: boolean
+        default: false
   # Daily rebuild so future-dated (scheduled) posts publish on their date.
   # Posts are dated 09:00 UK time (08:00 UTC in summer, 09:00 UTC in winter), so the run must
   # come after 09:00 UTC to publish them on the day all year round.
   # Off-the-hour minutes: GitHub delays/drops top-of-hour cron runs under load.
   # Scheduled runs are also dropped or delayed by hours at random, so several slots give
-  # redundancy. Rebuilds are idempotent; concurrency cancels any overlap.
+  # redundancy. Rebuilds are idempotent; trusted runs queue behind each other instead of cancelling.
   schedule:
     - cron: '17 9 * * *'
     - cron: '47 10 * * *'
@@ -21,14 +45,31 @@ permissions:
   pages: write
   id-token: write
 
+# One group for every trusted master run (push, schedule, manual) serialises deployment and
+# cross-posting. Pull requests and other refs get their own groups so they can never replace a
+# pending trusted run. Never cancel a trusted run midway: it may be publishing.
 concurrency:
-  group: pages-${{ github.ref }}
-  cancel-in-progress: true
+  group: ${{ (github.event_name != 'pull_request' && github.ref == 'refs/heads/master') && 'pages-master' || format('pages-{0}', github.ref) }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      sha: ${{ steps.identity.outputs.sha }}
+      built_at: ${{ steps.identity.outputs.built_at }}
     steps:
+      - name: Reject manual runs from other branches
+        if: github.event_name == 'workflow_dispatch' && github.ref != 'refs/heads/master'
+        run: |
+          echo "::error::Manual runs are only allowed from master (got $GITHUB_REF)"
+          exit 1
+      # The exact commit and time this deployment is built from. Cross-posting reads its content
+      # from this commit, never from a newer master.
+      - id: identity
+        run: |
+          echo "sha=$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+          echo "built_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
@@ -42,6 +83,10 @@ jobs:
       - name: Check agent skills (.agents/skills, AGENTS.md)
         if: github.event_name != 'schedule'
         run: npm run check:skills
+      # Fatal on every trigger, including scheduled rebuilds: a post that is not a draft must be
+      # approved and unchanged since approval, so hand-editing `draft: false` cannot release it.
+      - name: Check post approval
+        run: npm run check:approval
       # Fails on invalid front matter (src/content.config.ts, src/data/taxonomy.ts).
       - run: npm run build
       # Post-build checks block deploys on push and PRs. On the daily scheduled rebuild they only
@@ -87,11 +132,178 @@ jobs:
       - name: Submit new URLs to IndexNow
         run: node scripts/indexnow.mjs --since "$RUNNER_TEMP/sitemap-before.txt"
         continue-on-error: true
-      # Share new posts on LinkedIn (needs LINKEDIN_ACCESS_TOKEN secret and LINKEDIN_AUTHOR variable;
-      # skips if unset). Never fails the deploy.
-      - name: Share new posts on LinkedIn
-        run: node scripts/linkedin-post.mjs --since "$RUNNER_TEMP/sitemap-before.txt"
-        continue-on-error: true
+
+  # The only publishing path: runs after this run's own deployment and smoke test. Failure here
+  # never undoes the deployment. Needs MEDIUM_TOKEN / LINKEDIN_ACCESS_TOKEN secrets and the
+  # LINKEDIN_AUTHOR (and optional MEDIUM_PUBLICATION, LINKEDIN_VERSION) variables.
+  crosspost:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
+    needs: [build, deploy]
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    permissions:
+      contents: write # ledger commits only (src/data/crosspost-state.json), via GITHUB_TOKEN
+    env:
+      # ROLLOUT SWITCH. While set, every trigger and input is a dry run: no API writes,
+      # reservations, ledger commits or pushes. The separate activation commit removes this line.
+      CROSSPOST_FORCE_DRY_RUN: '1'
+      SOURCE_SHA: ${{ needs.build.outputs.sha }}
+      BUILT_AT: ${{ needs.build.outputs.built_at }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      LINKEDIN_AUTHOR: ${{ vars.LINKEDIN_AUTHOR }}
+      MEDIUM_PUBLICATION: ${{ vars.MEDIUM_PUBLICATION }}
+      LINKEDIN_VERSION: ${{ vars.LINKEDIN_VERSION }}
+      CP_DIR: ${{ runner.temp }}/crosspost
+    steps:
+      - name: Trust guard
+        run: |
+          if [ "$GITHUB_REF" != "refs/heads/master" ] || [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            echo "::error::Cross-posting only runs for trusted master deployments"; exit 1
+          fi
+      # Tooling, reviewed adapter code and the ledger come from current master...
+      - uses: actions/checkout@v7
+        with:
+          ref: master
+          path: trunk
+          fetch-depth: 0
+      # ...and article content from the commit that was actually deployed.
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.build.outputs.sha }}
+          path: snapshot
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: trunk/.nvmrc
+          cache: npm
+          cache-dependency-path: trunk/package-lock.json
+      - run: npm ci
+        working-directory: trunk
+      - name: Link dependencies into the snapshot and check Chrome
+        run: |
+          ln -s "$GITHUB_WORKSPACE/trunk/node_modules" "$GITHUB_WORKSPACE/snapshot/node_modules"
+          google-chrome --version
+          git -C trunk config user.name "github-actions[bot]"
+          git -C trunk config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      # Manual inputs are validated and passed through environment variables, never interpolated
+      # into shell code. Push and scheduled runs ignore inputs entirely.
+      - name: Resolve mode and inputs
         env:
+          IN_DEST: ${{ inputs.destination }}
+          IN_IDS: ${{ inputs.article_ids }}
+          IN_DRY: ${{ inputs.dry_run }}
+          IN_OVERRIDE: ${{ inputs.override_skipped }}
+          IN_BYPASS: ${{ inputs.bypass_linkedin_daily_allowance }}
+        run: |
+          dest=both; ids=""; override=""; bypass=""; dry=false
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
+            dest="$IN_DEST"; ids="$IN_IDS"
+            case "$dest" in both|medium|linkedin) ;; *) echo "::error::bad destination"; exit 1;; esac
+            if printf '%s' "$ids" | LC_ALL=C grep -qv '^[A-Za-z0-9._ -]*$'; then echo "::error::article_ids may only contain IDs separated by spaces or newlines"; exit 1; fi
+            [ "$IN_DRY" = "true" ] && dry=true
+            [ "$IN_OVERRIDE" = "true" ] && override=--override-skipped
+            [ "$IN_BYPASS" = "true" ] && bypass=--bypass-linkedin-allowance
+            if { [ -n "$override" ] || [ -n "$bypass" ]; } && [ -z "$(echo $ids)" ]; then echo "::error::overrides need explicit article IDs"; exit 1; fi
+          fi
+          [ "$CROSSPOST_FORCE_DRY_RUN" = "1" ] && dry=true
+          {
+            echo "CP_DEST=$dest"
+            echo "CP_OVERRIDE=$override"
+            echo "CP_BYPASS=$bypass"
+            echo "CP_DRY=$dry"
+            echo "CP_IDS<<EOF_IDS"
+            printf '%s\n' "$ids"
+            echo "EOF_IDS"
+          } >> "$GITHUB_ENV"
+          mkdir -p "$CP_DIR"
+
+      - name: Dry run (queue, batches, blocks; no writes)
+        if: env.CP_DRY == 'true'
+        working-directory: trunk
+        env:
+          MEDIUM_TOKEN: ${{ secrets.MEDIUM_TOKEN }}
           LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
-          LINKEDIN_AUTHOR: ${{ vars.LINKEDIN_AUTHOR }}
+        run: |
+          node scripts/crosspost.mjs dry-run \
+            --source-root "$GITHUB_WORKSPACE/snapshot" --state "$GITHUB_WORKSPACE/trunk/src/data/crosspost-state.json" \
+            --source-sha "$SOURCE_SHA" --eligible-at "$BUILT_AT" --work-dir "$CP_DIR" \
+            --destination "$CP_DEST" --ids "$CP_IDS" $CP_OVERRIDE $CP_BYPASS
+
+      # 1. Prepare and write needs-review reservations locally.
+      - name: Reserve
+        id: reserve
+        if: env.CP_DRY != 'true'
+        working-directory: trunk
+        env:
+          MEDIUM_TOKEN: ${{ secrets.MEDIUM_TOKEN }}
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+        run: |
+          node scripts/crosspost.mjs reserve \
+            --source-root "$GITHUB_WORKSPACE/snapshot" --state "$GITHUB_WORKSPACE/trunk/src/data/crosspost-state.json" \
+            --source-sha "$SOURCE_SHA" --eligible-at "$BUILT_AT" --run-url "$RUN_URL" --work-dir "$CP_DIR" \
+            --manifest "$CP_DIR/manifest.json" \
+            --destination "$CP_DEST" --ids "$CP_IDS" $CP_OVERRIDE $CP_BYPASS
+      # 2. Commit (the pre-commit hook runs npm run verify) and push; confirm on the remote.
+      #    Nothing is submitted anywhere unless this succeeds.
+      - name: Persist reservations
+        id: persist_reserve
+        if: steps.reserve.outcome == 'success'
+        working-directory: trunk
+        run: node scripts/crosspost.mjs persist --phase reserve --manifest "$CP_DIR/manifest.json" --state "$GITHUB_WORKSPACE/trunk/src/data/crosspost-state.json"
+      # 3. One creation attempt per confirmed reservation. Failure here must not skip finalising.
+      - name: Publish
+        id: publish
+        if: steps.persist_reserve.outcome == 'success'
+        continue-on-error: true
+        working-directory: trunk
+        env:
+          MEDIUM_TOKEN: ${{ secrets.MEDIUM_TOKEN }}
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+        run: |
+          node scripts/crosspost.mjs execute --manifest "$CP_DIR/manifest.json" \
+            --source-root "$GITHUB_WORKSPACE/snapshot" --state "$GITHUB_WORKSPACE/trunk/src/data/crosspost-state.json" \
+            --work-dir "$CP_DIR" --source-sha "$SOURCE_SHA"
+      # 4. Record results even after a publisher failure. If this fails, the pushed reservations
+      #    remain and keep later runs from recreating the content.
+      - name: Persist results
+        id: persist_results
+        if: always() && steps.persist_reserve.outcome == 'success'
+        working-directory: trunk
+        run: node scripts/crosspost.mjs persist --phase results --manifest "$CP_DIR/manifest.json" --state "$GITHUB_WORKSPACE/trunk/src/data/crosspost-state.json"
+      # Recovery data: ledger snapshot, attempts, per-attempt results. No credentials are written
+      # to any of these files.
+      - name: Collect recovery data
+        id: collect
+        if: always() && steps.reserve.outcome != 'skipped'
+        run: |
+          cp trunk/src/data/crosspost-state.json "$CP_DIR/ledger-snapshot.json" || true
+          echo "Source SHA: $SOURCE_SHA" > "$CP_DIR/persistence.txt"
+          echo "Reservations: ${{ steps.persist_reserve.outcome }}; publish: ${{ steps.publish.outcome }}; results: ${{ steps.persist_results.outcome }}" >> "$CP_DIR/persistence.txt"
+      - name: Upload recovery artifact
+        id: upload
+        if: always() && steps.reserve.outcome != 'skipped'
+        uses: actions/upload-artifact@v4
+        with:
+          name: crosspost-recovery-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/crosspost/manifest.json
+            ${{ runner.temp }}/crosspost/manifest.results.json
+            ${{ runner.temp }}/crosspost/ledger-snapshot.json
+            ${{ runner.temp }}/crosspost/persistence.txt
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Report persistence status
+        if: always() && steps.reserve.outcome != 'skipped'
+        run: |
+          {
+            echo "### Persistence"
+            echo "- reservations pushed: ${{ steps.persist_reserve.outcome }}"
+            echo "- publishing: ${{ steps.publish.outcome }}"
+            echo "- results pushed: ${{ steps.persist_results.outcome }}"
+            echo "- recovery artifact (30 days): ${{ steps.upload.outputs.artifact-url }}"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Fail the run if cross-posting failed
+        if: always() && (steps.reserve.outcome == 'failure' || steps.persist_reserve.outcome == 'failure' || steps.publish.outcome == 'failure' || steps.persist_results.outcome == 'failure')
+        run: |
+          echo "::error::Cross-posting failed or needs review. The deployment itself succeeded. See the summary and recovery artifact."
+          exit 1

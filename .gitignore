@@ -14,7 +14,7 @@ npm-debug.log*
 # OS
 .DS_Store
 
-# Medium exports (npm run medium)
+# Medium exports (npm run medium:export)
 medium-export/
-# Medium import copies (generated locally by the Medium scripts; never committed)
+# Legacy Medium import copies (no longer generated; never committed)
 public/medium/

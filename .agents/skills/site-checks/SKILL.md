@@ -49,7 +49,7 @@ These check every same-site link and image in the build (`dist/`) or in the draf
 - an image missing from `public/assets/`.
 
 Post URLs are `/<category>/<yyyy>/<mm>/<dd>/<slug>.html`. Find the right one with
-`npm run schedule -- --json`, or look it up in `dist/sitemap.xml`.
+`npm run post:status -- --json`, or look it up in `dist/sitemap.xml`.
 
 ## Published URLs: `npm run check:urls`
 
@@ -65,19 +65,13 @@ live post. It refuses builds that contain drafts.
 
 ## Smoke test: `npm run smoke [base-url]`
 
-This runs in CI after each deploy against the live site. It fetches every sitemap URL, the feed
-and each Medium copy listed in `/medium/index.json`. To run it locally, build, start
+This runs in CI after each deploy against the live site. It fetches every sitemap URL and the feed.
+To run it locally, build, start
 `npx astro preview --port 4399` in a separate terminal, then run:
 
 ```bash
 npm run smoke -- http://localhost:4399
 ```
-
-The local run only finds Medium copies if `npm run medium -- --all --live --publish` ran before
-the build.
-
-"No Medium copy" means the Medium export step failed or was skipped. The `medium-crosspost`
-skill explains how the copies are generated.
 
 ## Rules
 

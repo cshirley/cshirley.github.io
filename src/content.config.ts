@@ -47,6 +47,8 @@ const posts = defineCollection({
       categories: z.array(z.enum(CATEGORIES)).min(1, 'at least one category is required'),
       tags: z.array(tag).nullish().transform((t) => t ?? []),
       author: z.object({ display_name: z.string(), email: z.string().optional() }).optional(),
+      /** Set by `npm run post:approve`; checked by `npm run check:approval`. */
+      approval: z.object({ at: z.coerce.string(), fingerprint: z.string() }).optional(),
     })
     .superRefine((post, ctx) => {
       if (!post.draft && post.description?.startsWith('TODO')) {

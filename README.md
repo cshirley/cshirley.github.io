@@ -35,17 +35,28 @@ SHOW_DRAFTS=1 npm run build   # production build including drafts, for review
 
 ## Writing a post
 
+Normal journey: **add → approve → schedule**, then review, commit and push. Building, deploying and
+cross-posting follow automatically from `master`.
+
 ```bash
-npm run new-post -- --title "My Post" --category Engineering --tags "AWS,scaling" \
+npm run post:add -- --title "My Post" --category Engineering --tags "AWS,scaling" \
   --description "One or two sentences for listings, RSS and the post lead."
-npm run schedule                                   # what's queued, real go-live times, next free slot
-npm run schedule -- --move my-post 2026-12-16      # reschedule a post that isn't live yet
+# write, preview (npm run dev) and review the post
+npm run post:approve -- my-post     # records the reviewed content; the post stays a draft
+npm run post:schedule -- my-post --next   # or: --date 2026-12-16 --time 09:00 (UK local)
+npm run post:status                 # editorial state, go-live times, destination outcomes
 ```
 
-`new-post` creates `src/content/posts/YYYY-MM-DD-slug.md` as a draft. It validates the category
-and tags, defaults the date to the next free fortnightly Wednesday at 09:00 UK time, and prints
-the URL and go-live time. Remove `draft: true` to publish. A post with a future date goes live at
-the first build after that date: the daily rebuild, or an earlier push. The front matter looks
+`post:add` creates `src/content/posts/YYYY-MM-DD-slug.md` as a draft with valid taxonomy and a proposed
+date. `post:approve` stores a fingerprint of the reviewed content (title, description, categories,
+tags, author, body and referenced local assets, but not the date) in the front matter. Editing any of
+that makes the approval stale and blocks release until you approve again. `post:schedule` needs a
+current approval and a future date, sets the slot (09:00 UK time by default), clears `draft`, and
+prints the URL and UK/UTC go-live time. These commands only edit local files: nothing is active until
+the changes are reviewed, `npm run verify` passes and they reach `master`. Hand-editing `draft: false`
+does not release a post: `npm run check:approval` fails the build. To edit an approved or scheduled
+post, set `draft: true` again and re-approve. That never retracts external copies already published.
+Live posts cannot be moved with these commands (their URL contains the date). The front matter looks
 like this:
 
 ```markdown
@@ -53,7 +64,10 @@ like this:
 title: My Post
 description: One or two sentences used in listings, RSS and as the post lead.
 date: 2026-10-15 09:00:00 +0100
-draft: true          # remove (or set false) to publish
+draft: true          # post:schedule clears this
+approval:            # written by post:approve
+  at: 2026-10-01T09:00:00Z
+  fingerprint: sha256:...
 categories:
 - Engineering
 tags: []
@@ -139,47 +153,47 @@ npm run indexnow -- --all              # every URL in the live sitemap
 npm run indexnow -- --all --dry-run    # list without submitting
 ```
 
-## Sharing on LinkedIn
+## Cross-posting (Medium and LinkedIn)
 
-Each deploy shares newly published posts on LinkedIn (`scripts/linkedin-post.mjs`). For local use,
-`npm run linkedin:publish` mirrors the Medium workflow: it lists live posts not yet shared,
-accepts post ids/slugs, can post all pending ones, and records shares in
-`src/data/linkedin-posted.json`. The setup, including how to get the access token and member id,
-is in [`docs/linkedin.md`](docs/linkedin.md).
+After a post is live, `pages.yml` submits it to Medium (public publication) and shares a link on
+LinkedIn, using the deployed commit's content. State is in `src/data/crosspost-state.json`, one record
+per article and destination. Historical articles are recorded as `skipped`, so the archive is never
+shared automatically. LinkedIn gets at most one automatic share per UTC day; Medium up to three
+articles per run. Uncertain outcomes become durable `needs-review` blocks instead of being retried.
+Full day-to-day and recovery guidance: [`docs/publishing.md`](docs/publishing.md); LinkedIn token setup:
+[`docs/linkedin.md`](docs/linkedin.md).
 
-## Cross-posting to Medium
-
-Medium's [Import a story](https://medium.com/p/import) only accepts a public URL, so the site hosts a
-Medium-friendly copy of each post for the importer to read. CI generates them on every deploy
-(`npm run medium -- --all --live --publish`), so there is nothing to run or commit. Each live post
-has a copy, and a scheduled post gets its copy on the day it goes live. Drafts and scheduled posts
-never get one, so their content isn't published early.
-
-1. Once the post is live, import its copy at medium.com/p/import:
-   `https://www.shirleyconsulting.co.uk/medium/<post-id>/`. All import URLs are listed at
-   [`/medium/index.json`](https://www.shirleyconsulting.co.uk/medium/index.json).
-2. In the Medium draft, check the images and add up to 5 tags. Under **Story settings → Advanced
-   settings → Customize canonical link**, make sure the canonical link is the original post, not the
-   `/medium/` copy.
-3. Publish.
-
-`public/medium/` is git-ignored. After each deploy, the smoke test checks that every live post has a
-copy.
-
-`scripts/medium-export.mjs` starts the dev server, renders the post in headless Chrome and rewrites
-it using only what Medium supports: h3/h4 headings, plain `<pre>` code blocks, figures and absolute
-links. Mermaid diagrams and tables become PNG screenshots, because Medium supports neither. The copy
-has a canonical link to the original post and sends human visitors there (Medium's importer doesn't
-run JavaScript). Add `?preview` to the URL to view the copy itself. It isn't listed in the sitemap.
-
-Without `--publish`, the export goes to the git-ignored `medium-export/<post-id>/` with relative
-images, for previewing locally or copying and pasting into the Medium editor:
-`npm run medium -- payment-close-to-shipment` (a file id, slug, or unique part of one). Drafts and
-scheduled posts can be exported this way. Needs Google Chrome, or a Playwright Chromium
-(`npx playwright-core install chromium`).
+`npm run medium:export -- <post>` still makes a local, Medium-friendly export in `medium-export/<post-id>/`
+for previewing or pasting (drafts and scheduled posts work too; needs Google Chrome or
+`npx playwright-core install chromium`). It never publishes anything. It starts the dev server,
+renders the post in headless Chrome and rewrites it using only what Medium supports. Mermaid
+diagrams and tables become PNG screenshots. CI does not generate or deploy Medium copies.
 
 ## Deployment
 
 Pushing to `master` runs `.github/workflows/pages.yml`, which builds the site and deploys `dist/`
 to GitHub Pages. Pull requests are built but not deployed. The repository's
 **Settings → Pages → Source** must be set to **GitHub Actions**.
+
+### Cross-posting setup
+
+Add under **Settings → Secrets and variables → Actions**, then check with `gh secret list` and
+`gh variable list` (repository level only; the `crosspost` job doesn't use environments):
+
+| Kind | Name | Notes |
+|------|------|-------|
+| Secret | `MEDIUM_TOKEN` | Existing integration token (Medium no longer issues new ones). Test: `curl -H "Authorization: Bearer $TOKEN" https://api.medium.com/v1/me` |
+| Secret | `LINKEDIN_ACCESS_TOKEN` | Member OAuth token with `w_member_social`; expires after about 60 days, renew by hand |
+| Variable | `LINKEDIN_AUTHOR` | `urn:li:person:<member-id>` |
+| Variable | `MEDIUM_PUBLICATION` | Optional; publication ID, slug or name (currently `notes-from-the-build`). Omit for the personal profile |
+| Variable | `LINKEDIN_VERSION` | Optional `YYYYMM`; default `202511`, confirm it is still supported |
+
+```bash
+gh secret set LINKEDIN_ACCESS_TOKEN                    # prompts, so the token stays out of shell history
+gh variable set LINKEDIN_AUTHOR --body "urn:li:person:<member-id>"
+```
+
+`GITHUB_TOKEN` is automatic. No personal access token is needed. `master` must allow
+`github-actions[bot]` to push `src/data/crosspost-state.json` directly. LinkedIn token and member id
+steps are in [`docs/linkedin.md`](docs/linkedin.md); activation steps are in
+[`docs/publishing.md`](docs/publishing.md).

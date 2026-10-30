@@ -13,16 +13,18 @@ explicit go-ahead before pushing.
 
 1. Find the post: `src/content/posts/YYYY-MM-DD-slug.md`.
 2. Check the date. If it's in the future, the post is **scheduled**, not published now (see the
-   `publish-schedule` skill for when it appears). If the user wants it out now, move it to today
-   while it's still a draft: `npm run schedule -- --move <post> <YYYY-MM-DD>`. This updates the
-   filename and date together. The time stays 09:00 UK. If that hasn't passed yet, the post
-   appears at the first build after 09:00.
+   `publish-schedule` skill for when it appears). If the user wants it out now, schedule it for the
+   next slot: `npm run post:schedule -- <post> --next` (or `--date YYYY-MM-DD [--time HH:MM]`, a
+   future UK-local time; past or immediate dates are refused).
 3. Make sure no placeholders are left: `TODO` in the description or the prose.
 4. If the post hasn't been proofread, suggest the user runs the `proofread` skill first.
 
-## 2. Remove the draft flag
+## 2. Approve and schedule
 
-Delete the `draft: true` line, or set it to `false`.
+After the user has reviewed the final content: `npm run post:approve -- <post>` (records the reviewed
+content; the post stays a draft), then `npm run post:schedule -- <post> --next`. Scheduling clears
+`draft`. Don't hand-edit `draft: false`: `npm run check:approval` rejects it. Editing the post after
+approval makes the approval stale and requires approving again.
 
 ## 3. Verify
 
@@ -67,7 +69,9 @@ site. The post is live when the run is green.
    git add urls.snapshot.txt && git commit -m "[CHORE] Protect URL: <slug>" && git push
    ```
    `urls:update` refuses if the build contains drafts. Rebuild without `SHOW_DRAFTS`.
-2. **Cross-post.** Tell the user they can run the `medium-crosspost` skill.
+2. **Cross-post.** Automatic: the `crosspost` job in the same workflow submits it to Medium and LinkedIn
+   (see `docs/publishing.md`). Check `npm run post:status`; the `medium-crosspost` skill covers manual
+   or recovery runs.
 
 ## Rules
 

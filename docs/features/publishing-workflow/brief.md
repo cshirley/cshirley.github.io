@@ -1,8 +1,8 @@
 # Publishing workflow: feature brief
 
-Status: proposed. No publishing or workflow changes implemented yet.
+Status: implemented in forced dry-run mode (steps 1-5). Verification, Actions dry run, baseline refresh and the separate activation commit remain. Operator guidance: [publishing.md](../../publishing.md).
 
-Feature documents: **Brief** · [Design](design.md) · [Plan](plan.md).
+Feature documents: **Brief** · [Design](design.md) · [Plan](plan.md) · [Testing](testing.md).
 
 Repository paths in these documents are relative to the repository root unless stated otherwise.
 

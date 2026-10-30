@@ -20,9 +20,8 @@ GitHub can delay scheduled runs by minutes, occasionally longer.
 ## Report
 
 ```bash
-npm run schedule            # human-readable
-npm run schedule -- --json  # for processing
-npm run schedule -- --next  # next free slot only
+npm run post:status            # human-readable: editorial state, go-live times, destinations
+npm run post:status -- --json  # for processing
 ```
 
 The report shows:
@@ -34,23 +33,24 @@ The report shows:
   with a suggested fill date.
 - The next free slot.
 
-Options: `--cadence <days>` (default 14) and `--weekday <0-6>` (default 3, Wednesday).
+Options: `--cadence <days>` (default 14) and `--weekday <0-6>` (default 3, Wednesday). The report ends
+with the next free slot; `npm run post:schedule -- <post> --next` uses it.
 
 When summarising for the user, lead with anything flagged.
 
 ## Reschedule
 
 ```bash
-npm run schedule -- --move <post> YYYY-MM-DD
+npm run post:schedule -- <post> --date YYYY-MM-DD [--time HH:MM]
 ```
 
-`<post>` is a file id, slug or unique part of one. The script:
-- renames the file (with `git mv` if tracked);
+`<post>` is a file id, slug or unique part of one. The command needs a current approval (`npm run post:approve -- <post>`), and:
+- renames the file and updates quoted id references, or refuses if destination records exist;
 - rewrites the `date:` line, keeping the UK time of day and using the right offset (`+0000`
   GMT or `+0100` BST);
 - prints the new go-live time and any clash.
 
-It refuses to move a **live** post, because the date is part of its URL. If that's really
+Moving a date alone needs no new approval. It refuses to move a **live** post, because the date is part of its URL. If that's really
 needed, change the post by hand, add the old path to `redirects` in `astro.config.mjs`, and
 run `npm run build && npm run check:urls`. It also refuses a past date for a non-draft post,
 because that would publish it on the next deploy.
