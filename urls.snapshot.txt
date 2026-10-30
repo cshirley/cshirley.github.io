@@ -23,6 +23,8 @@
 /architecture/2026/07/08/search-then-create-is-a-race.html
 /architecture/2026/09/02/data-residency-without-a-full-stack.html
 /architecture/2026/09/16/cheaper-platform-isnt-cheaper-migration.html
+/architecture/2026/10/07/modelling-pharmacy-claims-in-fhir.html
+/architecture/2026/10/21/platform-limits-shape-products-more-than-ideas.html
 /blog/
 /contact/
 /development/2014/10/04/coding-in-the-cloud-practical-fact-or-developer-fiction.html
@@ -30,12 +32,14 @@
 /development/2022/02/14/how-i-get-through-a-day-at-babylon.html
 /development/2022/03/28/know-thy-runtime.html
 /development/2026/09/30/how-i-work-today.html
+/development/2026/10/12/good-engineering-habits-age-better-than-technology.html
 /development/consultancy/business/2015/12/07/delivering-teir-1-retail-bank-platforms.html
 /elements/
 /engineering/2026/04/22/evaluating-a-paas-on-aws.html
 /engineering/2026/06/24/rotating-credentials-without-downtime.html
 /engineering/2026/08/05/fix-dx-before-replatforming.html
 /engineering/2026/10/01/medley-one-command-local-stack.html
+/engineering/2026/10/28/mobile-was-never-the-hard-part.html
 /feed.xml
 /fswire/2013/01/01/fswire-architecture.html
 /fswire/2013/02/25/uri-rules-the-world.html
@@ -45,6 +49,7 @@
 /fswire/2013/09/16/fswire-usp.html
 /generic/
 /googleeefe65d20cfb8e33.html
+/lessons/
 /payments/2025/05/14/migrating-stripe-subscriptions-between-accounts.html
 /payments/2025/10/15/make-the-invoice-service-dumber.html
 /payments/2025/12/10/discount-stacking-and-payment-accounts.html

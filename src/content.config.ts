@@ -40,6 +40,8 @@ const posts = defineCollection({
         .max(DESCRIPTION_MAX, `description should be at most ${DESCRIPTION_MAX} characters`)
         .optional(),
       date: z.coerce.date(),
+      /** Optional last substantive edit; feeds sitemap `lastmod`. The URL still uses `date`. */
+      updated: z.coerce.date().optional(),
       /** Drafts render in `npm run dev` but are excluded from production builds. */
       draft: z.boolean().default(false),
       published: z.boolean().default(true),
