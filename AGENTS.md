@@ -33,9 +33,12 @@ Requires Node.js 22.12+ (`.nvmrc`). Run commands from the repository root.
 ```bash
 npm run dev              # http://localhost:4321, drafts visible
 npm run verify           # everything CI checks before deploy; also runs in the pre-commit hook (npm install enables it)
-npm run new-post -- --title "..." --category <Category> [--tags "a,b"] [--description "..."]
-npm run schedule         # queued posts, real go-live times, next free slot
-npm run medium -- <post> # local Medium-friendly export
+npm run post:add -- --title "..." --category <Category> [--tags "a,b"] [--description "..."]
+npm run post:approve -- <post>          # record reviewed content; stays a draft
+npm run post:schedule -- <post> --next  # or --date YYYY-MM-DD [--time HH:MM]; clears draft
+npm run post:status      # queued posts, go-live times, destination outcomes
+npm run medium:export -- <post>   # local Medium-friendly export (never publishes)
+npm run crosspost -- list         # advanced: cross-post queue (see docs/publishing.md)
 ```
 
 ## Conventions
@@ -50,6 +53,11 @@ npm run medium -- <post> # local Medium-friendly export
 - **Drafts and scheduling:**
   - `draft: true` hides a post from production builds.
   - A post with a future `date` is scheduled and appears at the first build after that date.
+  - Release needs approval: non-draft posts must be approved and unchanged since approval
+    (`npm run check:approval`), unless listed in `src/data/approval-baseline.json`.
+- **Cross-posting:** automatic, from `.github/workflows/pages.yml` only. Never publish to Medium or LinkedIn by other
+  means, never edit `src/data/crosspost-state.json` by hand, and never invoke `npm run crosspost --
+  reserve|execute|persist|reconcile` without the user's explicit go-ahead. See `docs/publishing.md`.
 - **Writing:**
   - Follow `docs/writing-style.md`: British English, no em dashes in prose, and a closing
     `## The general lesson`.
@@ -72,6 +80,8 @@ npm run medium -- <post> # local Medium-friendly export
 | `public/assets/` | Post images (referenced as `/assets/…`) |
 | `scripts/` | Authoring scripts, checks, smoke test, Medium exporter |
 | `docs/writing-style.md` | House style for posts |
+| `docs/publishing.md` | Publishing and cross-posting workflow, recovery, rollout |
 | `docs/linkedin.md` | LinkedIn sharing setup, token renewal |
+| `src/data/crosspost-state.json` | Cross-post ledger (managed by the workflow) |
 | `cspell.config.yaml`, `cspell-words.txt` | Spell check config and accepted words |
 | `urls.snapshot.txt` | Published URLs that must keep working |

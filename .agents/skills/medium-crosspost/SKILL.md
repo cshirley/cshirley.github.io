@@ -1,52 +1,41 @@
 ---
 name: medium-crosspost
-description: Cross-post a live blog post to Medium through Medium's API (or Import a story as a fallback), with the canonical link kept pointing at the original. Finds the post's import URL, previews the Medium copy and walks through import, tags and canonical settings. Use when the user wants to publish, import, syndicate or cross-post a post to Medium.
+description: Cross-post a live blog post to Medium. Explains the automatic workflow, previews a local Medium export, and handles manual or recovery runs through the shared crosspost workflow. Use when the user wants to publish, syndicate or cross-post a post to Medium.
 disable-model-invocation: true
 ---
 
 # Cross-post to Medium
 
-CI no longer generates Medium import copies, so there are no `/medium/<post-id>/` URLs on the live site.
-Cross-post locally with the API script (step 2), or use `npm run medium -- <post>` for a local export.
+Medium cross-posting is automatic: after a post is live, the `crosspost` job in
+`.github/workflows/pages.yml` creates the story with the canonical link pointing at the original, and
+records the status Medium returns in `src/data/crosspost-state.json`. Read `docs/publishing.md` first.
+Never create Medium stories by other means and never edit the ledger by hand.
 
 ## 1. Preview locally (optional)
 
-Run `npm run medium -- <post>` (works for drafts too; needs Chrome). Output goes to
-`medium-export/<post-id>/index.html`, which can also be pasted straight into Medium's editor. Check that:
+Run `npm run medium:export -- <post>` (works for drafts too; needs Chrome). Output goes to
+`medium-export/<post-id>/index.html`. Check that:
 
 - Mermaid diagrams and tables came through as images (Medium supports neither natively).
 - Code blocks are plain `<pre>` blocks. Headings are reduced to Medium's two sizes.
 
-## 2. Cross-post via the Medium API
+## 2. Check status
 
-Needs `MEDIUM_TOKEN` (integration token) in the environment. Never write it to a file or commit it.
-Set `MEDIUM_PUBLICATION=notes-from-the-build` (or pass `--publication notes-from-the-build`) to post
-into that publication; the user is an editor there, so `--public` publishes directly.
+`npm run post:status` shows destination outcomes and unresolved attempts.
+`npm run crosspost -- dry-run --destination medium --ids <id>` shows what a run would do (no writes).
 
-```bash
-npm run medium:publish                              # list live posts not yet on Medium
-npm run medium:publish -- <post> --dry-run          # show payload, post nothing
-npm run medium:publish -- <post>                    # create a Medium DRAFT
-npm run medium:publish -- <post> --public           # publish immediately
-npm run medium:publish-pending [-- --public]       # every pending post, oldest first
-```
+## 3. Manual or recovery runs
 
-The script builds the Medium HTML locally (same as `npm run medium`, needs Chrome), uploads the
-images to Medium, then creates the story with `canonicalUrl` set to the original post and the
-first five tags. It doesn't need CI or a deploy, but only **live** posts are eligible (the
-canonical URL must exist). It defaults to a draft: only use `--public` when the user asks.
-Each success is recorded in `src/data/medium-posted.json`, which stops a post going out twice.
-Commit that file (`[CHORE] Record Medium cross-post`); don't push without the user's go-ahead.
-
-After a draft is created, tell the user to open the returned URL, check images and code blocks,
-then publish from Medium.
-
-### Fallback: manual paste
-
-If the API is unavailable: run `npm run medium -- <post>`, paste `medium-export/<post-id>/index.html`
-into Medium's editor, add up to five tags, then **Story settings → Advanced settings → Customize
-canonical link** and set it to the original post URL. Add the post to the ledger by hand.
+- Run the **Deploy to GitHub Pages** workflow manually from `master` with `destination=medium`,
+  `article_ids=<id>` and `dry_run=false`. Use `override_skipped` only for a historical article the user
+  explicitly wants on Medium. Existing Medium drafts are never recreated.
+- A `needs-review` record needs reconciliation with `npm run crosspost -- reconcile ...`. See
+  `docs/publishing.md`.
+- Do not push or trigger real runs without the user's go-ahead.
 
 ## Rules
 
-- Never commit `public/medium/`. It's git-ignored; CI no longer generates it.
+- Never commit `public/medium/` or `medium-export/`. Both are git-ignored.
+- Fallback if the API is unavailable: paste `medium-export/<post-id>/index.html` into Medium, add up to
+  five tags and set the canonical link to the original URL, then tell the user the ledger needs a
+  reconciliation record.
