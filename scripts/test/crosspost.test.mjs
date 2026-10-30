@@ -468,6 +468,7 @@ test('wiring: package scripts expose the intended surface; old publishing paths 
   assert.match(wf, /dry_run:[\s\S]*default: true/);
   assert.match(wf, /if: always\(\) && steps\.persist_reserve\.outcome == 'success'/, 'results persisted even after publisher failure');
   assert.match(wf, /if: steps\.persist_reserve\.outcome == 'success'/, 'publish only after reservations are confirmed');
+  assert.doesNotMatch(wf, /^ {6}\w+: \$\{\{ *runner\./m, 'runner context is not allowed in job-level env (breaks the whole workflow)');
   assert.match(wf, /upload-artifact/);
   assert.equal(execFileSync('ls', [path.join(repo, '.github/workflows')], { encoding: 'utf8' }).includes('linkedin.yml'), false);
 });

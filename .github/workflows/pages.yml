@@ -153,13 +153,14 @@ jobs:
       LINKEDIN_AUTHOR: ${{ vars.LINKEDIN_AUTHOR }}
       MEDIUM_PUBLICATION: ${{ vars.MEDIUM_PUBLICATION }}
       LINKEDIN_VERSION: ${{ vars.LINKEDIN_VERSION }}
-      CP_DIR: ${{ runner.temp }}/crosspost
     steps:
       - name: Trust guard
         run: |
           if [ "$GITHUB_REF" != "refs/heads/master" ] || [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
             echo "::error::Cross-posting only runs for trusted master deployments"; exit 1
           fi
+          # The runner context is not available in job-level env, so set the work dir here.
+          echo "CP_DIR=$RUNNER_TEMP/crosspost" >> "$GITHUB_ENV"
       # Tooling, reviewed adapter code and the ledger come from current master...
       - uses: actions/checkout@v7
         with:
@@ -203,7 +204,7 @@ jobs:
             [ "$IN_DRY" = "true" ] && dry=true
             [ "$IN_OVERRIDE" = "true" ] && override=--override-skipped
             [ "$IN_BYPASS" = "true" ] && bypass=--bypass-linkedin-allowance
-            if { [ -n "$override" ] || [ -n "$bypass" ]; } && [ -z "$(echo $ids)" ]; then echo "::error::overrides need explicit article IDs"; exit 1; fi
+            if { [ -n "$override" ] || [ -n "$bypass" ]; } && [ -z "$(printf '%s' "$ids" | tr -d '[:space:]')" ]; then echo "::error::overrides need explicit article IDs"; exit 1; fi
           fi
           [ "$CROSSPOST_FORCE_DRY_RUN" = "1" ] && dry=true
           {
@@ -224,6 +225,7 @@ jobs:
           MEDIUM_TOKEN: ${{ secrets.MEDIUM_TOKEN }}
           LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
         run: |
+          # shellcheck disable=SC2086 # CP_OVERRIDE/CP_BYPASS are optional flags (empty or one word)
           node scripts/crosspost.mjs dry-run \
             --source-root "$GITHUB_WORKSPACE/snapshot" --state "$GITHUB_WORKSPACE/trunk/src/data/crosspost-state.json" \
             --source-sha "$SOURCE_SHA" --eligible-at "$BUILT_AT" --work-dir "$CP_DIR" \
@@ -238,6 +240,7 @@ jobs:
           MEDIUM_TOKEN: ${{ secrets.MEDIUM_TOKEN }}
           LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
         run: |
+          # shellcheck disable=SC2086 # CP_OVERRIDE/CP_BYPASS are optional flags (empty or one word)
           node scripts/crosspost.mjs reserve \
             --source-root "$GITHUB_WORKSPACE/snapshot" --state "$GITHUB_WORKSPACE/trunk/src/data/crosspost-state.json" \
             --source-sha "$SOURCE_SHA" --eligible-at "$BUILT_AT" --run-url "$RUN_URL" --work-dir "$CP_DIR" \
