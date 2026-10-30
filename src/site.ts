@@ -7,7 +7,7 @@ export const SITE = {
   title: 'Clive Shirley · Principal Software Engineer',
   role: 'Principal Software Engineer',
   description:
-    `Principal Software Engineer and architect-practitioner. ${YEARS_EXPERIENCE}+ years shipping software, specialising in safe change in regulated systems: payments, healthcare interoperability, multi-region platforms and AI-assisted delivery.`,
+    `Principal Software Engineer helping teams make safe changes in regulated systems. ${YEARS_EXPERIENCE}+ years shipping software across payments, healthcare interoperability, multi-region platforms and AI-assisted delivery.`,
   location: 'Hampshire, UK',
   email: 'clive.shirley@mac.com',
   links: {
@@ -23,6 +23,7 @@ export type NavItem = { title: string; url: string };
 
 export const NAV: NavItem[] = [
   { title: 'About', url: '/about/' },
+  { title: 'Lessons', url: '/lessons/' },
   { title: 'Writing', url: '/blog/' },
   { title: 'Contact', url: '/contact/' },
 ];

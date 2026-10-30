@@ -1,7 +1,7 @@
 import type { APIContext } from 'astro';
 import { getPosts, postUrl } from '../utils';
 
-const STATIC_PAGES = ['/', '/about/', '/blog/', '/contact/', '/privacy/'];
+const STATIC_PAGES = ['/', '/about/', '/blog/', '/lessons/', '/contact/', '/privacy/'];
 
 export async function GET({ site }: APIContext) {
   const posts = await getPosts();

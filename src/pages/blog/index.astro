@@ -2,9 +2,14 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostList from '../../components/PostList.astro';
 import Icon from '../../components/Icon.astro';
-import { getPosts, type Post } from '../../utils';
+import { getPosts, postUrl, type Post } from '../../utils';
+import { READING_COLLECTIONS, selectLivePosts } from '../../data/curation';
 
 const posts = await getPosts();
+const collections = READING_COLLECTIONS.map((collection) => ({
+  ...collection,
+  posts: selectLivePosts(posts, collection.postIds),
+})).filter((collection) => collection.posts.length > 0);
 const byYear = new Map<number, Post[]>();
 for (const post of posts) {
   const year = post.data.date.getUTCFullYear();
@@ -20,10 +25,45 @@ for (const post of posts) {
         Architecture, delivery and lessons learned, from ingesting the Twitter firehose for trading firms to
         building white-label banking platforms and practising agentic engineering.
       </p>
-      <p style="margin-top: 1.25rem;"><a class="link-arrow" href="/feed.xml"><Icon name="rss" /> Subscribe via RSS</a></p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="/lessons/">Browse engineering lessons <Icon name="arrow" /></a>
+        <a class="link-arrow" href="/feed.xml"><Icon name="rss" /> Subscribe via RSS</a>
+      </div>
     </div>
   </section>
-  <section class="container" style="padding-bottom: 5rem;">
+  {collections.length > 0 && (
+    <section class="section" aria-labelledby="start-here">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Start here</p>
+            <h2 id="start-here">Follow a thread</h2>
+            <p>A few routes through the writing, selected by problem rather than publication date.</p>
+          </div>
+        </div>
+        <div class="grid grid-md">
+          {collections.map((collection) => (
+            <article class="card reading-card">
+              <h3>{collection.title}</h3>
+              <p>{collection.description}</p>
+              <ul class="reading-links">
+                {collection.posts.map((post) => (
+                  <li><a href={postUrl(post)}>{post.data.title}</a></li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+  <section class="container" aria-labelledby="all-writing" style="padding-bottom: 5rem;">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Archive</p>
+        <h2 id="all-writing">All writing</h2>
+      </div>
+    </div>
     {[...byYear].map(([year, list]) => (
       <div class="year-group">
         <h2>{year}</h2>

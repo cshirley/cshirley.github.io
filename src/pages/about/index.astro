@@ -4,7 +4,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
 import portrait from '../../assets/clive-shirley-portrait.jpg';
 import { SITE } from '../../site';
-import { ABOUT_DESCRIPTION, AI_FOCUS, EDUCATION, EXPERIENCE, IMPACT, LEAD_STYLE, LEADERSHIP, PRINCIPLES, STACK, SUMMARY } from '../../data/profile';
+import { ABOUT_DESCRIPTION, AI_FOCUS, CURRENT_FOCUS, EDUCATION, EXPERIENCE, IMPACT, LEAD_STYLE, LEADERSHIP, PRINCIPLES, STACK, SUMMARY } from '../../data/profile';
+import { formatDate } from '../../utils';
 ---
 <BaseLayout
   title="About"
@@ -14,8 +15,8 @@ import { ABOUT_DESCRIPTION, AI_FOCUS, EDUCATION, EXPERIENCE, IMPACT, LEAD_STYLE,
   <section class="page-header">
     <div class="container">
       <p class="eyebrow">About</p>
-      <h1>Architect-practitioner</h1>
-      <p class="lead">Hands on the keyboard, designs on the page, guidance that helps the team succeed.</p>
+      <h1>Good architecture is a team effort</h1>
+      <p class="lead">I bring experience, ask questions and work alongside teams to find approaches we can explain, challenge and build together.</p>
     </div>
   </section>
 
@@ -41,11 +42,32 @@ import { ABOUT_DESCRIPTION, AI_FOCUS, EDUCATION, EXPERIENCE, IMPACT, LEAD_STYLE,
     </div>
   </section>
 
+  <section class="section" aria-labelledby="current-focus">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Current focus</p>
+          <h2 id="current-focus">What I am working on now</h2>
+          <p>Last reviewed <time datetime={CURRENT_FOCUS.reviewed}>{formatDate(new Date(`${CURRENT_FOCUS.reviewed}T12:00:00Z`), 'long')}</time>. Status describes the work, not a promise of production readiness.</p>
+        </div>
+      </div>
+      <div class="grid grid-lg">
+        {CURRENT_FOCUS.items.map((item) => (
+          <article class="card">
+            <h3>{item.title}</h3>
+            <p class="work-status">{item.status}</p>
+            <p>{item.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <section class="section" aria-labelledby="impact">
     <div class="container">
       <div class="section-head">
         <div>
-          <p class="eyebrow">In numbers</p>
+          <p class="eyebrow">Selected outcomes</p>
           <h2 id="impact">Track record</h2>
         </div>
       </div>
@@ -90,6 +112,7 @@ import { ABOUT_DESCRIPTION, AI_FOCUS, EDUCATION, EXPERIENCE, IMPACT, LEAD_STYLE,
       <div class="lead-style">
         <div class="prose">
           {LEAD_STYLE.paragraphs.map((p) => <p>{p}</p>)}
+          <p>"<a href={LEAD_STYLE.reflection.href}>{LEAD_STYLE.reflection.linkLabel}</a>"{LEAD_STYLE.reflection.after}</p>
         </div>
         <ul class="checklist">
           {LEAD_STYLE.points.map((p) => <li>{p}</li>)}

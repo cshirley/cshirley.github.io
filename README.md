@@ -20,7 +20,10 @@ SHOW_DRAFTS=1 npm run build   # production build including drafts, for review
 
 | Path | Purpose |
 |------|---------|
-| `src/data/profile.ts` | Profile content: intro, impact metrics, focus areas, principles, experience, stack (from the résumé) |
+| `src/data/profile.ts` | Profile content, delivery status and manually reviewed current focus |
+| `src/data/work.ts` | Selected-work summaries, contributions, outcomes and optional article ids |
+| `src/data/curation.ts` | Selected writing and reading routes; curated articles appear only once live |
+| `src/data/lessons.ts` | Curated lesson summaries grouped by problem, linked to original article ids |
 | `src/site.ts` | Name, contact links, navigation, analytics ID |
 | `src/content/posts/` | Blog posts (Markdown, `YYYY-MM-DD-slug.md`) |
 | `src/pages/` | Home, about, writing, contact, 404; `[...path].astro` renders posts |
@@ -76,6 +79,7 @@ message if any of these rules is broken.
 npm run verify              # everything CI runs before deploy: spelling, build + the checks below
 npm run check:spelling      # cspell (en-GB) + British -ise house style, posts and site copy
 npm run check:skills        # agent skills (.agents/skills) and AGENTS.md are valid and up to date
+npm run check:curation      # editorial ids and lesson anchors resolve; only live sources enter curation
 npm run check:links         # every internal link/image in dist/ resolves (no network)
 npm run check:urls          # every URL in urls.snapshot.txt still exists
 npm run check:links:drafts  # links in drafts and scheduled posts (builds into dist-drafts/)
@@ -100,6 +104,24 @@ it automatically (the `prepare` script sets `core.hooksPath`). Bypass it in an e
 In CI these checks block deploys on push and pull requests. On the daily scheduled rebuild they only
 report, so they can't hold back a scheduled post. After every deploy, including scheduled ones, the
 smoke test checks the live site.
+
+## Profile and curated writing
+
+Keep selected work in `src/data/work.ts` and reading routes in `src/data/curation.ts`.
+Reference article ids, not hard-coded URLs. Curation preserves editorial order and excludes drafts,
+unpublished entries and future dates, including in draft previews. Scheduled articles join their
+collections automatically once live. The full writing archive keeps its normal preview behaviour.
+
+`/lessons/` is a practical index, not an automatic extract of every closing section. Edit
+`src/data/lessons.ts` to add or refine a lesson: one clear takeaway and short summary per article,
+grouped by problem, with a unique, stable topic id for its jump link. The page derives article
+titles and URLs from post metadata. Both the lesson summary and source link stay hidden until
+the article is live, even in draft previews. Tests check source ids, conclusion sections, unique
+topic anchors and publication filtering. Original articles and their URLs remain unchanged.
+
+`CURRENT_FOCUS.reviewed` in `src/data/profile.ts` is an editorial review date, not the build date.
+Update it when reviewing the work's status. Distinguish delivered changes, proposals and research;
+check attribution and outcomes against the project evidence rather than copying résumé claims.
 
 ## Search engine indexing
 

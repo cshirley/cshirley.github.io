@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { LESSON_GROUPS } from '../../data/lessons';
+import { selectLiveLessons } from '../../data/curation';
+import { getPosts, postUrl } from '../../utils';
+
+const posts = await getPosts();
+const groups = LESSON_GROUPS.map((group) => ({
+  ...group,
+  lessons: selectLiveLessons(posts, group.lessons),
+})).filter((group) => group.lessons.length > 0);
+---
+<BaseLayout
+  title="Engineering lessons"
+  description="Practical lessons from changing regulated platforms, payments, reliability and AI-assisted engineering. Short summaries linked to the articles and trade-offs behind them."
+>
+  <section class="page-header">
+    <div class="container">
+      <p class="eyebrow">Lessons from the build</p>
+      <h1>Engineering lessons</h1>
+      <p class="lead">
+        What I would carry into the next project. These are selected lessons from my writing,
+        grouped by problem rather than year. Each is a starting point, not a universal rule:
+        the original article gives the context, trade-offs and limits.
+      </p>
+      {groups.length > 0 && (
+        <nav class="lesson-topics" aria-label="Lesson topics">
+          <ul class="tags">
+            {groups.map((group) => (
+              <li><a class="tag" href={`#${group.id}`}>{group.title}</a></li>
+            ))}
+          </ul>
+        </nav>
+      )}
+    </div>
+  </section>
+
+  {groups.map((group) => (
+    <section class="section lesson-group" aria-labelledby={group.id}>
+      <div class="container">
+        <div class="section-head">
+          <h2 id={group.id}>{group.title}</h2>
+        </div>
+        <div class="grid grid-lg">
+          {group.lessons.map((lesson) => (
+            <article class="card lesson-card">
+              <h3>{lesson.title}</h3>
+              <p>{lesson.summary}</p>
+              <p class="lesson-source">
+                Read the case: <a href={postUrl(lesson.post)}>{lesson.post.data.title}</a>
+              </p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="section">
+    <div class="container prose">
+      <h2>Keep the context</h2>
+      <p>
+        The lesson is the short version, not a substitute for the evidence. For the full stories,
+        or to follow how my thinking changes over time, browse <a href="/blog/">all writing</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

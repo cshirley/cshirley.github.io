@@ -1,17 +1,18 @@
-// Profile content, sourced from the résumé (documentation/3-resources/resume.md).
+// Profile content: résumé, project summaries and 2026 self-assessment in documentation/.
+// Prefer the newer delivery status and conservative attribution where sources differ.
 
 import { YEARS_EXPERIENCE } from '../site';
 
-export const INTRO = `Principal Software Engineer with ${YEARS_EXPERIENCE}+ years shipping software, leading architecture at Babylon Health from 2018 and at eMed UK since 2023, across a healthcare platform operating in the UK, US and Canada. I am a player-coach: I write the design doc, review the PRs and still ship the hard fix when it matters.`;
+export const INTRO = 'I help teams work through difficult technical decisions, make the trade-offs explicit and put those decisions into practice. I stay hands-on with design, code and review, sharing what I know and learning from the people closest to the problem.';
 
 export const ABOUT_DESCRIPTION = `Clive Shirley is a Principal Software Engineer with ${YEARS_EXPERIENCE}+ years’ experience across healthcare, fintech, trading and legal technology, specialising in safe change in regulated systems.`;
 
 export const AI_FOCUS = {
   before:
-    'Lately I have been focused on how teams adopt AI safely. I architected an internal agentic development harness at eMed and wrote',
+    'My current focus is delivery assurance for AI-assisted engineering: independent review, evidence against acceptance criteria and explicit release decisions. I architected an internal development harness at eMed and wrote',
   linkLabel: 'ACCORD',
   after:
-    ', an open-source, harness-agnostic CLI and Pi extension that holds AI-generated changes to the same checkable standards as human ones.',
+    ', an open-source CLI and Pi extension for contract-led delivery. Alongside that tooling, I am researching delivery risk and proposing risk-tiered controls for regulated systems; those controls are not yet adopted policy.',
 };
 
 export const SUMMARY = [
@@ -24,9 +25,9 @@ export type Metric = { value: string; label: string; detail: string };
 
 export const METRICS: Metric[] = [
   {
-    value: '2 days → 30s',
-    label: 'partner provisioning',
-    detail: 'B2B onboarding automation across 700+ client organisations and ~3M members; setup errors cut from ~7% to under 1%.',
+    value: 'One contract',
+    label: 'pricing & checkout',
+    detail: 'Replaced separate price configurations with a shared pricing API and shipped multi-account payment routing and a partner configuration portal.',
   },
   {
     value: '4M+',
@@ -74,29 +75,29 @@ export const FOCUS_AREAS: FocusArea[] = [
     tags: ['GDPR', 'HIPAA-aligned', 'AWS KMS', 'OIDC/SAML'],
   },
   {
-    title: 'Agentic & AI-assisted delivery',
+    title: 'AI-assisted engineering & delivery assurance',
     icon: 'spark',
-    body: 'Harnesses, agent standards and skills catalogues that hold AI-generated PRs to the same checkable rules as human ones.',
-    tags: ['ACCORD', 'Pi', 'Agent standards', 'CI enforcement'],
+    body: 'Contract-led workflows and independent review, alongside research into delivery risk and proposed controls for agent-built changes in regulated production.',
+    tags: ['ACCORD', 'Independent review', 'Release evidence', 'Risk-tiered controls'],
   },
 ];
 
 export const PRINCIPLES = [
   {
-    title: 'Architect-practitioner',
-    body: 'Hands on production code, incidents and migrations while setting technical direction. Designs on the page, fixes in the repo.',
+    title: 'Design grounded in delivery',
+    body: 'Test architectural decisions against production behaviour, migration constraints and the experience of the people building and maintaining the system.',
   },
   {
     title: 'Written reasoning over authority',
-    body: 'Design documents, RFCs and ADRs that set platform standards and keep decisions reviewable long after the fact.',
+    body: 'Record the options, evidence and trade-offs in design documents, RFCs and ADRs, so decisions can be challenged and revisited when circumstances change.',
   },
   {
-    title: 'Credit outward, ownership inward',
-    body: 'I share credit for good outcomes with the team and take ownership of the problems myself. I grow engineers through pairing and domain walk-throughs, making reasoning visible rather than handing down answers.',
+    title: 'Build on what works',
+    body: 'Start with established patterns and the team\'s experience. Make build-vs-buy decisions on evidence, and introduce something new when the problem warrants it.',
   },
   {
     title: 'Commercial-to-technical translation',
-    body: 'Turning commitments into delivery plans, making build-vs-buy calls on evidence, and labelling exploratory work honestly.',
+    body: 'Work with teams to turn commercial commitments into delivery options, making costs, risks and constraints explicit and labelling exploratory work honestly.',
   },
 ];
 
@@ -153,19 +154,19 @@ export const EXPERIENCE: Role[] = [
       },
       'Authored the pricing-plan standard (Stripe prices as list prices, every adjustment a coupon) and consolidated US checkout onto a single plan-configuration contract, ending pricing drift.',
       {
-        text: 'Brought NHS e-prescription signing in-house: per-prescriber AWS KMS keys, PAdES-signed PDFs and a feature-flagged rollout, removing a per-signature SaaS cost.',
+        text: 'Reviewed the design for in-house NHS e-prescription signing, covering key management, signing security and rollout risks. The team shipped the replacement for the third-party service.',
         href: '/architecture/2026/05/27/bringing-e-signing-in-house.html',
         label: 'Bringing e-signing in-house',
       },
       'Designed pharmacy claims submission and reconciliation with CVS, modelling NCPDP batches and X12 835 remittance natively in FHIR.',
       'Designed a reusable programme-hold model for US B2B pause and UK refill delay: time-bounded holds with declarative policies, layered over care plans.',
       {
-        text: 'Led the multi-quarter stability and scaling programme: back-pressure, bulkheads, circuit breakers, graceful shutdown and a performance-testing framework.',
+        text: 'Used load tests to identify capacity limits and unsafe autoscaling, then designed admission control, bulkheads and fan-out budgets. The back-pressure prototype and wider stability work remain unfinished.',
         href: '/architecture/2026/02/11/load-testing-autoscaling-unsafe.html',
         label: 'Why load testing autoscaling is unsafe',
       },
       {
-        text: 'Set the Canadian deployment architecture and a data-cell pattern that keeps at-rest patient data in-country for residency-constrained markets.',
+        text: 'Authored Canadian deployment and data-residency designs, separating in-country storage from processing boundaries. The broader progressive-jurisdiction architecture remains a proposal, not a completed rollout.',
         href: '/architecture/2026/09/02/data-residency-without-a-full-stack.html',
         label: 'Data residency without a full stack',
       },
@@ -174,7 +175,8 @@ export const EXPERIENCE: Role[] = [
         href: '/engineering/2026/06/24/rotating-credentials-without-downtime.html',
         label: 'Rotating credentials without downtime',
       },
-      'Led B2B partner-onboarding automation across 700+ client organisations, and designed partner single sign-on (OIDC over SAML) and a config-driven partner app launcher.',
+      'Built the first partner configuration portal, generating programme, pricing and organisation configuration PRs, then handed development to another engineer. Separately designed partner single sign-on and a config-driven app launcher.',
+      'Authored the identity-provider build-vs-buy analysis that informed the decision to retain the incumbent rather than migrate. Commercial owners made the decision and handled renegotiation.',
       {
         text: 'Decommissioned a UK telehealth platform serving 4M+ patient records and migrated active Stripe subscriptions between accounts with runbooks, validation and rollback.',
         href: '/architecture/2025/04/16/decommissioning-a-telehealth-platform.html',
@@ -262,11 +264,32 @@ export const EXPERIENCE: Role[] = [
 export const EDUCATION = { school: 'City University, London', degree: 'BSc (Hons) Computer Science', period: '1990 – 1994' };
 
 export const IMPACT: { value: string; label: string }[] = [
-  { value: '2,000+', label: 'PRs reviewed across Babylon and eMed' },
   { value: '1K+', label: 'GDPR access and erasure requests, within SLA' },
   { value: '4M+', label: 'patients on the Babylon platform' },
-  { value: '700+', label: 'partner organisations onboarded' },
+  { value: 'Shared pricing', label: 'API and partner configuration portal in production' },
 ];
+
+// Manually reviewed, not a build timestamp. Update when the work changes.
+export const CURRENT_FOCUS = {
+  reviewed: '2026-10-30',
+  items: [
+    {
+      title: 'Agentic delivery assurance',
+      status: 'Research & proposed controls',
+      body: 'Studying where defects enter delivery and proposing risk-tiered review and release controls. ACCORD is a working tool, not evidence that the organisational policy has been adopted.',
+    },
+    {
+      title: 'Progressive regional deployment',
+      status: 'Proposed architecture',
+      body: 'Developing a data-cell and processing-hub model for regional expansion, with explicit storage, processing and operational trade-offs. The proposal remains open for collaboration and decision.',
+    },
+    {
+      title: 'Platform engineering',
+      status: 'Delivered & in progress',
+      body: 'Medley and the backend monorepo put the developer-experience strategy into practice. Work to let authorisation scale independently is in progress, not a completed production change.',
+    },
+  ],
+};
 
 export const LEADERSHIP = [
   {
@@ -290,13 +313,19 @@ export const LEADERSHIP = [
 export const LEAD_STYLE = {
   title: 'A quiet kind of leadership',
   paragraphs: [
-    'I am not an overt leader. I lead by example, and I listen before I speak. Most of the time the most useful thing I can do is understand the problem properly, and the people closest to it, before offering a view.',
+    'I lead by example and listen before I speak. Before offering a view, I want to understand the problem and hear from the people closest to it.',
     'When I do offer one, I show my working. I write down the options, the evidence and the trade-offs, in design documents, RFCs and ADRs, so a decision can be questioned, challenged and revisited long after the meeting has ended. A written case can be improved by anyone. A confident opinion mostly can’t.',
   ],
+  reflection: {
+    linkLabel: 'Standing on the shoulders of giants',
+    href: 'https://plato.stanford.edu/entries/john-salisbury/',
+    after: ' captures how I think about engineering. We build on other people\'s ideas, tools and experience. My contribution is to connect that knowledge to the problem in front of us, give credit and help the team leave something others can build on.',
+  },
   points: [
-    'Lead by example: hands on production code, incidents and migrations rather than directing from a distance.',
+    'Work alongside the team: stay hands-on with production code, incidents and migrations rather than directing from a distance.',
     'Make reasoning visible: record the why as well as the what, so the team can build on it.',
     'Label exploratory work honestly, so people can push back early.',
-    'Pass on understanding through pairing and walk-throughs, and leave people room to find the answer themselves.',
+    'Share understanding through pairing and walk-throughs, learning from each other and leaving people room to find the answer themselves.',
+    'Share credit for good outcomes and take responsibility for my part when things go wrong.',
   ],
 };

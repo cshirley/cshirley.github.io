@@ -6,11 +6,20 @@ import PostList from '../components/PostList.astro';
 import portrait from '../assets/clive-shirley-portrait.jpg';
 import { SITE, YEARS_EXPERIENCE } from '../site';
 import { EXPERIENCE, FOCUS_AREAS, INTRO, METRICS } from '../data/profile';
-import { getPosts } from '../utils';
+import { SELECTED_POST_IDS, selectLivePosts } from '../data/curation';
+import { SELECTED_WORK } from '../data/work';
+import { getPosts, postUrl } from '../utils';
 
 const HOME_POST_COUNT = 4;
-const HOME_ROLE_COUNT = 6;
-const posts = (await getPosts()).slice(0, HOME_POST_COUNT);
+const HOME_ROLE_COUNT = 3;
+const allPosts = await getPosts();
+const selectedPosts = selectLivePosts(allPosts, SELECTED_POST_IDS);
+const selectedIds = new Set(selectedPosts.map((post) => post.id));
+const posts = allPosts.filter((post) => !selectedIds.has(post.id)).slice(0, HOME_POST_COUNT);
+const work = SELECTED_WORK.map((item) => ({
+  ...item,
+  post: item.postId ? selectLivePosts(allPosts, [item.postId])[0] : undefined,
+}));
 const roles = EXPERIENCE.slice(0, HOME_ROLE_COUNT);
 ---
 <BaseLayout type="profile">
@@ -21,7 +30,7 @@ const roles = EXPERIENCE.slice(0, HOME_ROLE_COUNT);
         <p class="status"><span class="status-dot"></span>Principal Software Engineer at eMed UK</p>
         <h1>
           Clive Shirley{' '}
-          <span class="role">Principal Software Engineer · Architect-practitioner</span>
+          <span class="role">Architecture, code and shared understanding</span>
         </h1>
         <p class="lead">
           I design and ship <strong>safe changes in regulated systems</strong>: payments, healthcare
@@ -65,6 +74,35 @@ const roles = EXPERIENCE.slice(0, HOME_ROLE_COUNT);
     </div>
   </section>
 
+  <!-- Selected work -->
+  <section class="section" aria-labelledby="selected-work">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <div>
+          <p class="eyebrow">Selected work</p>
+          <h2 id="selected-work">Decisions put into practice</h2>
+          <p>What needed to change, what I contributed and what happened next. Sometimes the right outcome is not to build.</p>
+        </div>
+      </div>
+      <div class="grid grid-lg" data-reveal>
+        {work.map((item) => (
+          <article class="card work-card">
+            <h3>{item.title}</h3>
+            <p class="work-status">{item.status}</p>
+            <dl class="work-details">
+              <div><dt>Problem</dt><dd>{item.problem}</dd></div>
+              <div><dt>Decision &amp; contribution</dt><dd>{item.contribution}</dd></div>
+              <div><dt>Outcome</dt><dd>{item.outcome}</dd></div>
+            </dl>
+            {item.post && (
+              <a class="link-arrow" href={postUrl(item.post)}>Read the write-up <Icon name="arrow" /></a>
+            )}
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <!-- Focus areas -->
   <section class="section" aria-labelledby="focus">
     <div class="container">
@@ -72,7 +110,7 @@ const roles = EXPERIENCE.slice(0, HOME_ROLE_COUNT);
         <div>
           <p class="eyebrow">What I do</p>
           <h2 id="focus">Where I add the most value</h2>
-          <p>Cross-cutting architecture for platforms that move money, handle patient data and span jurisdictions, and the engineering culture to keep them healthy.</p>
+          <p>I help teams change how platforms take payments, handle patient data and operate across borders, without losing sight of reliability or the people maintaining them.</p>
         </div>
       </div>
       <div class="grid grid-lg" data-reveal>
@@ -96,10 +134,13 @@ const roles = EXPERIENCE.slice(0, HOME_ROLE_COUNT);
           <p class="eyebrow">Open source · MIT</p>
           <h2 id="accord">ACCORD: reach agreement before you build</h2>
           <p class="lead">
-            A harness-agnostic delivery workflow that turns a request into a validated contract (brief, spec, plan
-            and verification evidence) before anyone writes code. Run it from the <code>accord</code> CLI with Claude
-            Code, Cursor or <a href="https://pi.dev/">Pi</a>, or install the Pi extension for a <code>/accord</code> command inside Pi. It is built around
-            one metric: how little of an engineer’s attention it consumes.
+            ACCORD is an open-source workflow for AI-assisted software delivery. It makes the request, acceptance
+            criteria and plan explicit before implementation, then checks the result against those criteria.
+          </p>
+          <p>
+            Run it from the <code>accord</code> CLI with Claude Code, Cursor or <a href="https://pi.dev/">Pi</a>,
+            or install the Pi extension for a <code>/accord</code> command inside Pi. It is built around
+            one metric: how little of an engineer's attention it consumes.
           </p>
           <ul class="checklist">
             <li>Orchestration lives in a CLI, not a prompt, so any agent harness can do the work</li>
@@ -164,11 +205,18 @@ const roles = EXPERIENCE.slice(0, HOME_ROLE_COUNT);
         <div>
           <p class="eyebrow">Writing</p>
           <h2 id="writing">Notes from the build</h2>
-          <p>Architecture, delivery and the occasional war story, from real-time finance to regulated healthcare.</p>
+          <p>Architecture, delivery and the occasional war story, from real-time finance to regulated healthcare. For the practical takeaways, browse <a href="/lessons/">engineering lessons</a>.</p>
         </div>
         <a class="link-arrow" href="/blog/">All posts <Icon name="arrow" /></a>
       </div>
-      <div data-reveal>
+      {selectedPosts.length > 0 && (
+        <div class="writing-group" data-reveal>
+          <h3>Start here</h3>
+          <PostList posts={selectedPosts} />
+        </div>
+      )}
+      <div class="writing-group" data-reveal>
+        <h3>Latest writing</h3>
         <PostList posts={posts} />
       </div>
     </div>
@@ -179,8 +227,8 @@ const roles = EXPERIENCE.slice(0, HOME_ROLE_COUNT);
     <div class="container">
       <div class="cta" data-reveal>
         <p class="eyebrow">Contact</p>
-        <h2>Let’s talk architecture</h2>
-        <p class="lead">Whether it’s a regulated platform that needs to change safely, a payments domain that needs untangling, or AI-assisted delivery that needs guardrails, I’m happy to compare notes.</p>
+        <h2>Let's compare notes</h2>
+        <p class="lead">Working through a difficult platform change, a payments problem or AI-assisted delivery? I'd welcome a conversation about what you're trying to achieve and where I could help.</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href={`mailto:${SITE.email}`}><Icon name="mail" /> Email me</a>
           <a class="btn btn-ghost" href={SITE.links.linkedin} rel="me"><Icon name="linkedin" /> LinkedIn</a>

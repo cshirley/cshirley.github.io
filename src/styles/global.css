@@ -392,13 +392,39 @@ p {
   display: block;
 }
 
-@media (max-width: 34rem) {
+@media (max-width: 40rem) {
+  .site-header .container {
+    height: auto;
+    min-height: 4rem;
+    padding-block: 0.5rem;
+  }
+
   .brand-name {
     display: none;
   }
 
+  .site-nav {
+    flex: 1;
+    min-width: 0;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
   .site-nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
     padding-inline: 0.55rem;
+  }
+
+  .theme-toggle {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .prose :is(h1, h2, h3, h4)[id],
+  .lesson-group h2[id] {
+    scroll-margin-top: 8rem;
   }
 }
 
@@ -730,6 +756,76 @@ a.card:hover {
   font-size: 0.72rem;
   color: var(--muted);
   line-height: 1.5;
+}
+
+/* ---------- Selected work & reading routes ---------- */
+.work-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.card > .work-status {
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.work-details {
+  display: grid;
+  gap: 1rem;
+  margin: 1.25rem 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.work-details dt {
+  font-weight: 600;
+}
+
+.work-details dd {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+}
+
+.work-card > .link-arrow {
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+.reading-links {
+  margin: 1.25rem 0 0;
+  padding-left: 1.25rem;
+  font-size: 0.95rem;
+}
+
+.reading-links li + li {
+  margin-top: 0.8rem;
+}
+
+.writing-group + .writing-group {
+  margin-top: 2rem;
+}
+
+/* ---------- Engineering lessons ---------- */
+.lesson-group h2 {
+  scroll-margin-top: 6rem;
+}
+
+.lesson-topics a:hover,
+.lesson-topics a:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.lesson-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.lesson-card > .lesson-source {
+  margin-top: auto;
+  padding-top: 1.25rem;
+  font-size: 0.85rem;
 }
 
 /* ---------- Feature (ACCORD) ---------- */
