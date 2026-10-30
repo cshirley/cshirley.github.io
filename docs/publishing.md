@@ -80,21 +80,21 @@ An empty search or an expired artifact is not proof of non-creation: leave the b
 share that is not in the ledger can be recorded by reserving and reconciling it the same way, so that it
 consumes the daily allowance.
 
-## Rollout and activation
+## Activation status and the pause switch
 
-`pages.yml` ships with `CROSSPOST_FORCE_DRY_RUN: '1'` on the `crosspost` job: every trigger is a dry run
-(no API writes, reservations, ledger commits or pushes). To activate:
+Cross-posting was activated on 2026-10-30 (it shipped in forced dry-run first, and a dry run on `master`
+and a manual override dry run were reviewed). The old `linkedin-posted.json` / `medium-posted.json`
+ledgers were removed; their records live in `src/data/crosspost-state.json`. Two live articles that were
+missing from the old Medium ledger are recorded `skipped`
+(`2026-10-21-platform-limits-shape-products-more-than-ideas`, `2026-10-28-mobile-was-never-the-hard-part`):
+publish them with a manual run using `override_skipped` if wanted.
 
-1. Review a dry-run summary (deployed SHA, eligible articles, batches, blocks).
-2. Check `MEDIUM_TOKEN` and `LINKEDIN_ACCESS_TOKEN` work with read-only calls, and that branch rules let
-   `github-actions[bot]` push `src/data/crosspost-state.json` to `master` with `GITHUB_TOKEN`.
-3. Refresh the baseline for articles that went live since it was captured
-   (`node scripts/crosspost-migrate.mjs`, see its header, was the one-off tool), remove the old
-   `src/data/linkedin-posted.json` / `medium-posted.json`, and decide the two Medium articles that were
-   missing from the old ledger (currently `skipped`; approve backfill by manual run with
-   `override_skipped`).
-4. In a **separate commit**, delete the `CROSSPOST_FORCE_DRY_RUN` line. Confirm the first publications,
-   the committed state and a duplicate-free next run before raising batch limits or adding destinations.
+**To pause everything**, add `CROSSPOST_FORCE_DRY_RUN: '1'` to the `crosspost` job's `env:` in
+`pages.yml` (see the comment there). Every trigger and input then becomes a dry run: no API writes,
+reservations, ledger commits or pushes. Remove the line to resume.
+
+Until the first automatic publications have been checked (the committed state, a duplicate-free next run),
+don't raise batch limits or add destinations.
 
 Adding a destination: one adapter in `scripts/lib/crosspost/adapters/`, a registry entry, credentials,
 contract tests and a reviewed baseline for that destination (missing state alone would publish the
