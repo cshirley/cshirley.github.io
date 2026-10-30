@@ -387,6 +387,24 @@ test('persist: uncertain push is checked against the remote; unreachable remote 
   assert.equal(confirmed({ a: { m: { status: 'x' } } }, { a: { m: { status: 'y' } } }, [{ id: 'a', adapter: 'm' }]), false);
 });
 
+test('persist: an unreachable remote is reported as such, and a retry pushes the stranded commit', async () => {
+  const { work, g, file } = gitRepo();
+  await S.writeState(file, {});
+  g(work, 'add', '.'); g(work, 'commit', '-m', 'init'); g(work, 'push', 'origin', 'master');
+  await S.writeState(file, S.reserve({}, 'a', 'medium', { attemptId: 'u1', at: NOW.toISOString() }));
+  const attempts = [{ id: 'a', adapter: 'medium', attemptId: 'u1' }];
+  const real = realGit(work);
+  const down = (...a) => { if (['push', 'fetch'].includes(a[0])) throw Object.assign(new Error('x'), { stderr: 'fatal: unable to access remote\n' }); return real(...a); };
+  const common = { file, attempts, readLocal: () => S.readState(file), message: '[CHORE] R', requireStatus: 'needs-review' };
+  await assert.rejects(persist({ ...common, git: down }), (e) => e instanceof PersistError && /unreachable/.test(e.message) && !/conflict/.test(e.message));
+  assert.match(g(work, 'log', '-1', '--format=%s'), /\[CHORE\] R/, 'commit exists locally but is not on the remote');
+  const r = await persist({ ...common, git: real });
+  assert.equal(r.pushed, true, 'retry pushes the commit left behind');
+  assert.equal(confirmed(await S.readState(file), JSON.parse(g(work, 'show', 'origin/master:src/data/crosspost-state.json')), attempts, { requireStatus: 'needs-review' }), true);
+  const again = await persist({ ...common, git: real });
+  assert.deepEqual(again, { committed: false, pushed: false }, 'nothing left to do once confirmed');
+});
+
 test('lifecycle: reserve then execute through the CLI core; dry-run writes nothing; rerun does not recreate', async () => {
   const sourceRoot = tempRoot();
   post(sourceRoot, '2030-01-02-a-post', { fm: { draft: false, date: '2030-01-02 09:00:00 +0000' } });

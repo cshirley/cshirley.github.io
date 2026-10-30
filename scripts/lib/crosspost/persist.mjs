@@ -14,6 +14,8 @@ export class PersistError extends Error {}
 export const cleanGitEnv = (env = process.env) => Object.fromEntries(Object.entries(env).filter(([k]) => !k.startsWith('GIT_') || k === 'GIT_SSH_COMMAND' || k === 'GIT_TERMINAL_PROMPT'));
 export const realGit = (cwd) => (...args) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], env: cleanGitEnv() });
 
+const firstLine = (err) => String(err.stderr || err.message).trim().split('\n')[0];
+
 const remoteState = (git, remote, branch, file) => {
   git('fetch', remote, branch);
   return JSON.parse(git('show', `${remote}/${branch}:${file}`));
@@ -37,12 +39,19 @@ export async function persist({ git, file, message, attempts, readLocal, remote 
   const rel = path.isAbsolute(file) ? path.relative(realpathSync(git('rev-parse', '--show-toplevel').trim()), realpathSync(file)) : file;
   git('add', '--', rel);
   const dirty = git('status', '--porcelain', '--', rel).trim();
-  if (!dirty) {
-    // Nothing to commit: the remote must already hold these records.
+  if (dirty) git('commit', '-m', message, '--', rel);
+  // A commit left by an earlier failed push still has to reach the remote, so look at the remote
+  // before deciding there is nothing to do.
+  try {
+    git('fetch', remote, branch);
+  } catch (err) {
+    throw new PersistError(`remote ${remote}/${branch} unreachable: ${firstLine(err)}`);
+  }
+  const ahead = Number(git('rev-list', '--count', `${remote}/${branch}..HEAD`).trim());
+  if (!dirty && !ahead) {
     if (!confirmed(await readLocal(), remoteState(git, remote, branch, rel), attempts, { requireStatus })) throw new PersistError('ledger unchanged locally but remote does not hold the expected records');
     return { committed: false, pushed: false };
   }
-  git('commit', '-m', message, '--', rel);
   let lastErr;
   for (let i = 0; i < retries; i++) {
     try {
@@ -64,14 +73,19 @@ export async function persist({ git, file, message, attempts, readLocal, remote 
       }
       try {
         git('fetch', remote, branch);
+      } catch (fetchErr) {
+        if (i + 1 < retries) continue;
+        throw new PersistError(`remote ${remote}/${branch} unreachable: ${firstLine(fetchErr)}`);
+      }
+      try {
         git('rebase', `${remote}/${branch}`);
       } catch (rebaseErr) {
         try { git('rebase', '--abort'); } catch { /* none in progress */ }
-        throw new PersistError(`ledger conflict with remote ${branch}; reconcile manually (${rebaseErr.message.split('\n')[0]})`);
+        throw new PersistError(`ledger conflict with remote ${branch}; reconcile manually (${firstLine(rebaseErr)})`);
       }
     }
   }
-  if (lastErr) throw new PersistError(`push failed after ${retries} attempts: ${lastErr.message.split('\n')[0]}`);
+  if (lastErr) throw new PersistError(`push failed after ${retries} attempts: ${firstLine(lastErr)}`);
   if (!confirmed(await readLocal(), remoteState(git, remote, branch, rel), attempts, { requireStatus })) {
     throw new PersistError('remote ledger does not contain the expected records after push');
   }

@@ -46,6 +46,25 @@ Pass:
 
 `gh secret list` and `gh variable list` confirm names exist but not that the values work. Also confirm `master` accepts a direct push from `github-actions[bot]` (no branch protection or rulesets at last check).
 
+### 2b. Local end-to-end rehearsal (done, 2026-10-30)
+
+The real CLI (`reserve`, `persist`, `execute`, `persist`) was run in a throwaway clone with a local bare
+remote. A preload script stubbed the Medium and LinkedIn APIs (the live site check stayed real and
+read-only), and recorded what the remote held at the moment each external POST arrived.
+
+| Scenario | Result |
+| --- | --- |
+| Happy path, both destinations | Reservations on the remote before either POST; results pushed; both `published` |
+| Re-run of the same article | Nothing selected, no API calls |
+| LinkedIn daily allowance | A second share the same UTC day was not selected without the explicit bypass |
+| LinkedIn HTTP 502 (uncertain) | `needs-review` pushed with the error; execute exit 1; later automatic runs blocked and red |
+| Reconcile | Refused without a reason; with evidence it published the record, pushed it and cleared the block |
+| Remote unreachable at reservation | `persist` failed and nothing was published; retry pushed the stranded commit; run then completed |
+
+This found two defects, now fixed with tests: an unreachable remote was reported as a "ledger conflict",
+and a retry after a failed push refused to push the commit already made. Repeat the rehearsal after any
+change to `persist.mjs` or the runner.
+
 ## 4. Actions dry run (needs a push)
 
 `pages.yml` ships with `CROSSPOST_FORCE_DRY_RUN: '1'`, so every trigger is a dry run.
