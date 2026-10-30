@@ -703,7 +703,7 @@
   },
   "2026-10-21-platform-limits-shape-products-more-than-ideas": {
     "linkedin": {
-      "status": "needs-review",
+      "status": "published",
       "attemptId": "57901890-6249-44c8-8d06-8ca563f36146",
       "reservedAt": "2026-10-30T12:44:43.942Z",
       "sourceSha": "49c98e17ece70957083f5a7fbcd508155756cb90",
@@ -712,13 +712,13 @@
       "provenance": {
         "runUrl": "https://github.com/cshirley/cshirley.github.io/actions/runs/41057477670"
       },
-      "prior": {
-        "status": "skipped",
-        "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
-      }
+      "attemptedAt": "2026-10-30T12:45:08.044Z",
+      "externalId": "urn:li:share:7521915091496112128",
+      "url": "https://www.linkedin.com/feed/update/urn:li:share:7521915091496112128/",
+      "at": "2026-10-30T12:45:08.682Z"
     },
     "medium": {
-      "status": "needs-review",
+      "status": "published",
       "attemptId": "95450b50-b5c1-4711-8a90-fdd104272973",
       "reservedAt": "2026-10-30T12:44:43.942Z",
       "sourceSha": "49c98e17ece70957083f5a7fbcd508155756cb90",
@@ -727,10 +727,11 @@
       "provenance": {
         "runUrl": "https://github.com/cshirley/cshirley.github.io/actions/runs/41057477670"
       },
-      "prior": {
-        "status": "skipped",
-        "reason": "Historical article at rollout; Medium backfill not approved"
-      }
+      "attemptedAt": "2026-10-30T12:45:00.390Z",
+      "publication": "Notes from the build",
+      "externalId": "1b7fd3f52724",
+      "url": "https://medium.com/@clive-shirley/platform-limits-shape-products-more-than-ideas-lessons-from-a-pre-airtag-child-tracker-1b7fd3f52724",
+      "at": "2026-10-30T12:45:04.150Z"
     }
   },
   "2026-10-28-mobile-was-never-the-hard-part": {
@@ -739,7 +740,7 @@
       "reason": "Historical article at rollout; excluded from automatic sharing (not proof it was never shared)"
     },
     "medium": {
-      "status": "needs-review",
+      "status": "published",
       "attemptId": "288719b2-edde-4ddd-a265-5c3809f1b0c4",
       "reservedAt": "2026-10-30T12:44:43.942Z",
       "sourceSha": "49c98e17ece70957083f5a7fbcd508155756cb90",
@@ -748,10 +749,11 @@
       "provenance": {
         "runUrl": "https://github.com/cshirley/cshirley.github.io/actions/runs/41057477670"
       },
-      "prior": {
-        "status": "skipped",
-        "reason": "Historical article at rollout; Medium backfill not approved"
-      }
+      "attemptedAt": "2026-10-30T12:45:04.282Z",
+      "publication": "Notes from the build",
+      "externalId": "1cb0705086df",
+      "url": "https://medium.com/@clive-shirley/mobile-was-never-the-hard-part-enterprise-mobility-was-integration-1cb0705086df",
+      "at": "2026-10-30T12:45:08.030Z"
     }
   }
 }
