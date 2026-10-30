@@ -42,7 +42,7 @@ const usage = `Usage: npm run post:add -- --title "Title" --category <${CATEGORI
          [--tags "a,b"] [--description "..."] [--date YYYY-MM-DD] [--time HH:MM] [--slug slug]
        npm run post:approve -- <post>
        npm run post:schedule -- <post> (--next | --date YYYY-MM-DD) [--time HH:MM]
-       npm run post:status [-- --json] [--cadence 14] [--weekday 3]`;
+       npm run post:status [-- --json] [--cadence 7] [--weekday 3]`;
 
 const rel = (f) => path.relative(root, f);
 const uk = (d) => `${ukDateTime(d)} UK / ${d.toISOString().slice(0, 16).replace('T', ' ')} UTC`;

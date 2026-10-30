@@ -1,6 +1,6 @@
 # Publishing workflow: feature brief
 
-Status: implemented in forced dry-run mode (steps 1-5). Verification, Actions dry run, baseline refresh and the separate activation commit remain. Operator guidance: [publishing.md](../../publishing.md).
+Status: shipped and active (PRs #19, #20). These feature documents are historical design records and may mention files since removed (`scripts/linkedin-post.mjs`, `scripts/crosspost-migrate.mjs`, the old ledgers). Operator guidance: [publishing.md](../../publishing.md).
 
 Feature documents: **Brief** · [Design](design.md) · [Plan](plan.md) · [Testing](testing.md).
 

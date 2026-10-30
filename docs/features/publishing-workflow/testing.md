@@ -1,6 +1,6 @@
 # Publishing workflow: testing plan
 
-Status: stages 1-4 done (including the merged `master` dry run and a manual override dry run on a real article). Stage 5 (activation) is in the activation PR; stages 6-7 follow.
+Status: stages 1-5 done (including the merged `master` dry run, a manual override dry run and activation on 2026-10-30). Stages 6-7: automatic runs have since published and recorded results (see the `Reserve`/`Record` commits), but whether the controlled single-article run and the failure rehearsals were done as written is not recorded here. Kept as the test plan and delivery history.
 
 Feature documents: [Brief](brief.md) · [Design](design.md) · [Plan](plan.md) · **Testing**.
 
@@ -20,7 +20,7 @@ npm run verify        # spelling, skills, approval, test:posts, test:crosspost, 
 npm run crosspost -- list
 ```
 
-Pass: `verify` exits 0. `list` shows the queue, allowance and blocks. The queue is empty because the baseline marks every live article as handled. The ledger is unchanged (`git diff src/data/crosspost-state.json`).
+Pass: `verify` exits 0. `list` shows the queue, allowance and blocks. The queue is empty when every live article already has a recorded state (historical articles are `skipped`). The ledger is unchanged (`git diff src/data/crosspost-state.json`).
 
 ## 2. Local dry run against a real article (no writes)
 

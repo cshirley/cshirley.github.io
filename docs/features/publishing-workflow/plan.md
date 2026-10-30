@@ -1,6 +1,6 @@
 # Publishing workflow: implementation plan
 
-Status: implemented in forced dry-run mode (steps 1-5). Verification, Actions dry run, baseline refresh and the separate activation commit remain. Operator guidance: [publishing.md](../../publishing.md).
+Status: complete. Delivered in PRs #19 and #20 (activation on 2026-10-30) and #21 (Medium follower notification). The historical migration script has since been removed. This plan is kept as delivery history. Operator guidance: [publishing.md](../../publishing.md).
 
 Feature documents: [Brief](brief.md) · [Design](design.md) · **Plan** · [Testing](testing.md).
 
@@ -21,7 +21,7 @@ Implement the [technical design](design.md) against the [brief and acceptance cr
 
 ## Migrate history before enabling automation
 
-Add a one-off migration script and review its output:
+Done at activation. The one-off migration script ran once and was then deleted along with the old ledgers and the baseline file it wrote; `src/data/crosspost-state.json` holds the result. The steps are kept as a record of what was reviewed:
 
 1. Merge both existing ledgers into the shared format.
 2. Convert LinkedIn successes to `published`; preserve Medium's recorded `draft` or `public` status, mapping `public` to `published`.
@@ -41,9 +41,9 @@ Normal local authoring stops at add/approve/schedule and the normal review/commi
 
 Local publishing must start from clean, up-to-date `master` and resolve a confirmed deployment snapshot. Do not publish locally while Actions publishing is running. Local and Actions processes do not share a lock, so concurrent local publishing remains an operational restriction. Push reservations before submitting, then commit and push results promptly. A wrapper must not offer an unsafe direct-create shortcut that bypasses reservations.
 
-Retire raw `scripts/linkedin-post.mjs` once no callers remain, or convert it to a non-publishing payload utility. Do not leave an unattended or undocumented second creation path. Remove obsolete separate ledger files after all callers and documentation have migrated. Update `README.md` and `docs/linkedin.md`; correct stale statements about Medium exports being generated during CI.
+Done: `scripts/linkedin-post.mjs` and the old ledgers are gone. Original requirement: retire raw `scripts/linkedin-post.mjs` once no callers remain, or convert it to a non-publishing payload utility. Do not leave an unattended or undocumented second creation path. Remove obsolete separate ledger files after all callers and documentation have migrated. Update `README.md` and `docs/linkedin.md`; correct stale statements about Medium exports being generated during CI.
 
-Roll out through two reviewed workflow changes:
+Rolled out through two reviewed workflow changes (both done; `CROSSPOST_FORCE_DRY_RUN` remains available as a pause switch, see `publishing.md`):
 
 1. Install the new workflow path in dry-run-only mode. Both automatic and manual entry points are forced dry-run; no API writes, reservations, ledger commits or pushes. Read-only API calls and local export generation are allowed and identified in the summary. Inspect exact eligible batches, deployment SHA and current ledger.
 2. After baseline, branch permissions and credentials are approved, merge a separate explicit activation commit enabling the real reservation lifecycle. Review any baseline changes since the dry run. Existing drafts and review blocks remain untouched.

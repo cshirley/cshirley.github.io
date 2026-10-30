@@ -2,7 +2,7 @@
 import { goLive, rebuildTimeUtc, ymd } from './posts.mjs';
 
 export const DAY = 86_400_000;
-export const DEFAULT_CADENCE = 14;
+export const DEFAULT_CADENCE = 7;
 export const DEFAULT_WEEKDAY = 3; // Wednesday
 
 /** Next date on or after d that falls on the target weekday (UTC calendar date). */

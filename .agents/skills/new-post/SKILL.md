@@ -18,7 +18,7 @@ Ask only for what's missing:
   URL, so it can't change after publishing.
 - **Tags:** up to about five, chosen from `TAGS` in `src/data/taxonomy.ts`. Prefer existing tags.
   Only propose a new tag if nothing fits, and add it to the taxonomy file first.
-- **Date:** leave it out to use the next free slot in the schedule (fortnightly Wednesdays,
+- **Date:** leave it out to use the next free slot in the schedule (weekly Wednesdays,
   09:00 UK time). Check `npm run post:status` if the user cares about timing.
 
 ## 2. Create the file

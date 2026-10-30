@@ -98,7 +98,8 @@ don't raise batch limits or add destinations.
 
 Adding a destination: one adapter in `scripts/lib/crosspost/adapters/`, a registry entry, credentials,
 contract tests and a reviewed baseline for that destination (missing state alone would publish the
-whole archive).
+whole archive). Record the baseline as `skipped` entries (with a reason) in `src/data/crosspost-state.json`
+for existing articles. The one-off migration script that did this for Medium and LinkedIn has been removed.
 
 Medium and LinkedIn credentials: repository secrets `MEDIUM_TOKEN`, `LINKEDIN_ACCESS_TOKEN`; variables
 `LINKEDIN_AUTHOR`, optional `MEDIUM_PUBLICATION`, `MEDIUM_NOTIFY_FOLLOWERS` (default on; `false` stops follower
