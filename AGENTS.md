@@ -47,6 +47,8 @@ npm run crosspost -- list         # advanced: cross-post queue (see docs/publish
   - Files are `src/content/posts/YYYY-MM-DD-slug.md`.
   - The front matter schema is in `src/content.config.ts`.
   - Categories and tags must come from `src/data/taxonomy.ts`.
+  - Set the optional `updated:` date after a substantive edit to a live post; it feeds sitemap
+    `lastmod` only (the URL keeps using `date`).
   - The URL is `/<category>/<yyyy>/<mm>/<dd>/<slug>.html`, so **never change the category,
     date or slug of a live post** without adding a redirect in `astro.config.mjs`.
     `npm run check:urls` enforces this.

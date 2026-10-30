@@ -26,7 +26,7 @@ SHOW_DRAFTS=1 npm run build   # production build including drafts, for review
 | `src/data/lessons.ts` | Curated lesson summaries grouped by problem, linked to original article ids |
 | `src/site.ts` | Name, contact links, navigation, analytics ID |
 | `src/content/posts/` | Blog posts (Markdown, `YYYY-MM-DD-slug.md`) |
-| `docs/features/` | Feature briefs, technical designs and implementation plans; start with [publishing workflow](docs/features/publishing-workflow/brief.md) |
+| `docs/features/` | Historical briefs, designs and plans for shipped features; start with [publishing workflow](docs/features/publishing-workflow/brief.md) |
 | `src/pages/` | Home, about, writing, contact, 404; `[...path].astro` renders posts |
 | `src/components/`, `src/layouts/` | Header, footer, icons, post list, base layout |
 | `src/styles/global.css` | Design system (light/dark themes, typography, components) |
@@ -65,6 +65,7 @@ title: My Post
 description: One or two sentences used in listings, RSS and as the post lead.
 date: 2026-10-15 09:00:00 +0100
 draft: true          # post:schedule clears this
+updated: 2026-11-02  # optional: last substantive edit; sitemap lastmod only, URL keeps `date`
 approval:            # written by post:approve
   at: 2026-10-01T09:00:00Z
   fingerprint: sha256:...
@@ -140,8 +141,10 @@ check attribution and outcomes against the project evidence rather than copying 
 
 ## Search engine indexing
 
-Google finds new posts through `sitemap.xml` (submitted in Search Console). To get a post crawled
-sooner, use **URL Inspection → Request indexing** in Search Console.
+Google finds new posts through `sitemap.xml` (submitted once in Search Console) and re-fetches it on its
+own, so there is no submission step to automate. Each post's `<lastmod>` is its `updated` date, else its
+`date`; `/` and `/blog/` use the newest post's. Add `updated:` to a post after a substantive edit so Google
+re-crawls it. To get a post crawled sooner, use **URL Inspection → Request indexing** in Search Console.
 
 For Bing and other [IndexNow](https://www.indexnow.org/) engines, each deploy snapshots the live
 sitemap first, then submits any new URLs once the deploy is live (`scripts/indexnow.mjs`). The key

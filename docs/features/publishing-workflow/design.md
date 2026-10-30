@@ -1,6 +1,6 @@
 # Publishing workflow: technical design
 
-Status: implemented in forced dry-run mode (steps 1-5). Verification, Actions dry run, baseline refresh and the separate activation commit remain. Operator guidance: [publishing.md](../../publishing.md).
+Status: implemented and active since 2026-10-30 (PRs #19, #20), with Medium follower notification added in #21. Sections describing earlier components or rollout stages are kept as design history. Operator guidance: [publishing.md](../../publishing.md).
 
 Feature documents: [Brief](brief.md) · **Design** · [Plan](plan.md) · [Testing](testing.md).
 
@@ -10,7 +10,9 @@ This document specifies implementation behaviour for the [feature brief](brief.m
 
 Use a small shared runner and destination-specific adapters. Adding a destination should not require copying selection, ledger, retry or persistence logic. Do not build a plugin framework, dynamic discovery or a generic workflow engine.
 
-## Existing components
+## Previous components (replaced)
+
+The components below existed before this feature. They have since been replaced: the shared `crosspost` job, `scripts/crosspost.mjs` and the adapters in `scripts/lib/crosspost/` are the only publishing path, and `src/data/crosspost-state.json` is the only ledger. The old publisher scripts, ledgers and `linkedin.yml` are deleted.
 
 - `.github/workflows/pages.yml` builds and deploys on `master` pushes, manual runs and three daily schedules.
 - Its current LinkedIn step uses `scripts/linkedin-post.mjs` and a pre-deploy sitemap snapshot. Failed shares are not retried on later deployments because the article is no longer new to the sitemap.
@@ -46,7 +48,7 @@ npm run post:status
 # Review changes, run npm run verify, then commit and push through normal repository policy.
 ```
 
-Scheduling also accepts `--date YYYY-MM-DD --time HH:MM` in UK local time. Reuse existing cadence, next-slot and daylight-saving logic. Show final article ID, canonical URL, UK/UTC publication time and expected rebuild time. Commands modify local authoring files only; they never commit, push or call destination APIs. Clearly report that scheduling is not active until changes reach `master`.
+Scheduling also accepts `--date YYYY-MM-DD --time HH:MM` in UK local time. Reuse existing cadence (weekly: Wednesdays, 7 days apart by default), next-slot and daylight-saving logic. Show final article ID, canonical URL, UK/UTC publication time and expected rebuild time. Commands modify local authoring files only; they never commit, push or call destination APIs. Clearly report that scheduling is not active until changes reach `master`.
 
 ### Approval and scheduling semantics
 

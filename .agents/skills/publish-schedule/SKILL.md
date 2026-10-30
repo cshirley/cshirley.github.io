@@ -1,6 +1,6 @@
 ---
 name: publish-schedule
-description: Show and manage the blog's publishing schedule. Lists scheduled posts and drafts with their real go-live times, finds gaps and clashes in the fortnightly cadence, suggests the next free slot, and reschedules posts that aren't live yet. Use when the user asks what's queued or coming up, when a post will appear, or wants to move, reorder or plan posts.
+description: Show and manage the blog's publishing schedule. Lists scheduled posts and drafts with their real go-live times, finds gaps and clashes in the weekly cadence, suggests the next free slot, and reschedules posts that aren't live yet. Use when the user asks what's queued or coming up, when a post will appear, or wants to move, reorder or plan posts.
 disable-model-invocation: true
 ---
 
@@ -29,11 +29,11 @@ The report shows:
 - Drafts, flagged when their date has already passed, which means they go live on the next
   deploy once `draft: true` is removed.
 - The last three live posts.
-- Cadence problems: posts less than seven days apart (clash), or gaps longer than the cadence,
+- Cadence problems: posts less than seven days apart (clash), or gaps more than three days longer than the cadence,
   with a suggested fill date.
 - The next free slot.
 
-Options: `--cadence <days>` (default 14) and `--weekday <0-6>` (default 3, Wednesday). The report ends
+Options: `--cadence <days>` (default 7) and `--weekday <0-6>` (default 3, Wednesday). The report ends
 with the next free slot; `npm run post:schedule -- <post> --next` uses it.
 
 When summarising for the user, lead with anything flagged.
