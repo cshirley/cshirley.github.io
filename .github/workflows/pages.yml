@@ -151,6 +151,7 @@ jobs:
       RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
       LINKEDIN_AUTHOR: ${{ vars.LINKEDIN_AUTHOR }}
       MEDIUM_PUBLICATION: ${{ vars.MEDIUM_PUBLICATION }}
+      MEDIUM_NOTIFY_FOLLOWERS: ${{ vars.MEDIUM_NOTIFY_FOLLOWERS }}
       LINKEDIN_VERSION: ${{ vars.LINKEDIN_VERSION }}
     steps:
       - name: Trust guard

@@ -186,6 +186,7 @@ Add under **Settings → Secrets and variables → Actions**, then check with `g
 | Secret | `LINKEDIN_ACCESS_TOKEN` | Member OAuth token with `w_member_social`; expires after about 60 days, renew by hand |
 | Variable | `LINKEDIN_AUTHOR` | `urn:li:person:<member-id>` |
 | Variable | `MEDIUM_PUBLICATION` | Optional; publication ID, slug or name (currently `notes-from-the-build`). Omit for the personal profile |
+| Variable | `MEDIUM_NOTIFY_FOLLOWERS` | Optional; Medium followers are notified of new public stories by default. Set `false` to turn this off |
 | Variable | `LINKEDIN_VERSION` | Optional `YYYYMM`; default `202511`, confirm it is still supported |
 
 ```bash

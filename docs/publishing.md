@@ -26,7 +26,7 @@ cross-posting happen automatically from `master`, at the first build at or after
    LinkedIn share per run; LinkedIn also allows one automatic creation per UTC day.
 2. Prepare payloads, write `needs-review` reservations, commit and push them (the pre-commit hook runs
    `npm run verify`), and confirm them on the remote. **Nothing is sent before that.**
-3. Submit each reserved article once. Medium requests public publication and records the status it
+3. Submit each reserved article once. Medium requests public publication (notifying followers unless `MEDIUM_NOTIFY_FOLLOWERS=false`) and records the status it
    actually returns (`published` or `draft`).
 4. Record results, push, upload a recovery artifact and summarise. Failures turn the job red but never
    undo the deployment.
@@ -101,5 +101,6 @@ contract tests and a reviewed baseline for that destination (missing state alone
 whole archive).
 
 Medium and LinkedIn credentials: repository secrets `MEDIUM_TOKEN`, `LINKEDIN_ACCESS_TOKEN`; variables
-`LINKEDIN_AUTHOR`, optional `MEDIUM_PUBLICATION` and `LINKEDIN_VERSION`. LinkedIn token renewal is manual
+`LINKEDIN_AUTHOR`, optional `MEDIUM_PUBLICATION`, `MEDIUM_NOTIFY_FOLLOWERS` (default on; `false` stops follower
+notifications; drafts never notify) and `LINKEDIN_VERSION`. LinkedIn token renewal is manual
 (see [`linkedin.md`](linkedin.md)). Publishing secrets are only exposed to trusted `master` runs.
