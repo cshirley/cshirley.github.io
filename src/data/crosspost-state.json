@@ -755,5 +755,29 @@
       "url": "https://medium.com/@clive-shirley/mobile-was-never-the-hard-part-enterprise-mobility-was-integration-1cb0705086df",
       "at": "2026-10-30T12:45:08.030Z"
     }
+  },
+  "2026-11-04-the-custom-bit-should-be-a-hook-not-a-fork": {
+    "linkedin": {
+      "status": "needs-review",
+      "attemptId": "3e6caca1-df62-4395-87a4-49efef7f118c",
+      "reservedAt": "2026-11-04T17:22:15.024Z",
+      "sourceSha": "1f3a1c86c65da7f58ed93731465dec036b2d4f11",
+      "sourceUrl": "https://www.shirleyconsulting.co.uk/architecture/2026/11/04/the-custom-bit-should-be-a-hook-not-a-fork.html",
+      "mode": "link-post",
+      "provenance": {
+        "runUrl": "https://github.com/cshirley/cshirley.github.io/actions/runs/41876705778"
+      }
+    },
+    "medium": {
+      "status": "needs-review",
+      "attemptId": "ccb665e2-15e5-4a3a-af6c-2d87ab7406b4",
+      "reservedAt": "2026-11-04T17:22:15.024Z",
+      "sourceSha": "1f3a1c86c65da7f58ed93731465dec036b2d4f11",
+      "sourceUrl": "https://www.shirleyconsulting.co.uk/architecture/2026/11/04/the-custom-bit-should-be-a-hook-not-a-fork.html",
+      "mode": "public",
+      "provenance": {
+        "runUrl": "https://github.com/cshirley/cshirley.github.io/actions/runs/41876705778"
+      }
+    }
   }
 }
