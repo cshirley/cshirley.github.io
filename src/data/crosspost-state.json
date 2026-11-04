@@ -758,7 +758,7 @@
   },
   "2026-11-04-the-custom-bit-should-be-a-hook-not-a-fork": {
     "linkedin": {
-      "status": "needs-review",
+      "status": "published",
       "attemptId": "3e6caca1-df62-4395-87a4-49efef7f118c",
       "reservedAt": "2026-11-04T17:22:15.024Z",
       "sourceSha": "1f3a1c86c65da7f58ed93731465dec036b2d4f11",
@@ -766,10 +766,14 @@
       "mode": "link-post",
       "provenance": {
         "runUrl": "https://github.com/cshirley/cshirley.github.io/actions/runs/41876705778"
-      }
+      },
+      "attemptedAt": "2026-11-04T17:22:41.391Z",
+      "externalId": "urn:li:share:7523796879902568448",
+      "url": "https://www.linkedin.com/feed/update/urn:li:share:7523796879902568448/",
+      "at": "2026-11-04T17:22:41.972Z"
     },
     "medium": {
-      "status": "needs-review",
+      "status": "published",
       "attemptId": "ccb665e2-15e5-4a3a-af6c-2d87ab7406b4",
       "reservedAt": "2026-11-04T17:22:15.024Z",
       "sourceSha": "1f3a1c86c65da7f58ed93731465dec036b2d4f11",
@@ -777,7 +781,12 @@
       "mode": "public",
       "provenance": {
         "runUrl": "https://github.com/cshirley/cshirley.github.io/actions/runs/41876705778"
-      }
+      },
+      "attemptedAt": "2026-11-04T17:22:40.168Z",
+      "publication": "Notes from the build",
+      "externalId": "8e39476c091b",
+      "url": "https://medium.com/@clive-shirley/the-custom-bit-should-be-a-hook-not-a-fork-extensibility-in-enterprise-products-8e39476c091b",
+      "at": "2026-11-04T17:22:41.384Z"
     }
   }
 }
