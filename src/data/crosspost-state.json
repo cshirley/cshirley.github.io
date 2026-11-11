@@ -788,5 +788,29 @@
       "url": "https://medium.com/@clive-shirley/the-custom-bit-should-be-a-hook-not-a-fork-extensibility-in-enterprise-products-8e39476c091b",
       "at": "2026-11-04T17:22:41.384Z"
     }
+  },
+  "2026-11-11-shown-equals-charged": {
+    "linkedin": {
+      "status": "needs-review",
+      "attemptId": "a11afc75-528a-44be-b7b4-8ccdb2a577c9",
+      "reservedAt": "2026-11-11T17:16:42.068Z",
+      "sourceSha": "204b9b6397ec6a4b7d6614a81e37c3fbc1c66a5f",
+      "sourceUrl": "https://www.shirleyconsulting.co.uk/payments/2026/11/11/shown-equals-charged.html",
+      "mode": "link-post",
+      "provenance": {
+        "runUrl": "https://github.com/cshirley/cshirley.github.io/actions/runs/43066350631"
+      }
+    },
+    "medium": {
+      "status": "needs-review",
+      "attemptId": "497cfee2-37dc-4bf6-9268-205f5fbb817b",
+      "reservedAt": "2026-11-11T17:16:42.068Z",
+      "sourceSha": "204b9b6397ec6a4b7d6614a81e37c3fbc1c66a5f",
+      "sourceUrl": "https://www.shirleyconsulting.co.uk/payments/2026/11/11/shown-equals-charged.html",
+      "mode": "public",
+      "provenance": {
+        "runUrl": "https://github.com/cshirley/cshirley.github.io/actions/runs/43066350631"
+      }
+    }
   }
 }
