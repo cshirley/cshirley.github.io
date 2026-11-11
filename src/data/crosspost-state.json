@@ -791,7 +791,7 @@
   },
   "2026-11-11-shown-equals-charged": {
     "linkedin": {
-      "status": "needs-review",
+      "status": "published",
       "attemptId": "a11afc75-528a-44be-b7b4-8ccdb2a577c9",
       "reservedAt": "2026-11-11T17:16:42.068Z",
       "sourceSha": "204b9b6397ec6a4b7d6614a81e37c3fbc1c66a5f",
@@ -799,10 +799,14 @@
       "mode": "link-post",
       "provenance": {
         "runUrl": "https://github.com/cshirley/cshirley.github.io/actions/runs/43066350631"
-      }
+      },
+      "attemptedAt": "2026-11-11T17:17:14.465Z",
+      "externalId": "urn:li:share:7526332224279887872",
+      "url": "https://www.linkedin.com/feed/update/urn:li:share:7526332224279887872/",
+      "at": "2026-11-11T17:17:15.227Z"
     },
     "medium": {
-      "status": "needs-review",
+      "status": "published",
       "attemptId": "497cfee2-37dc-4bf6-9268-205f5fbb817b",
       "reservedAt": "2026-11-11T17:16:42.068Z",
       "sourceSha": "204b9b6397ec6a4b7d6614a81e37c3fbc1c66a5f",
@@ -810,7 +814,12 @@
       "mode": "public",
       "provenance": {
         "runUrl": "https://github.com/cshirley/cshirley.github.io/actions/runs/43066350631"
-      }
+      },
+      "attemptedAt": "2026-11-11T17:17:02.376Z",
+      "publication": "Notes from the build",
+      "externalId": "4d0868f8acba",
+      "url": "https://medium.com/@clive-shirley/shown-charged-time-based-pricing-needs-a-persisted-order-4d0868f8acba",
+      "at": "2026-11-11T17:17:14.438Z"
     }
   }
 }
