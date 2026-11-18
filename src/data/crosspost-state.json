@@ -823,19 +823,8 @@
     }
   },
   "2026-11-18-database-bill-is-a-design-smell": {
-    "linkedin": {
-      "status": "needs-review",
-      "attemptId": "00085014-1a47-44b6-b432-0490b4b9a6b1",
-      "reservedAt": "2026-11-18T18:12:00.822Z",
-      "sourceSha": "842805979c328fb86e5c158398677f879c07db29",
-      "sourceUrl": "https://www.shirleyconsulting.co.uk/architecture/2026/11/18/database-bill-is-a-design-smell.html",
-      "mode": "link-post",
-      "provenance": {
-        "runUrl": "https://github.com/cshirley/cshirley.github.io/actions/runs/44366782559"
-      }
-    },
     "medium": {
-      "status": "needs-review",
+      "status": "published",
       "attemptId": "c3243aa3-c08c-4542-b98b-960b85bb9cc6",
       "reservedAt": "2026-11-18T18:12:00.822Z",
       "sourceSha": "842805979c328fb86e5c158398677f879c07db29",
@@ -843,7 +832,12 @@
       "mode": "public",
       "provenance": {
         "runUrl": "https://github.com/cshirley/cshirley.github.io/actions/runs/44366782559"
-      }
+      },
+      "attemptedAt": "2026-11-18T18:12:19.228Z",
+      "publication": "Notes from the build",
+      "externalId": "84e304c33b54",
+      "url": "https://medium.com/@clive-shirley/your-database-bill-is-a-design-smell-84e304c33b54",
+      "at": "2026-11-18T18:12:22.726Z"
     }
   }
 }
