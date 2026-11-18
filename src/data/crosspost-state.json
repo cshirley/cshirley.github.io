@@ -821,5 +821,29 @@
       "url": "https://medium.com/@clive-shirley/shown-charged-time-based-pricing-needs-a-persisted-order-4d0868f8acba",
       "at": "2026-11-11T17:17:14.438Z"
     }
+  },
+  "2026-11-18-database-bill-is-a-design-smell": {
+    "linkedin": {
+      "status": "needs-review",
+      "attemptId": "00085014-1a47-44b6-b432-0490b4b9a6b1",
+      "reservedAt": "2026-11-18T18:12:00.822Z",
+      "sourceSha": "842805979c328fb86e5c158398677f879c07db29",
+      "sourceUrl": "https://www.shirleyconsulting.co.uk/architecture/2026/11/18/database-bill-is-a-design-smell.html",
+      "mode": "link-post",
+      "provenance": {
+        "runUrl": "https://github.com/cshirley/cshirley.github.io/actions/runs/44366782559"
+      }
+    },
+    "medium": {
+      "status": "needs-review",
+      "attemptId": "c3243aa3-c08c-4542-b98b-960b85bb9cc6",
+      "reservedAt": "2026-11-18T18:12:00.822Z",
+      "sourceSha": "842805979c328fb86e5c158398677f879c07db29",
+      "sourceUrl": "https://www.shirleyconsulting.co.uk/architecture/2026/11/18/database-bill-is-a-design-smell.html",
+      "mode": "public",
+      "provenance": {
+        "runUrl": "https://github.com/cshirley/cshirley.github.io/actions/runs/44366782559"
+      }
+    }
   }
 }
