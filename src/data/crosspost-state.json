@@ -823,6 +823,17 @@
     }
   },
   "2026-11-18-database-bill-is-a-design-smell": {
+    "linkedin": {
+      "status": "needs-review",
+      "attemptId": "85a194a6-1e86-4e2b-8de5-eb455ebcdbe9",
+      "reservedAt": "2026-11-23T22:17:13.979Z",
+      "sourceSha": "26941ac60c9bb4d42e70e7c36671d42181e58b90",
+      "sourceUrl": "https://www.shirleyconsulting.co.uk/architecture/2026/11/18/database-bill-is-a-design-smell.html",
+      "mode": "link-post",
+      "provenance": {
+        "runUrl": "https://github.com/cshirley/cshirley.github.io/actions/runs/45278013943"
+      }
+    },
     "medium": {
       "status": "published",
       "attemptId": "c3243aa3-c08c-4542-b98b-960b85bb9cc6",
