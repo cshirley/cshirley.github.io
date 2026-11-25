@@ -823,6 +823,17 @@
     }
   },
   "2026-11-18-database-bill-is-a-design-smell": {
+    "linkedin": {
+      "status": "needs-review",
+      "attemptId": "7e9cbd33-1d7e-4823-885d-24e189820d6d",
+      "reservedAt": "2026-11-25T19:26:00.041Z",
+      "sourceSha": "fd9c15173dde5da1a6307e1d274d932178e8b476",
+      "sourceUrl": "https://www.shirleyconsulting.co.uk/architecture/2026/11/18/database-bill-is-a-design-smell.html",
+      "mode": "link-post",
+      "provenance": {
+        "runUrl": "https://github.com/cshirley/cshirley.github.io/actions/runs/45684937618"
+      }
+    },
     "medium": {
       "status": "published",
       "attemptId": "c3243aa3-c08c-4542-b98b-960b85bb9cc6",
@@ -838,6 +849,19 @@
       "externalId": "84e304c33b54",
       "url": "https://medium.com/@clive-shirley/your-database-bill-is-a-design-smell-84e304c33b54",
       "at": "2026-11-18T18:12:22.726Z"
+    }
+  },
+  "2026-11-25-agent-standards-architecture": {
+    "medium": {
+      "status": "needs-review",
+      "attemptId": "a4a72952-5af9-42ea-a4a5-371e8d69e8e2",
+      "reservedAt": "2026-11-25T19:26:00.041Z",
+      "sourceSha": "fd9c15173dde5da1a6307e1d274d932178e8b476",
+      "sourceUrl": "https://www.shirleyconsulting.co.uk/ai/2026/11/25/agent-standards-architecture.html",
+      "mode": "public",
+      "provenance": {
+        "runUrl": "https://github.com/cshirley/cshirley.github.io/actions/runs/45684937618"
+      }
     }
   }
 }
